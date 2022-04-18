@@ -1,7 +1,7 @@
 import React from 'react';
 import {List, ListItem, ListItemText, Paper, Typography} from "@mui/material";
 
-const InfoProfile = () => {
+const InfoUser = () => {
     return (
        <>
            <Paper elevation={3} sx={{p:2, background: "#f9fafb"}}>
@@ -11,27 +11,27 @@ const InfoProfile = () => {
                <List>
                    <ListItem>
                        <ListItemText
-                           primary="Прізвище: Баб'як"
+                           primary="Прізвище: Саня"
                        />
                    </ListItem>
                    <ListItem>
                        <ListItemText
-                           primary="Ім'я: Олег"
+                           primary="Ім'я: Саня"
                        />
                    </ListItem>
                    <ListItem>
                        <ListItemText
-                           primary="Електронна адреса: oleh@gmail.com"
+                           primary="Електронна адреса: sanya@gmail.com"
                        />
                    </ListItem>
                    <ListItem>
                        <ListItemText
-                           primary="Номер телефону: +380 502 65 92 88"
+                           primary="Номер телефону: +380 422 58 17 32"
                        />
                    </ListItem>
                    <ListItem>
                        <ListItemText
-                           primary="Дата народження: 17.05.2001"
+                           primary="Дата народження: 27.12.1992"
                        />
                    </ListItem>
                </List>
@@ -40,4 +40,4 @@ const InfoProfile = () => {
     );
 };
 
-export default InfoProfile;
+export default InfoUser;

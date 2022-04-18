@@ -2,18 +2,18 @@ import React from 'react';
 import {
     Box
 } from "@mui/material";
-import GaleryProfile from "../GaleryProfile/GaleryProfile";
-import InfoProfile from "../InfoProfile/InfoProfile";
+import InfoUser from "../InfoProfile/InfoUser";
+import GaleryUser from "../GaleryProfile/GaleryUser";
 
-const ProfileBodyLeft = () => {
+const UserBodyLeft = () => {
     return (
         <Box flex={3} p={{ xs: 0, md: 2 }}>
             <Box sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
-                <InfoProfile/>
-                <GaleryProfile/>
+                <InfoUser/>
+                <GaleryUser/>
             </Box>
         </Box>
     );
 };
 
-export default ProfileBodyLeft;
+export default UserBodyLeft;

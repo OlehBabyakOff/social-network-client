@@ -6,6 +6,11 @@ import Friends from "./pages/Friends/Friends";
 import Groups from "./pages/Groups/Groups";
 import Messages from "./pages/Messages/Messages";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
+import PostDetail from "./pages/PostDetail/PostDetail";
+import User from "./pages/User/User";
+import Group from "./pages/Group/Group";
+import Chat from "./pages/Chat/Chat";
+import GroupChat from "./pages/GroupChat/GroupChat";
 
 const App = () => {
 
@@ -35,6 +40,21 @@ const App = () => {
                     </Route>
                     <Route exact path='/messages'>
                         <Messages/>
+                    </Route>
+                    <Route exact path='/post'>
+                        <PostDetail/>
+                    </Route>
+                    <Route exact path='/user'>
+                        <User/>
+                    </Route>
+                    <Route exact path='/group'>
+                        <Group/>
+                    </Route>
+                    <Route exact path='/chat'>
+                        <Chat/>
+                    </Route>
+                    <Route exact path='/groupChat'>
+                        <GroupChat/>
                     </Route>
                     <Route path='*'>
                         <Redirect to="/"/>

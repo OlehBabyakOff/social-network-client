@@ -13,6 +13,7 @@ const Feed = () => {
 
     return (
         <Box flex={7} p={{ xs: 0, md: 2 }}>
+            <CreatePost/>
             {loading ? (
                 <Stack spacing={1} sx={{ml:5}}>
                     <Skeleton variant="text" height={100} />
@@ -22,7 +23,6 @@ const Feed = () => {
                 </Stack>
             ) : (
                 <>
-                    <CreatePost/>
                     <Post/>
                     <Post/>
                     <Post/>

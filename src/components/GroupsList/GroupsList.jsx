@@ -34,7 +34,7 @@ const GroupsList = () => {
                 <GroupSearch/>
 
                 <List dense sx={{width: '100%', maxWidth: 900, mt: 3,  bgcolor: 'background.paper'}}>
-                    <ListItem sx={{lineHeight: 2}}
+                    <ListItem sx={{lineHeight: 2, background: "#f9fafb"}}
                               disablePadding
                     >
                         <ListItemButton>

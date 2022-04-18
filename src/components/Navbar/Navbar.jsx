@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {
-    AppBar,
+    AppBar, Autocomplete,
     Avatar,
     Badge,
     Box,
@@ -8,7 +8,7 @@ import {
     IconButton,
     List,
     ListItem, ListItemText, MenuItem,
-    styled,
+    styled, TextField,
     Toolbar,
     Typography
 } from "@mui/material";
@@ -41,6 +41,7 @@ const UserBox = styled(Box)(({theme}) => ({
 const Navbar = () => {
 
     const [open, setOpen] = useState(false)
+    const friends = ['Oleh', "Sasha"]
 
     return (
         <AppBar position="sticky">
@@ -55,6 +56,7 @@ const Navbar = () => {
                         Social Network
                     </Typography>
                 </NavLink>
+
                 <Box sx={{ flexGrow: 1 }} />
                 <Icons sx={{ display: { xs: 'none', md: 'flex' } }}>
                     <NavLink to="/messages" style={{textDecoration: "none", color: "white"}}>

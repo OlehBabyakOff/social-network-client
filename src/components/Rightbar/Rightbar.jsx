@@ -14,12 +14,12 @@ import {
 const Rightbar = () => {
     return (
         <Box flex={2} p={3} pl={0} sx={{ display: { xs: "none", sm: "block" } }}>
-            <Box position="fixed" width={300}>
+            <Box position="fixed" width={300} sx={{background: "#f9fafb", height: "100vh"}}>
                 <Typography variant="h6" fontWeight={300}>
                     Знайомтесь з новими людьми
                 </Typography>
 
-                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                <List sx={{ width: '100%', maxWidth: 360, background: "#f9fafb" }}>
                     <ListItem
                         secondaryAction={
                             <Button variant="text">Підписатися</Button>
@@ -67,12 +67,14 @@ const Rightbar = () => {
                     </ListItem>
 
                 </List>
+
+                <Divider/>
 
                 <Typography variant="h6" fontWeight={300} sx={{mt:3}}>
                     Вступайте до спільнот
                 </Typography>
 
-                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                <List sx={{ width: '100%', maxWidth: 360, background: "#f9fafb" }}>
                     <ListItem
                         secondaryAction={
                             <AvatarGroup max={3}>
@@ -120,7 +122,6 @@ const Rightbar = () => {
                     </ListItem>
 
                 </List>
-
             </Box>
         </Box>
     );

@@ -1,12 +1,11 @@
 import React from 'react';
 import {Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 import {Article, Email, Group, Home, Person, Settings} from "@mui/icons-material";
-import {NavLink} from "react-router-dom";
 
 const Sidebar = () => {
     return (
-        <Box flex={1.5} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
-            <Box position="fixed">
+        <Box flex={1.5} p={2} sx={{ display: { xs: "none", sm: "block" }, background: "#f9fafb" }}>
+            <Box position="fixed" style={{width: 260, background: "#f9fafb", height: "100vh"}}>
                 <List>
                     <ListItem disablePadding>
                         <ListItemButton component="a" href="/me">

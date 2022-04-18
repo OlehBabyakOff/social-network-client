@@ -12,50 +12,19 @@ import {
 } from "@mui/material";
 import {ChatBubbleOutlineOutlined, Favorite, FavoriteBorder, MoreVert, Share} from "@mui/icons-material";
 
-const PostProfile = () => {
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+const PostGroup = () => {
 
     return (
-        <Card sx={{ margin: 5, mt: 0,  width: "80%", ml:13, background: "#f9fafb" }}>
+        <Card sx={{ margin: 5,  width: "80%", ml:13, background: "#f9fafb" }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
                         R
                     </Avatar>
                 }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVert id="basic-button"
-                                  aria-controls={open ? 'basic-menu' : undefined}
-                                  aria-haspopup="true"
-                                  aria-expanded={open ? 'true' : undefined}
-                                  onClick={handleClick}/>
-                    </IconButton>
-                }
                 title="John Doe"
                 subheader="September 14, 2022"
             />
-
-            <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                }}
-            >
-                <MenuItem onClick={handleClose}>Видалити</MenuItem>
-            </Menu>
 
             <CardMedia
                 component="img"
@@ -91,4 +60,4 @@ const PostProfile = () => {
     );
 };
 
-export default PostProfile;
+export default PostGroup;
