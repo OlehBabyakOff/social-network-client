@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Avatar,
     Card,
@@ -11,8 +11,11 @@ import {
     Typography
 } from "@mui/material";
 import {ChatBubbleOutlineOutlined, Favorite, FavoriteBorder, MoreVert, Share} from "@mui/icons-material";
+import Moment from "react-moment";
+import {getPostLikeService, likePostService} from "../../api/postService";
+import {Link} from "react-router-dom";
 
-const PostProfile = () => {
+const PostProfile = ({post, reload, setReload}) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -24,12 +27,28 @@ const PostProfile = () => {
         setAnchorEl(null);
     };
 
+    const [isLiked, setIsLiked] = useState(false)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const likedPost = await getPostLikeService(post._id)
+            if (likedPost.data !== null) setIsLiked(true)
+        }
+        fetchData()
+    }, [reload, post.likes, post.comments])
+
+    const likePost = async (id) => {
+        await likePostService(id)
+        setReload(!reload)
+        setIsLiked(!isLiked)
+    }
+
     return (
-        <Card sx={{ margin: 5, mt: 0,  width: "80%", ml:13, background: "#f9fafb" }}>
+        <Card sx={{ margin: 5, mt: 0,  width: "85%", ml:14, background: "#f9fafb" }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-                        R
+                        {post.user}
                     </Avatar>
                 }
                 action={
@@ -41,8 +60,8 @@ const PostProfile = () => {
                                   onClick={handleClick}/>
                     </IconButton>
                 }
-                title="John Doe"
-                subheader="September 14, 2022"
+                title={post.user}
+                subheader={<Moment format="DD.MM.YYYY HH:mm">{post.createdAt.toString()}</Moment>}
             />
 
             <Menu
@@ -56,33 +75,30 @@ const PostProfile = () => {
             >
                 <MenuItem onClick={handleClose}>Видалити</MenuItem>
             </Menu>
-
-            <CardMedia
+            {post.image ? (<CardMedia
                 component="img"
                 height="20%"
-                image="https://images.pexels.com/photos/4534200/pexels-photo-4534200.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt="Paella dish"
-            />
+                image={`data:buffer;base64,${post.image}`}
+                alt="Фото"
+            />) : null}
+
             <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                    This impressive paella is a perfect party dish and a fun meal to cook
-                    together with your guests. Add 1 cup of frozen peas along with the
-                    mussels, if you like.
+                <Typography variant="body1" color="text.secondary">
+                    {post.text}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing sx={{justifyContent: "space-between"}}>
                 <IconButton aria-label="add to favorites">
-                    <Checkbox
-                        icon={<FavoriteBorder />}
-                        checkedIcon={<Favorite sx={{ color: "red" }} />}
-                    />
-                    <Typography variant="span">
-                        10
+                    {isLiked ? (<Favorite sx={{color: "red"}} onClick={() => likePost(post._id)}/>) : (<FavoriteBorder onClick={() => likePost(post._id)}/>)}
+                    <Typography variant="span" sx={{ml:1}}>
+                        {post.likes}
                     </Typography>
                 </IconButton>
                 <IconButton aria-label="comment">
                     <Typography variant="span" sx={{mr:1}}>
-                        3
+                        <Link style={{ textDecoration: 'inherit', color: 'inherit' }} to={`/post/${post._id}`}>
+                            {post.comments}
+                        </Link>
                     </Typography>
                     <ChatBubbleOutlineOutlined/>
                 </IconButton>

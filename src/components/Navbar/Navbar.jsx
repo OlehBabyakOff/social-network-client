@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
     AppBar, Autocomplete,
     Avatar,
@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import {AccountCircle, Group, Home, Logout, Mail, Menu, Settings} from "@mui/icons-material";
 import {NavLink} from "react-router-dom";
+import {Context} from "../../index.js";
+import {observer} from "mobx-react-lite";
 
 const StyledToolBar = styled(Toolbar)({
     display: "flex",
@@ -40,8 +42,14 @@ const UserBox = styled(Box)(({theme}) => ({
 
 const Navbar = () => {
 
+    const {store} = useContext(Context)
+
     const [open, setOpen] = useState(false)
     const friends = ['Oleh', "Sasha"]
+
+    const logout = async () => {
+        await store.logout()
+    }
 
     return (
         <AppBar position="sticky">
@@ -85,7 +93,7 @@ const Navbar = () => {
                     >
                         <Avatar onClick={() => setOpen(true)}
                         sx={{ width: 30, height: 30 }}
-                        src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg"
+                        src={`data:buffer;base64,${store.user.avatar}`}
                         />
                     </IconButton>
                     <Drawer anchor="right"
@@ -108,7 +116,7 @@ const Navbar = () => {
                                 </ListItem>
                             </NavLink>
                             <ListItem>
-                                <MenuItem sx={{ml:0.5}}>
+                                <MenuItem onClick={() => logout()} sx={{ml:0.5}}>
                                     <Logout sx={{mr:2}}/>
                                     Вихід</MenuItem>
                             </ListItem>
@@ -133,4 +141,4 @@ const Navbar = () => {
     );
 };
 
-export default Navbar;
+export default observer(Navbar);

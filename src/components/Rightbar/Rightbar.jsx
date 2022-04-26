@@ -10,6 +10,7 @@ import {
     ListItemText,
     Typography
 } from "@mui/material";
+import {observer} from "mobx-react-lite";
 
 const Rightbar = () => {
     return (
@@ -127,4 +128,4 @@ const Rightbar = () => {
     );
 };
 
-export default Rightbar;
+export default observer(Rightbar);

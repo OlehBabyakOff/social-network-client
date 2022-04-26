@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Avatar, Button, Divider, Grid, IconButton, Menu, MenuItem, Paper} from "@mui/material";
 import ReplyComment from "./ReplyComment";
 import {MoreVert} from "@mui/icons-material";
 import CreateReplyComment from "./CreateReplyComment";
+import {getPostChildCommentsService} from "../../api/postService";
+import Moment from "react-moment";
 
-const Comment = () => {
-
+const Comment = ({comment, reload, setReload, postId}) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [reply, setReply] = useState(false)
 
@@ -18,25 +19,30 @@ const Comment = () => {
         setAnchorEl(null);
     };
 
+    const [childs, setChilds] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const fetchChilds = await getPostChildCommentsService(postId, comment._id)
+            setChilds(fetchChilds.data)
+        }
+        fetchData().then(() => setLoading(false))
+    }, [reload])
+
     return (
        <>
            <Paper style={{ padding: "40px 20px", width: "95%", background: "#f9fafb", marginBottom: 5 }} elevation={0}>
                <Grid container wrap="nowrap" spacing={2}>
                    <Grid item>
-                       <Avatar alt="Remy Sharp" src="" />
+                       <Avatar alt="" src="" >{comment.userId}</Avatar>
                    </Grid>
                    <Grid justifyContent="left" item xs zeroMinWidth>
-                       <h4 style={{ margin: 0, textAlign: "left" }}>Michel Michel</h4>
-                       <p style={{ textAlign: "left" }}>
-                           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                           luctus ut est sed faucibus. Duis bibendum ac ex vehicula laoreet.
-                           Suspendisse congue vulputate lobortis. Pellentesque at interdum
-                           tortor. Quisque arcu quam, malesuada vel mauris et, posuere
-                           sagittis ipsum. Aliquam ultricies a ligula nec faucibus. In elit
-                           metus, efficitur lobortis nisi quis, molestie porttitor metus.
-                           Pellentesque et neque risus. Aliquam vulputate, mauris vitae
-                           tincidunt interdum, mauris mi vehicula urna, nec feugiat quam
-                           lectus vitae ex.{" "}
+                       <h4 style={{ margin: 0, textAlign: "left" }}>{comment.userId}
+                           <Moment format="DD.MM.YYYY HH:mm" style={{color: 'inherit', fontWeight: "300", float: "right"}}>{comment.createdAt.toString()}</Moment>
+                       </h4>
+                       <p style={{ textAlign: "left", margin: "5px 0"}}>
+                           {comment.content}
                        </p>
                        <p style={{ textAlign: "left", color: "gray" }}>
                            <IconButton aria-label="settings" sx={{float: "right"}}>
@@ -62,13 +68,15 @@ const Comment = () => {
                    </Menu>
                </Grid>
 
-               {reply ? (<CreateReplyComment/>) : null}
+               {reply ? (<CreateReplyComment reload={reload} setReload={setReload} postId={postId} parentId={comment._id} reply={reply} setReply={setReply}/>) : null}
 
-               <ReplyComment/>
-               <ReplyComment/>
-               <ReplyComment/>
-               <ReplyComment/>
 
+               {loading ? null :
+               comment.childs.length > 0 ?
+                   childs.map(child => (
+                       <ReplyComment comment={child} key={child._id}/>
+                   ))
+                : null}
 
            </Paper>
        </>

@@ -7,7 +7,7 @@ const ChatMember = () => {
             <ListItemIcon>
                 <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
             </ListItemIcon>
-            <ListItemText primary="Remy Sharp">Remy Sharp</ListItemText>
+            <ListItemText primary="Баб'як Олег">Баб'як Олег</ListItemText>
             <ListItemText secondary="online" align="right"></ListItemText>
         </ListItem>
     );

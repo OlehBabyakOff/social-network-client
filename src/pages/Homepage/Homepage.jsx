@@ -3,6 +3,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import {Box, Stack} from "@mui/material";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Profile from "../../components/Profile/Profile";
+import {observer} from "mobx-react-lite";
 
 const Homepage = () => {
     return (
@@ -16,4 +17,4 @@ const Homepage = () => {
     );
 };
 
-export default Homepage;
+export default observer(Homepage);

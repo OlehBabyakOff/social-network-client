@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Feed from '../../components/Feed/Feed'
 import Rightbar from "../../components/Rightbar/Rightbar";
+import {observer} from "mobx-react-lite";
 
 const News = () => {
 
@@ -21,4 +22,4 @@ const News = () => {
     );
 };
 
-export default News;
+export default observer(News);

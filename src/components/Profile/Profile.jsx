@@ -1,24 +1,29 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
     Box, CardContent, CardMedia, Divider, Stack, Typography
 } from "@mui/material";
 import ProfileBodyLeft from "../ProfileBody/ProfileBodyLeft";
 import ProfileBodyRight from "../ProfileBody/ProfileBodyRight";
+import {Context} from "../../index.js";
+import {observer} from "mobx-react-lite";
 
 const Profile = () => {
+
+    const {store} = useContext(Context)
+
     return (
         <Box flex={10}>
 
                 <CardMedia
                     component="img"
                     height="400"
-                    image="https://www.iucn.org/sites/dev/files/content/images/2020/shutterstock_1458128810.jpg"
+                    image={`data:buffer;base64,${store.user.background}`}
                     alt="Paella dish"
                 />
                 <CardMedia
                     component="img"
                     sx={{borderRadius: 50, borderColor: "white", height: 200, width: 200, mt: -13, ml: 86}}
-                    image="https://html5css.ru/w3images/avatar2.png"
+                    image={`data:buffer;base64,${store.user.avatar}`}
                     alt="Paella dish"
                 />
                 <CardContent>
@@ -27,14 +32,14 @@ const Profile = () => {
                     alignItems: "center",
                     justifyContent: "center",
                     fontWeight: 500}}>
-                        Баб'як Олег
+                        {`${store.user.second_name} ${store.user.first_name}`}
                     </Typography>
                     <Typography variant="h6" sx={{display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
                         fontWeight: 400}}>
-                        @spicepower
+                        @{store.user.username}
                     </Typography>
                 </CardContent>
                 <Divider/>
@@ -47,4 +52,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default observer(Profile);

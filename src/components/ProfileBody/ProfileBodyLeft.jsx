@@ -4,6 +4,7 @@ import {
 } from "@mui/material";
 import GaleryProfile from "../GaleryProfile/GaleryProfile";
 import InfoProfile from "../InfoProfile/InfoProfile";
+import {observer} from "mobx-react-lite";
 
 const ProfileBodyLeft = () => {
     return (
@@ -16,4 +17,4 @@ const ProfileBodyLeft = () => {
     );
 };
 
-export default ProfileBodyLeft;
+export default observer(ProfileBodyLeft);

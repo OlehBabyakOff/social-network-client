@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {createTheme, ThemeProvider} from "@mui/material";
 import News from "./pages/News/News";
 import Homepage from "./pages/Homepage/Homepage";
@@ -11,8 +11,14 @@ import User from "./pages/User/User";
 import Group from "./pages/Group/Group";
 import Chat from "./pages/Chat/Chat";
 import GroupChat from "./pages/GroupChat/GroupChat";
+import Registration from "./pages/Registration/Registration";
+import Login from "./pages/Login/Login";
+import {observer} from "mobx-react-lite";
+import {Context} from "./index.js";
 
 const App = () => {
+
+    const {store} = useContext(Context)
 
     const [mode, setMode] = useState("light");
     const darkTheme = createTheme({
@@ -21,43 +27,55 @@ const App = () => {
         },
     });
 
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            store.checkAuth()
+        }
+    }, [])
+
   return (
     <>
         <ThemeProvider theme={darkTheme}>
             <Router>
                 <Switch>
                     <Route exact path='/'>
-                        <News/>
+                        {store.user ? <News/> : <Login/>}
                     </Route>
                     <Route exact path='/me'>
-                        <Homepage/>
+                        {store.user ? <Homepage/> : <Login/>}
                     </Route>
                     <Route exact path='/friends'>
-                        <Friends/>
+                        {store.user ? <Friends/> : <Login/>}
                     </Route>
                     <Route exact path='/groups'>
-                        <Groups/>
+                        {store.user ? <Groups/> : <Login/>}
                     </Route>
                     <Route exact path='/messages'>
-                        <Messages/>
+                        {store.user ? <Messages/> : <Login/>}
                     </Route>
-                    <Route exact path='/post'>
-                        <PostDetail/>
+                    <Route exact path='/post/:postId'>
+                        {store.user ? <PostDetail/> : <Login/>}
                     </Route>
                     <Route exact path='/user'>
-                        <User/>
+                        {store.user ? <User/> : <Login/>}
                     </Route>
                     <Route exact path='/group'>
-                        <Group/>
+                        {store.user ? <Group/> : <Login/>}
                     </Route>
                     <Route exact path='/chat'>
-                        <Chat/>
+                        {store.user ? <Chat/> : <Login/>}
                     </Route>
                     <Route exact path='/groupChat'>
-                        <GroupChat/>
+                        {store.user ? <GroupChat/> : <Login/>}
+                    </Route>
+                    <Route exact path='/registration'>
+                        {store.user ? <Redirect to='/'/> : <Registration/>}
+                    </Route>
+                    <Route exact path='/login'>
+                        {store.user ? <Redirect to='/'/> : <Login/>}
                     </Route>
                     <Route path='*'>
-                        <Redirect to="/"/>
+                        {store.user ? <Redirect to='/'/> : <Login/>}
                     </Route>
                 </Switch>
             </Router>
@@ -66,4 +84,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default observer(App);

@@ -1,6 +1,9 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {Avatar, Box, Button, ButtonGroup, Paper, Stack, styled, TextField, Typography} from "@mui/material";
 import {Image, Room} from "@mui/icons-material";
+import {Context} from "../../index.js";
+import {observer} from "mobx-react-lite";
+import {createPostService} from "../../api/postService";
 
 const UserBox = styled(Box)({
     display: "flex",
@@ -9,7 +12,23 @@ const UserBox = styled(Box)({
     marginBottom: "20px",
 });
 
-const CreatePost = () => {
+const CreatePost = ({reload, setReload}) => {
+
+    const {store} = useContext(Context)
+
+    const [text, setText] = useState("")
+    const [image, setImage] = useState(null)
+
+    const createPost = async (text, image) => {
+        const data = new FormData()
+        data.append('text', text)
+        if (image) data.append('image', image)
+        await createPostService(data)
+        setReload(!reload)
+        setText("")
+        setImage(null)
+    }
+
     return (
         <Box
             sx={{width: "70%", ml:21, mb: 10, height: 280, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
@@ -17,15 +36,15 @@ const CreatePost = () => {
             <Paper elevation={2} sx={{p:5, background: "#f9fafb"}}>
                 <UserBox>
                     <Avatar
-                        src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                        src={`data:buffer;base64,${store.user.avatar}`}
                         sx={{ width: 50, height: 50 }}
                     />
                     <Stack direction="column">
                         <Typography fontWeight={500} fontSize={20} variant="span">
-                            Баб'як Олег
+                            {`${store.user.second_name} ${store.user.first_name}`}
                         </Typography>
                         <Typography fontWeight={300} fontSize={18} variant="span">
-                            @spicepower
+                            @{store.user.username}
                         </Typography>
                     </Stack>
                 </UserBox>
@@ -36,14 +55,16 @@ const CreatePost = () => {
                     rows={3}
                     placeholder="Поділіться новинами з друзями"
                     variant="standard"
+                    value={text}
+                    onChange={e => setText(e.target.value)}
                 />
                 <Stack direction="row" gap={1} mt={2} mb={3} sx={{justifyContent: "space-around"}}>
                     <input
                         accept="image/*"
                         style={{ display: 'none' }}
                         id="raised-button-file"
-                        multiple
                         type="file"
+                        onChange={e => setImage(e.target.files[0])}
                     />
                     <label htmlFor="raised-button-file">
                         <Button variant="raised" component="span">
@@ -61,11 +82,14 @@ const CreatePost = () => {
                     variant="contained"
                     aria-label="outlined primary button group"
                 >
-                    <Button>Створити</Button>
+                    <Button onClick={(e) => {
+                        e.preventDefault()
+                        createPost(text, image)
+                    }}>Створити</Button>
                 </ButtonGroup>
             </Paper>
         </Box>
     );
 };
 
-export default CreatePost;
+export default observer(CreatePost);

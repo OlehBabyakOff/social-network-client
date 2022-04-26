@@ -1,7 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {List, ListItem, ListItemText, Paper, Typography} from "@mui/material";
+import {observer} from "mobx-react-lite";
+import {Context} from "../../index.js";
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 const InfoProfile = () => {
+
+    const {store} = useContext(Context)
+
     return (
        <>
            <Paper elevation={3} sx={{p:2, background: "#f9fafb"}}>
@@ -10,29 +17,29 @@ const InfoProfile = () => {
                </Typography>
                <List>
                    <ListItem>
-                       <ListItemText
-                           primary="Прізвище: Баб'як"
-                       />
+                       <ListItemText>
+                           Прізвище: {store.user.second_name}
+                       </ListItemText>
                    </ListItem>
                    <ListItem>
-                       <ListItemText
-                           primary="Ім'я: Олег"
-                       />
+                       <ListItemText>
+                           Ім'я: {store.user.first_name}
+                       </ListItemText>
                    </ListItem>
                    <ListItem>
-                       <ListItemText
-                           primary="Електронна адреса: oleh@gmail.com"
-                       />
+                       <ListItemText>
+                           Електронна адреса: {store.user.email}
+                       </ListItemText>
                    </ListItem>
                    <ListItem>
-                       <ListItemText
-                           primary="Номер телефону: +380 502 65 92 88"
-                       />
+                       <ListItemText>
+                           Номер телефону: {store.user.phone}
+                       </ListItemText>
                    </ListItem>
                    <ListItem>
-                       <ListItemText
-                           primary="Дата народження: 17.05.2001"
-                       />
+                       <ListItemText>
+                           Дата народження: <Moment format="DD/MM/YYYY">{store.user.birthday.toString()}</Moment>
+                       </ListItemText>
                    </ListItem>
                </List>
            </Paper>
@@ -40,4 +47,4 @@ const InfoProfile = () => {
     );
 };
 
-export default InfoProfile;
+export default observer(InfoProfile);

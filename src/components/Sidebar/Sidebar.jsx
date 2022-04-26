@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 import {Article, Email, Group, Home, Person, Settings} from "@mui/icons-material";
+import {observer} from "mobx-react-lite";
 
 const Sidebar = () => {
     return (
@@ -61,4 +62,4 @@ const Sidebar = () => {
     );
 };
 
-export default Sidebar;
+export default observer(Sidebar);
