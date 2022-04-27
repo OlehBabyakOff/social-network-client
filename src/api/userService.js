@@ -7,3 +7,11 @@ export const getAllUsers = async () => {
 export const getUser = async (id) => {
     return api.get(`/user/${id}`)
 }
+
+export const getFollowersService = async (id) => {
+    return api.get(`/user/${id}/followers`)
+}
+
+export const getFollowingsService = async (id) => {
+    return api.get(`/user/${id}/followings`)
+}

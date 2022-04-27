@@ -38,7 +38,7 @@ const InfoProfile = () => {
                    </ListItem>
                    <ListItem>
                        <ListItemText>
-                           Дата народження: <Moment format="DD/MM/YYYY">{store.user.birthday.toString()}</Moment>
+                           Дата народження: <Moment format="DD.MM.YYYY">{store.user.birthday.toString()}</Moment>
                        </ListItemText>
                    </ListItem>
                </List>

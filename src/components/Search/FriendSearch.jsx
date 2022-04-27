@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {IconButton, InputBase, Paper} from "@mui/material";
 import {SearchOutlined} from "@mui/icons-material";
 
-const FriendSearch = () => {
+const FriendSearch = ({followers, users}) => {
+
     return (
         <Paper
             component="form"

@@ -18,15 +18,28 @@ const CreatePost = ({reload, setReload}) => {
 
     const [text, setText] = useState("")
     const [image, setImage] = useState(null)
+    const [location, setLocation] = useState(null)
 
-    const createPost = async (text, image) => {
+    const createPost = async (text, image, location) => {
         const data = new FormData()
         data.append('text', text)
         if (image) data.append('image', image)
+        if (location) data.append('location', location)
         await createPostService(data)
         setReload(!reload)
         setText("")
         setImage(null)
+        setLocation(null)
+    }
+
+    const sendLocation = async () => {
+        if (!navigator.geolocation) {
+            return alert('Дана функція недоступна у вашому браузері!')
+        }
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const message = `https://google.com/maps?q=${position.coords.longitude},${position.coords.latitude}`
+            setLocation(message)
+        })
     }
 
     return (
@@ -72,7 +85,7 @@ const CreatePost = ({reload, setReload}) => {
                         </Button>
                     </label>
 
-                    <Button variant="raised" component="span">
+                    <Button onClick={() => sendLocation()} variant="raised" component="span">
                         <Room color="success" />
                     </Button>
 
@@ -84,7 +97,7 @@ const CreatePost = ({reload, setReload}) => {
                 >
                     <Button onClick={(e) => {
                         e.preventDefault()
-                        createPost(text, image)
+                        createPost(text, image, location)
                     }}>Створити</Button>
                 </ButtonGroup>
             </Paper>

@@ -3,7 +3,7 @@ import {Avatar, Button, Divider, Grid, IconButton, Menu, MenuItem, Paper} from "
 import ReplyComment from "./ReplyComment";
 import {MoreVert} from "@mui/icons-material";
 import CreateReplyComment from "./CreateReplyComment";
-import {getPostChildCommentsService} from "../../api/postService";
+import {deleteCommentService, getPostChildCommentsService} from "../../api/postService";
 import Moment from "react-moment";
 
 const Comment = ({comment, reload, setReload, postId}) => {
@@ -29,6 +29,11 @@ const Comment = ({comment, reload, setReload, postId}) => {
         }
         fetchData().then(() => setLoading(false))
     }, [reload])
+
+    const deleteComment = async (id, commentId) => {
+        await deleteCommentService(id, commentId)
+        setReload(!reload)
+    }
 
     return (
        <>
@@ -64,7 +69,7 @@ const Comment = ({comment, reload, setReload, postId}) => {
                            'aria-labelledby': 'basic-button',
                        }}
                    >
-                       <MenuItem onClick={handleClose}>Видалити</MenuItem>
+                       <MenuItem onClick={() => deleteComment(postId, comment._id).then(() => handleClose())}>Видалити</MenuItem>
                    </Menu>
                </Grid>
 
@@ -74,7 +79,7 @@ const Comment = ({comment, reload, setReload, postId}) => {
                {loading ? null :
                comment.childs.length > 0 ?
                    childs.map(child => (
-                       <ReplyComment comment={child} key={child._id}/>
+                       <ReplyComment comment={child} postId={postId} key={child._id} reload={reload} setReload={setReload}/>
                    ))
                 : null}
 

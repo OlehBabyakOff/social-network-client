@@ -11,15 +11,28 @@ const CreatePostProfile = ({reload, setReload}) => {
 
     const [text, setText] = useState("")
     const [image, setImage] = useState(null)
+    const [location, setLocation] = useState(null)
 
     const createPost = async (text, image) => {
         const data = new FormData()
         data.append('text', text)
         if (image) data.append('image', image)
+        if (location) data.append('location', location)
         await createPostService(data)
         setReload(!reload)
         setText("")
         setImage(null)
+        setLocation(null)
+    }
+
+    const sendLocation = async () => {
+        if (!navigator.geolocation) {
+            return alert('Дана функція недоступна у вашому браузері!')
+        }
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const message = `https://google.com/maps?q=${position.coords.longitude},${position.coords.latitude}`
+            setLocation(message)
+        })
     }
 
     return (
@@ -52,7 +65,7 @@ const CreatePostProfile = ({reload, setReload}) => {
                         </Button>
                     </label>
 
-                    <Button variant="raised" component="span">
+                    <Button onClick={() => sendLocation()} variant="raised" component="span">
                         <Room color="success" />
                     </Button>
 
@@ -62,7 +75,7 @@ const CreatePostProfile = ({reload, setReload}) => {
                     variant="contained"
                     aria-label="outlined primary button group"
                 >
-                    <Button onClick={() => createPost(text, image)}>Створити</Button>
+                    <Button onClick={() => createPost(text, image, location)}>Створити</Button>
                 </ButtonGroup>
                 </Paper>
             </Box>

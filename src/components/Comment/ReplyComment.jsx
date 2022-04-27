@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import {Avatar, Button, Divider, Grid, IconButton, Menu, MenuItem} from "@mui/material";
 import {MoreVert} from "@mui/icons-material";
 import Moment from "react-moment";
+import {deleteCommentService} from "../../api/postService";
 
-const ReplyComment = ({comment}) => {
+const ReplyComment = ({comment, postId, reload, setReload}) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -14,6 +15,11 @@ const ReplyComment = ({comment}) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const deleteComment = async (id, commentId) => {
+        await deleteCommentService(id, commentId)
+        setReload(!reload)
+    }
 
     return (
        <>
@@ -48,7 +54,7 @@ const ReplyComment = ({comment}) => {
                            'aria-labelledby': 'basic-button',
                        }}
                    >
-                       <MenuItem onClick={handleClose}>Видалити</MenuItem>
+                       <MenuItem onClick={() => deleteComment(postId, comment._id).then(() => handleClose())}>Видалити</MenuItem>
                    </Menu>
                </Grid>
        </>

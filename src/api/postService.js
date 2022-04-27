@@ -12,6 +12,10 @@ export const getMyPosts = async () => {
     return api.get("/post/getMy")
 }
 
+export const getUserPosts = async (id) => {
+    return api.get(`/${id}/posts/get`)
+}
+
 export const getPost = async (id) => {
     return api.get(`/post/get/${id}`)
 }
@@ -38,4 +42,12 @@ export const getPostCommentsService = async (id) => {
 
 export const getPostChildCommentsService = async (id, parentId) => {
     return api.get(`/${id}/comments/get/${parentId}/child`)
+}
+
+export const deletePostService = async (id) => {
+    return api.delete(`/post/delete/${id}`)
+}
+
+export const deleteCommentService = async (id, commentId) => {
+    return api.delete(`/${id}/comment/${commentId}/delete`)
 }

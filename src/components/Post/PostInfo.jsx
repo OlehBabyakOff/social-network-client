@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import { useHistory } from "react-router-dom";
 import {
     Avatar, Box, Button, Card,
     CardActions,
@@ -14,10 +15,19 @@ import {ChatBubbleOutlineOutlined, Favorite, FavoriteBorder, MoreVert} from "@mu
 import Comment from "../Comment/Comment";
 import CreateComment from "../Comment/CreateComment";
 import {useParams} from "react-router-dom";
-import {getPost, getPostCommentsService, getPostLikeService, likePostService} from "../../api/postService";
+import {
+    deletePostService,
+    getPost,
+    getPostCommentsService,
+    getPostLikeService,
+    likePostService
+} from "../../api/postService";
 import Moment from "react-moment";
+import {Context} from "../../index.js";
 
 const PostInfo = () => {
+
+    const {store} = useContext(Context)
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -30,6 +40,8 @@ const PostInfo = () => {
     };
 
     const {postId} = useParams()
+
+    let history = useHistory()
 
     const [loading, setLoading] = useState(true)
     const [isLiked, setIsLiked] = useState(false)
@@ -56,6 +68,12 @@ const PostInfo = () => {
         setIsLiked(!isLiked)
     }
 
+    const deletePost = async (id) => {
+        await deletePostService(id)
+        setReload(!reload)
+        history.push('/')
+    }
+
     return (
         loading ? null : (
             <Box flex={7} p={{xs: 0, md: 2}}>
@@ -67,13 +85,15 @@ const PostInfo = () => {
                             </Avatar>
                         }
                         action={
-                            <IconButton aria-label="settings">
-                                <MoreVert id="basic-button"
-                                          aria-controls={open ? 'basic-menu' : undefined}
-                                          aria-haspopup="true"
-                                          aria-expanded={open ? 'true' : undefined}
-                                          onClick={handleClick}/>
-                            </IconButton>
+                            store.user.roles.isAdmin || post.user.toString() === store.user._id.toString() ?
+                                <IconButton aria-label="settings">
+                                    <MoreVert id="basic-button"
+                                              aria-controls={open ? 'basic-menu' : undefined}
+                                              aria-haspopup="true"
+                                              aria-expanded={open ? 'true' : undefined}
+                                              onClick={handleClick}/>
+                                </IconButton>
+                                : null
                         }
                         title={post.user}
                         subheader={<Moment format="DD.MM.YYYY HH:mm">{post.createdAt.toString()}</Moment>}
@@ -88,7 +108,7 @@ const PostInfo = () => {
                             'aria-labelledby': 'basic-button',
                         }}
                     >
-                        <MenuItem onClick={handleClose}>Видалити</MenuItem>
+                        <MenuItem onClick={() => deletePost(post._id).then(() => handleClose())}>Видалити</MenuItem>
                     </Menu>
                     {post.image ? (<CardMedia
                         component="img"
@@ -100,6 +120,9 @@ const PostInfo = () => {
                         <Typography variant="body2" color="text.secondary">
                             {post.text}
                         </Typography>
+                        {post?.location ? (<Typography variant="body1" color="text.secondary">
+                            <a style={{color: "inherit", textDecoration: "inherit"}} href={post.location} target="_blank">Моя геолокація</a>
+                        </Typography>) : null}
                     </CardContent>
                     <CardActions disableSpacing sx={{justifyContent: "space-between"}}>
                         <IconButton aria-label="add to favorites">

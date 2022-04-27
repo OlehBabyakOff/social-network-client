@@ -1,7 +1,8 @@
 import React from 'react';
 import {List, ListItem, ListItemText, Paper, Typography} from "@mui/material";
+import Moment from "react-moment";
 
-const InfoUser = () => {
+const InfoUser = ({user}) => {
     return (
        <>
            <Paper elevation={3} sx={{p:2, background: "#f9fafb"}}>
@@ -10,29 +11,29 @@ const InfoUser = () => {
                </Typography>
                <List>
                    <ListItem>
-                       <ListItemText
-                           primary="Прізвище: Саня"
-                       />
+                       <ListItemText>
+                           Прізвище: {user.second_name}
+                       </ListItemText>
                    </ListItem>
                    <ListItem>
-                       <ListItemText
-                           primary="Ім'я: Саня"
-                       />
+                       <ListItemText>
+                           Ім'я: {user.first_name}
+                       </ListItemText>
                    </ListItem>
                    <ListItem>
-                       <ListItemText
-                           primary="Електронна адреса: sanya@gmail.com"
-                       />
+                       <ListItemText>
+                           Електронна адреса: {user.email}
+                       </ListItemText>
                    </ListItem>
                    <ListItem>
-                       <ListItemText
-                           primary="Номер телефону: +380 422 58 17 32"
-                       />
+                       <ListItemText>
+                           Номер телефону: {user.phone}
+                       </ListItemText>
                    </ListItem>
                    <ListItem>
-                       <ListItemText
-                           primary="Дата народження: 27.12.1992"
-                       />
+                       <ListItemText>
+                           Дата народження: <Moment format="DD.MM.YYYY">{user.birthday.toString()}</Moment>
+                       </ListItemText>
                    </ListItem>
                </List>
            </Paper>

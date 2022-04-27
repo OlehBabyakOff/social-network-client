@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     Avatar,
     Box, Button, ButtonGroup, Divider,
@@ -18,11 +18,11 @@ import {
     PersonOutlineOutlined,
     Room
 } from "@mui/icons-material";
-import CreatePostProfile from "../CreatePost/CreatePostProfile";
-import PostProfile from "../Post/PostProfile";
 import PostUser from "../Post/PostUser";
+import {observer} from "mobx-react-lite";
 
-const UserBodyRight = () => {
+const UserBodyRight = ({user, userPosts, reload, setReload}) => {
+
     return (
         <Box flex={6} p={{ xs: 0, md: 2 }}>
             <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
@@ -37,11 +37,11 @@ const UserBodyRight = () => {
 
             <Divider/>
 
-            <PostUser/>
-            <PostUser/>
-
+            {userPosts.map(post =>
+                (<PostUser post={post} reload={reload} setReload={setReload} key={post._id}/>)
+            )}
         </Box>
     );
 };
 
-export default UserBodyRight;
+export default observer(UserBodyRight);

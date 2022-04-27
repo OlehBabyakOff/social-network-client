@@ -15,7 +15,7 @@ import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
 import Moment from "react-moment";
 import {Link} from "react-router-dom";
-import {getPost, getPostLikeService, likePostService} from "../../api/postService";
+import {deletePostService, getPostLikeService, likePostService} from "../../api/postService";
 
 const Post = ({post, reload, setReload}) => {
 
@@ -47,6 +47,11 @@ const Post = ({post, reload, setReload}) => {
         setIsLiked(!isLiked)
     }
 
+    const deletePost = async (id) => {
+        await deletePostService(id)
+        setReload(!reload)
+    }
+
     return (
           <Card sx={{ margin: 5, mt: 0,  width: "85%", ml:14, background: "#f9fafb" }}>
               <CardHeader
@@ -56,6 +61,7 @@ const Post = ({post, reload, setReload}) => {
                       </Avatar>
                   }
                   action={
+                      store.user.roles.isAdmin || post.user.toString() === store.user._id.toString() ?
                       <IconButton aria-label="settings">
                           <MoreVert id="basic-button"
                                     aria-controls={open ? 'basic-menu' : undefined}
@@ -63,6 +69,7 @@ const Post = ({post, reload, setReload}) => {
                                     aria-expanded={open ? 'true' : undefined}
                                     onClick={handleClick}/>
                       </IconButton>
+                          : null
                   }
                   title={post.user}
                   subheader={<Moment format="DD.MM.YYYY HH:mm">{post.createdAt.toString()}</Moment>}
@@ -77,7 +84,7 @@ const Post = ({post, reload, setReload}) => {
                       'aria-labelledby': 'basic-button',
                   }}
               >
-                  <MenuItem onClick={handleClose}>Видалити</MenuItem>
+                  <MenuItem onClick={() => deletePost(post._id).then(() => handleClose())}>Видалити</MenuItem>
               </Menu>
               {post.image ? (<CardMedia
                   component="img"
@@ -90,6 +97,9 @@ const Post = ({post, reload, setReload}) => {
                   <Typography variant="body1" color="text.secondary">
                       {post.text}
                   </Typography>
+                  {post?.location ? (<Typography variant="body1" color="text.secondary">
+                      <a style={{color: "inherit", textDecoration: "inherit"}} href={post.location} target="_blank">Моя геолокація</a>
+                  </Typography>) : null}
               </CardContent>
               <CardActions disableSpacing sx={{justifyContent: "space-between"}}>
                   <IconButton aria-label="add to favorites">
