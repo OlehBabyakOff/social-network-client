@@ -53,7 +53,7 @@ const Post = ({post, reload, setReload}) => {
     }
 
     return (
-          <Card sx={{ margin: 5, mt: 0,  width: "85%", ml:14, background: "#f9fafb" }}>
+          <Card sx={{ margin: 5, mt: 0, width: "85%", ml:12, background: "#f9fafb" }}>
               <CardHeader
                   avatar={
                       <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">

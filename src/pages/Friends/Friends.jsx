@@ -30,7 +30,7 @@ const Friends = () => {
             const fetchUsers = await getAllUsers()
             setUsers(fetchUsers.data)
         }
-        fetchData().then(() => setLoading(!loading))
+        fetchData().then(() => setLoading(false))
     }, [reload])
 
     const searchUsers = (second_name="", first_name="", username="", email="", phone="") => {
@@ -51,7 +51,7 @@ const Friends = () => {
                <Navbar/>
                <Stack direction="row" spacing={2} justifyContent="space-between">
                    <Sidebar/>
-                   <FriendsList followers={followers} followings={followings} reload={reload} setReload={setReload} loading={loading} users={users} value={value} setValue={setValue} isDisabled={isDisabled} setIsDisabled={setIsDisabled} searchedUsers={searchedUsers}/>
+                   <FriendsList followers={followers} followings={followings} reload={reload} setReload={setReload} loading={loading} setLoading={setLoading} users={users} value={value} setValue={setValue} isDisabled={isDisabled} setIsDisabled={setIsDisabled} searchedUsers={searchedUsers}/>
                    <FriendsRightbar followers={followers} followings={followings} reload={reload} setReload={setReload} users={users} searchUsers={searchUsers}/>
                </Stack>
            </Box>

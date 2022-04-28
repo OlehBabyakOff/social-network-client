@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Avatar, Button, Divider, Grid, IconButton, Menu, MenuItem} from "@mui/material";
 import {MoreVert} from "@mui/icons-material";
 import Moment from "react-moment";
 import {deleteCommentService} from "../../api/postService";
+import {Context} from "../../index.js";
 
 const ReplyComment = ({comment, postId, reload, setReload}) => {
+
+    const {store} = useContext(Context)
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -36,13 +39,15 @@ const ReplyComment = ({comment, postId, reload, setReload}) => {
                            {comment.content}
                        </p>
                        <p style={{ textAlign: "left", color: "gray" }}>
-                           <IconButton aria-label="settings" sx={{float: "right"}}>
-                               <MoreVert id="basic-button"
-                                         aria-controls={open ? 'basic-menu' : undefined}
-                                         aria-haspopup="true"
-                                         aria-expanded={open ? 'true' : undefined}
-                                         onClick={handleClick}/>
-                           </IconButton>
+                           {store.user.roles.isAdmin || comment.userId.toString() === store.user._id.toString() ?
+                               <IconButton aria-label="settings" sx={{float: "right"}}>
+                                   <MoreVert id="basic-button"
+                                             aria-controls={open ? 'basic-menu' : undefined}
+                                             aria-haspopup="true"
+                                             aria-expanded={open ? 'true' : undefined}
+                                             onClick={handleClick}/>
+                               </IconButton>
+                           : null}
                        </p>
                    </Grid>
                    <Menu

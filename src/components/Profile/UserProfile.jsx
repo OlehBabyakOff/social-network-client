@@ -1,17 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Box, Button, CardContent, CardMedia, Divider, Stack, Typography} from "@mui/material";
 import UserBodyLeft from "../ProfileBody/UserBodyLeft";
 import UserBodyRight from "../ProfileBody/UserBodyRight";
 import {useParams} from "react-router-dom";
-import {getUser} from "../../api/userService";
+import {getFollowingsService, getUser} from "../../api/userService";
 import {getUserPosts} from "../../api/postService";
+import {Context} from "../../index.js";
 
 const UserProfile = () => {
 
     const {userId} = useParams()
+    const {store} = useContext(Context)
 
     const [user, setUser] = useState({})
     const [userPosts, setUserPosts] = useState([])
+    const [followings, setFollowings] = useState([])
     const [loading, setLoading] = useState(true)
     const [reload, setReload] = useState(true)
 
@@ -21,6 +24,8 @@ const UserProfile = () => {
             setUser(fetchUser.data)
             const fetchPosts = await getUserPosts(userId)
             setUserPosts(fetchPosts.data)
+            const fetchFollowings = await getFollowingsService(store.user._id)
+            setFollowings(fetchFollowings.data)
         }
         fetchData().then(() => setLoading(false))
     }, [reload])
@@ -32,13 +37,13 @@ const UserProfile = () => {
                     component="img"
                     height="400"
                     image={`data:buffer;base64,${user.background}`}
-                    alt="Paella dish"
+                    alt="Фото"
                 />
                 <CardMedia
                     component="img"
                     sx={{borderRadius: 50, borderColor: "white", height: 200, width: 200, mt: -13, ml: 86}}
                     image={`data:buffer;base64,${user.avatar}`}
-                    alt="Paella dish"
+                    alt="Аватар"
                 />
                 <CardContent>
                     <Typography variant="h5" sx={{display: "flex",
@@ -59,7 +64,7 @@ const UserProfile = () => {
                 <Divider/>
                 <Stack direction="row" spacing={2} justifyContent="space-between">
                     <UserBodyLeft user={user}/>
-                    <UserBodyRight user={user} userPosts={userPosts} reload={reload} setReload={setReload}/>
+                    <UserBodyRight user={user} userPosts={userPosts} reload={reload} setReload={setReload} followings={followings}/>
                 </Stack>
             </Box>)
     );

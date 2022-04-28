@@ -44,7 +44,7 @@ const CreatePost = ({reload, setReload}) => {
 
     return (
         <Box
-            sx={{width: "70%", ml:21, mb: 10, height: 280, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
+            sx={{width: "70%", ml:20, mb: 10, height: 280, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
         >
             <Paper elevation={2} sx={{p:5, background: "#f9fafb"}}>
                 <UserBox>

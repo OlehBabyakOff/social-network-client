@@ -1,12 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Avatar, Button, Divider, Grid, IconButton, Menu, MenuItem, Paper} from "@mui/material";
 import ReplyComment from "./ReplyComment";
 import {MoreVert} from "@mui/icons-material";
 import CreateReplyComment from "./CreateReplyComment";
 import {deleteCommentService, getPostChildCommentsService} from "../../api/postService";
 import Moment from "react-moment";
+import {Context} from "../../index.js";
 
 const Comment = ({comment, reload, setReload, postId}) => {
+
+    const {store} = useContext(Context)
+
     const [anchorEl, setAnchorEl] = useState(null);
     const [reply, setReply] = useState(false)
 
@@ -50,13 +54,15 @@ const Comment = ({comment, reload, setReload, postId}) => {
                            {comment.content}
                        </p>
                        <p style={{ textAlign: "left", color: "gray" }}>
-                           <IconButton aria-label="settings" sx={{float: "right"}}>
-                               <MoreVert id="basic-button"
-                                         aria-controls={open ? 'basic-menu' : undefined}
-                                         aria-haspopup="true"
-                                         aria-expanded={open ? 'true' : undefined}
-                                         onClick={handleClick}/>
-                           </IconButton>
+                           {store.user.roles.isAdmin || comment.userId.toString() === store.user._id.toString() ?
+                               <IconButton aria-label="settings" sx={{float: "right"}}>
+                                   <MoreVert id="basic-button"
+                                             aria-controls={open ? 'basic-menu' : undefined}
+                                             aria-haspopup="true"
+                                             aria-expanded={open ? 'true' : undefined}
+                                             onClick={handleClick}/>
+                               </IconButton>
+                               : null}
                            <Button onClick={() => setReply(!reply)} sx={{float: "right"}}>Відповісти</Button>
                        </p>
                    </Grid>

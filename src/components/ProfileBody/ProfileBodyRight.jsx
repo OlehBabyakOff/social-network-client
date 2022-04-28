@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     Avatar,
     Box, Button, ButtonGroup, Divider,
@@ -14,17 +14,25 @@ import {CollectionsOutlined, GroupsOutlined, Home, Image, PersonOutlineOutlined,
 import CreatePostProfile from "../CreatePost/CreatePostProfile";
 import PostProfile from "../Post/PostProfile";
 import {observer} from "mobx-react-lite";
-import {getAllPosts, getMyPosts} from "../../api/postService";
+import {getMyPosts} from "../../api/postService";
 import {Link} from "react-router-dom";
+import {getFollowingsService} from "../../api/userService";
+import {Context} from "../../index.js";
 
 const ProfileBodyRight = () => {
+
+    const {store} = useContext(Context)
+
     const [posts, setPosts] = useState([])
     const [reload, setReload] = useState(false)
+    const [followings, setFollowings] = useState(0)
 
     useEffect(() => {
         const fetchData = async () => {
             const fetchedPosts = await getMyPosts()
             setPosts(fetchedPosts.data)
+            const fetchFollowers = await getFollowingsService(store.user._id)
+            setFollowings(fetchFollowers.data.length)
         }
         fetchData()
     }, [reload])
@@ -35,16 +43,16 @@ const ProfileBodyRight = () => {
                 <List component="nav" aria-label="main mailbox folders">
                     <Stack direction="row" spacing={1} justifyContent="space-around" sx={{mr:2}}>
                         <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 250 }} to={`/friends`}>
-                            <ListItemButton sx={{maxWidth: 250}} component="a">
+                            <ListItemButton sx={{maxWidth: 250}}>
                                 <ListItemIcon>
                                     <PersonOutlineOutlined />
                                 </ListItemIcon>
-                                <ListItemText primary="Друзі" />
-                                <Typography variant="span">10</Typography>
+                                <ListItemText primary="Підписки" />
+                                <Typography variant="span">{followings}</Typography>
                             </ListItemButton>
                         </Link>
                         <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 250 }} to={`/groups`}>
-                            <ListItemButton sx={{maxWidth: 250}} component="a">
+                            <ListItemButton sx={{maxWidth: 250}}>
                                 <ListItemIcon>
                                     <GroupsOutlined />
                                 </ListItemIcon>
@@ -53,7 +61,7 @@ const ProfileBodyRight = () => {
                             </ListItemButton>
                         </Link>
                         <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 250 }} to={`/gallery`}>
-                            <ListItemButton sx={{maxWidth: 250}} component="a">
+                            <ListItemButton sx={{maxWidth: 250}}>
                                 <ListItemIcon>
                                     <CollectionsOutlined />
                                 </ListItemIcon>

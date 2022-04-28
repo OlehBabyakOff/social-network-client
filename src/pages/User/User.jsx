@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Navbar from "../../components/Navbar/Navbar";
 import {Box, Stack} from "@mui/material";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import UserProfile from "../../components/Profile/UserProfile";
+import {observer} from "mobx-react-lite";
 
 const User = () => {
     return (
@@ -16,4 +17,4 @@ const User = () => {
     );
 };
 
-export default User;
+export default observer(User);

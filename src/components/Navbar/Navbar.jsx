@@ -45,7 +45,6 @@ const Navbar = () => {
     const {store} = useContext(Context)
 
     const [open, setOpen] = useState(false)
-    const friends = ['Oleh', "Sasha"]
 
     const logout = async () => {
         await store.logout()

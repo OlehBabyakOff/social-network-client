@@ -11,7 +11,7 @@ const Sidebar = () => {
                 <List>
                     <ListItem disablePadding>
                         <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/me`}>
-                            <ListItemButton component="a">
+                            <ListItemButton>
                                     <ListItemIcon>
                                         <Home />
                                     </ListItemIcon>
@@ -21,7 +21,7 @@ const Sidebar = () => {
                     </ListItem>
                     <ListItem disablePadding>
                         <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/`}>
-                            <ListItemButton component="a">
+                            <ListItemButton>
                                 <ListItemIcon>
                                     <Article />
                                 </ListItemIcon>
@@ -30,8 +30,18 @@ const Sidebar = () => {
                         </Link>
                     </ListItem>
                     <ListItem disablePadding>
-                        <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/group`}>
-                            <ListItemButton component="a">
+                        <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/friends`}>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <Person />
+                                </ListItemIcon>
+                                <ListItemText primary="Підписки" />
+                            </ListItemButton>
+                        </Link>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/groups`}>
+                            <ListItemButton>
                                 <ListItemIcon>
                                     <Group />
                                 </ListItemIcon>
@@ -41,7 +51,7 @@ const Sidebar = () => {
                     </ListItem>
                     <ListItem disablePadding>
                         <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/messages`}>
-                            <ListItemButton component="a">
+                            <ListItemButton>
                                 <ListItemIcon>
                                     <Email />
                                 </ListItemIcon>
@@ -50,18 +60,8 @@ const Sidebar = () => {
                         </Link>
                     </ListItem>
                     <ListItem disablePadding>
-                        <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/friends`}>
-                            <ListItemButton component="a">
-                                <ListItemIcon>
-                                    <Person />
-                                </ListItemIcon>
-                                <ListItemText primary="Друзі" />
-                            </ListItemButton>
-                        </Link>
-                    </ListItem>
-                    <ListItem disablePadding>
                         <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/dashboard`}>
-                            <ListItemButton component="a">
+                            <ListItemButton>
                                 <ListItemIcon>
                                     <Settings />
                                 </ListItemIcon>

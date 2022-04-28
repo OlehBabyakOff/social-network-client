@@ -16,8 +16,9 @@ import {EmailOutlined, MoreVert} from "@mui/icons-material";
 import FriendSearch from "../Search/FriendSearch";
 import {observer} from "mobx-react-lite";
 import {Link} from "react-router-dom";
+import {followUserService} from "../../api/userService";
 
-const FriendsList = ({followers, followings, loading, users, value, setValue, isDisabled, setIsDisabled, searchedUsers}) => {
+const FriendsList = ({followers, followings, loading, users, value, setValue, isDisabled, searchedUsers, reload, setReload}) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -33,7 +34,10 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
         setValue(newValue);
     };
 
-    console.log(searchedUsers)
+    const unfollowUser = async (id) => {
+        await followUserService(id)
+        setReload(!reload)
+    }
 
     return (
         <>
@@ -49,10 +53,11 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                         <Tab label="Пошук" value="Search" disabled={isDisabled}/>
                     </TabList>
 
-                    {loading ? null :
                         <TabPanel value="Subscriptions">
 
                             <FriendSearch users={followings}/>
+
+                            {loading ? null :
 
                             <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
 
@@ -86,19 +91,29 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                                           aria-haspopup="true"
                                                           aria-expanded={open ? 'true' : undefined}
                                                           onClick={handleClick}/>
+                                                <Menu
+                                                    id="basic-menu"
+                                                    anchorEl={anchorEl}
+                                                    open={open}
+                                                    onClose={handleClose}
+                                                    MenuListProps={{
+                                                        'aria-labelledby': 'basic-button',
+                                                    }}
+                                                >
+                                                    <MenuItem onClick={() => unfollowUser(user._id)}>Відписатися</MenuItem>
+                                                </Menu>
                                             </IconButton>
                                         </ListItem>
                                     )
                                 })}
-
-                            </List>
-
+                            </List> }
                         </TabPanel>
-                    }
-                    {loading ? null :
+
                         <TabPanel value="Subscribers">
 
                             <FriendSearch users={followers}/>
+
+                            {loading ? null :
 
                             <List dense sx={{width: '100%', maxWidth: 900, mt: 3,  bgcolor: 'background.paper'}}>
 
@@ -126,26 +141,19 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                             <Button>
                                                 <EmailOutlined sx={{width: 25, height: 25}}/>
                                             </Button>
-                                            <IconButton aria-label="settings">
-                                                <MoreVert id="basic-button"
-                                                          aria-controls={open ? 'basic-menu' : undefined}
-                                                          aria-haspopup="true"
-                                                          aria-expanded={open ? 'true' : undefined}
-                                                          onClick={handleClick}/>
-                                            </IconButton>
                                         </ListItem>
                                     )
                                 })}
-                            </List>
+                            </List> }
+                        </TabPanel>
 
-                        </TabPanel>}
-
-                    {loading ? null :
                         <TabPanel value="Search">
 
                             <FriendSearch/>
 
-                            <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
+                            {loading ? null :
+
+                                <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
 
                                 {searchedUsers?.map(user => (
                                         <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb"}}
@@ -169,33 +177,12 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                             <Button>
                                                 <EmailOutlined sx={{width: 25, height: 25}}/>
                                             </Button>
-                                            <IconButton aria-label="settings">
-                                                <MoreVert id="basic-button"
-                                                          aria-controls={open ? 'basic-menu' : undefined}
-                                                          aria-haspopup="true"
-                                                          aria-expanded={open ? 'true' : undefined}
-                                                          onClick={handleClick}/>
-                                            </IconButton>
                                         </ListItem>
                                 ))}
 
-                            </List>
-
+                            </List> }
                         </TabPanel>
-                    }
                 </Box>
-
-                <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                        'aria-labelledby': 'basic-button',
-                    }}
-                >
-                    <MenuItem>Відписатися</MenuItem>
-                </Menu>
             </TabContext>
 
         </>
