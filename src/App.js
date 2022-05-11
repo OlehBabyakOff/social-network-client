@@ -59,7 +59,7 @@ const App = () => {
                     <Route exact path='/user/:userId'>
                         {store.user ? <User/> : <Login/>}
                     </Route>
-                    <Route exact path='/group'>
+                    <Route exact path='/group/:groupId'>
                         {store.user ? <Group/> : <Login/>}
                     </Route>
                     <Route exact path='/chat'>

@@ -34,7 +34,6 @@ const Friends = () => {
     }, [reload])
 
     const searchUsers = (second_name="", first_name="", username="", email="", phone="") => {
-        console.log(second_name)
         const searchUsers = users.filter(user => {
             return user.first_name === first_name || user.second_name === second_name
             || user.username === username || user.email === email ||

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import {ChatBubbleOutlineOutlined, Favorite, FavoriteBorder, MoreVert, Share} from "@mui/icons-material";
 
-const PostGroup = () => {
+const PostGroup = ({post}) => {
 
     return (
         <Card sx={{ margin: 5,  width: "80%", ml:13, background: "#f9fafb" }}>
