@@ -25,8 +25,14 @@ import {
 import Moment from "react-moment";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
+import {
+    getGroupPostCommentsService,
+    getGroupPostLikeService,
+    getGroupPostService,
+    likeGroupPostService
+} from "../../api/groupService";
 
-const PostInfo = () => {
+const PostInfoGroup = () => {
 
     const {store} = useContext(Context)
 
@@ -40,7 +46,7 @@ const PostInfo = () => {
         setAnchorEl(null);
     };
 
-    const {postId} = useParams()
+    const {groupId, postId} = useParams()
 
     let history = useHistory()
 
@@ -53,9 +59,9 @@ const PostInfo = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const fetchPost = await getPost(postId)
-            const likedPost = await getPostLikeService(postId)
-            const fetchComments = await getPostCommentsService(postId)
+            const fetchPost = await getGroupPostService(groupId, postId)
+            const likedPost = await getGroupPostLikeService(groupId, postId)
+            const fetchComments = await getGroupPostCommentsService(groupId, postId)
             if (likedPost.data !== null) setIsLiked(true)
             setPost(fetchPost.data)
             setComments(fetchComments.data)
@@ -63,16 +69,16 @@ const PostInfo = () => {
         fetchData().then(() => setLoading(false))
     }, [post.likes, post.comments, reload])
 
-    const likePost = async (id) => {
-        await likePostService(id)
+    const likePost = async (postId, groupId) => {
+        await likeGroupPostService(groupId, postId)
         setReload(!reload)
         setIsLiked(!isLiked)
     }
 
     const deletePost = async (id) => {
-        await deletePostService(id)
-        setReload(!reload)
-        history.push('/')
+        // await deletePostService(id)
+        // setReload(!reload)
+        // history.push('/')
     }
 
     return (
@@ -82,11 +88,11 @@ const PostInfo = () => {
                     <CardHeader
                         avatar={
                             <Avatar sx={{bgcolor: "red"}} aria-label="recipe">
-                                {post.user}
+                                {post.userId}
                             </Avatar>
                         }
                         action={
-                            store.user.roles.isAdmin || post.user.toString() === store.user._id.toString() ?
+                            store?.user?.roles?.isAdmin || post.userId.toString() === store?.user?._id.toString() ?
                                 <IconButton aria-label="settings">
                                     <MoreVert id="basic-button"
                                               aria-controls={open ? 'basic-menu' : undefined}
@@ -96,7 +102,7 @@ const PostInfo = () => {
                                 </IconButton>
                                 : null
                         }
-                        title={post.user}
+                        title={post.userId}
                         subheader={<Moment format="DD.MM.YYYY HH:mm">{post.createdAt.toString()}</Moment>}
                     />
 
@@ -122,12 +128,12 @@ const PostInfo = () => {
                             {post.text}
                         </Typography>
                         {post?.location ? (<Typography variant="body1" color="text.secondary">
-                            <a style={{color: "inherit", textDecoration: "inherit"}} href={post.location} target="_blank">Моя геолокація</a>
+                            <a style={{color: "inherit", textDecoration: "inherit"}} href={post.location} target="_blank">Геолокація</a>
                         </Typography>) : null}
                     </CardContent>
                     <CardActions disableSpacing sx={{justifyContent: "space-between"}}>
                         <IconButton aria-label="add to favorites">
-                            {isLiked ? (<Favorite sx={{color: "red"}} onClick={() => likePost(postId)}/>) : (<FavoriteBorder onClick={() => likePost(postId)}/>)}
+                            {isLiked ? (<Favorite sx={{color: "red"}} onClick={() => likePost(postId, groupId)}/>) : (<FavoriteBorder onClick={() => likePost(postId, groupId)}/>)}
                             <Typography variant="span" sx={{ml: 1}}>
                                 {post.likes}
                             </Typography>
@@ -153,4 +159,4 @@ const PostInfo = () => {
     );
 };
 
-export default observer(PostInfo);
+export default observer(PostInfoGroup);

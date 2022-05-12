@@ -53,6 +53,14 @@ const GroupProfile = () => {
                         fontWeight: 500}}>
                         {group.title}
                     </Typography>
+                    <Typography variant="span" sx={{display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: 400,
+                        fontSize: 18}}>
+                        {members.length} учасників
+                    </Typography>
                 </CardContent>
                 <Divider/>
                 <Stack direction="row" spacing={2} justifyContent="space-between">

@@ -15,21 +15,25 @@ import {getFollowingsService, getLimitedUsers} from "../../api/userService";
 import {Link} from "react-router-dom";
 import {Context} from "../../index.js";
 import {ForwardToInboxOutlined} from "@mui/icons-material";
+import {getLimitedGroupsService} from "../../api/groupService";
 
 const Rightbar = () => {
 
     const {store} = useContext(Context)
 
     const [users, setUsers] = useState([])
-    const [followings, setFollowings] = useState([])
+    const [groups, setGroups] = useState([])
+    const [groupsMembers, setGroupsMembers] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
             const fetchUsers = await getLimitedUsers()
             setUsers(fetchUsers.data)
-            const fetchFollowings = await getFollowingsService(store.user._id)
-            setFollowings(fetchFollowings.data)
+            const fetchGroups = await getLimitedGroupsService()
+            const {groups, groupMembers} = fetchGroups.data
+            setGroups(groups)
+            setGroupsMembers(groupMembers)
         }
         fetchData().then(() => setLoading(false))
     }, [])
@@ -70,52 +74,28 @@ const Rightbar = () => {
                 </Typography>
 
                 <List sx={{ width: '100%', maxWidth: 360, background: "#f9fafb" }}>
-                    <ListItem
-                        secondaryAction={
-                            <AvatarGroup max={3}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-                                <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-                                <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-                            </AvatarGroup>
-                        }
-                        disablePadding
-                    >
-                        <ListItemButton>
-                            <ListItemText primary="Баб'як Олег" />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem
-                        secondaryAction={
-                            <AvatarGroup max={3}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-                                <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-                                <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-                            </AvatarGroup>
-                        }
-                        disablePadding
-                    >
-                        <ListItemButton>
-                            <ListItemText primary="Баб'як Олег" />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem
-                        secondaryAction={
-                            <AvatarGroup max={3}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-                                <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-                                <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-                            </AvatarGroup>
-                        }
-                        disablePadding
-                    >
-                        <ListItemButton>
-                            <ListItemText primary="Баб'як Олег" />
-                        </ListItemButton>
-                    </ListItem>
-
+                    {groups.map(group =>
+                        <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/group/${group._id}`}>
+                            <ListItem
+                                secondaryAction={
+                                    <AvatarGroup max={3}>
+                                        {groupsMembers.map(member => {
+                                            if (member.groupId === group._id) {
+                                                return (
+                                                    <Avatar alt={member._id} src={`data:buffer;base64,${member._id}`}/>
+                                                )
+                                            }
+                                        })}
+                                    </AvatarGroup>
+                                }
+                                disablePadding
+                            >
+                                <ListItemButton>
+                                    <ListItemText primary={group.title} />
+                                </ListItemButton>
+                            </ListItem>
+                        </Link>
+                    )}
                 </List>
             </Box>
         </Box>

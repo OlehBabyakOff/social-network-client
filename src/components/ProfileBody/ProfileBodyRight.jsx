@@ -18,6 +18,7 @@ import {getMyPosts} from "../../api/postService";
 import {Link} from "react-router-dom";
 import {getFollowingsService} from "../../api/userService";
 import {Context} from "../../index.js";
+import {getMyGroupsService} from "../../api/groupService";
 
 const ProfileBodyRight = () => {
 
@@ -26,6 +27,7 @@ const ProfileBodyRight = () => {
     const [posts, setPosts] = useState([])
     const [reload, setReload] = useState(false)
     const [followings, setFollowings] = useState(0)
+    const [groups, setGroups] = useState(0)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,6 +35,8 @@ const ProfileBodyRight = () => {
             setPosts(fetchedPosts.data)
             const fetchFollowers = await getFollowingsService(store.user._id)
             setFollowings(fetchFollowers.data.length)
+            const fetchMyGroups = await getMyGroupsService()
+            setGroups(fetchMyGroups.data.length)
         }
         fetchData()
     }, [reload])
@@ -57,7 +61,7 @@ const ProfileBodyRight = () => {
                                     <GroupsOutlined />
                                 </ListItemIcon>
                                 <ListItemText primary="Спільноти" />
-                                <Typography variant="span">10</Typography>
+                                <Typography variant="span">{groups}</Typography>
                             </ListItemButton>
                         </Link>
                         <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 250 }} to={`/gallery`}>

@@ -15,6 +15,7 @@ import Registration from "./pages/Registration/Registration";
 import Login from "./pages/Login/Login";
 import {observer} from "mobx-react-lite";
 import {Context} from "./index.js";
+import PostDetailGroup from "./pages/PostDetail/PostDetailGroup";
 
 const App = () => {
 
@@ -55,6 +56,9 @@ const App = () => {
                     </Route>
                     <Route exact path='/post/:postId'>
                         {store.user ? <PostDetail/> : <Login/>}
+                    </Route>
+                    <Route exact path='/group/:groupId/post/:postId'>
+                        {store.user ? <PostDetailGroup/> : <Login/>}
                     </Route>
                     <Route exact path='/user/:userId'>
                         {store.user ? <User/> : <Login/>}

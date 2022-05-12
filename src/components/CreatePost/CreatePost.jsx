@@ -37,7 +37,7 @@ const CreatePost = ({reload, setReload}) => {
             return alert('Дана функція недоступна у вашому браузері!')
         }
         navigator.geolocation.getCurrentPosition(async (position) => {
-            const message = `https://google.com/maps?q=${position.coords.longitude},${position.coords.latitude}`
+            const message = `https://google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`
             setLocation(message)
         })
     }

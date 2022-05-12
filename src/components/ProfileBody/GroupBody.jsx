@@ -41,11 +41,11 @@ const GroupBody = ({groupId, group, members, groupPosts, reload, setReload}) => 
                         <Stack direction="row" spacing={1} justifyContent="space-evenly" sx={{mb: 1}}>
                             {group.creatorId !== store?.user?._id ?
                                 isFollowed ?
-                                        <Button onClick={() => followGroup(groupId)}><PersonRemoveAlt1Outlined sx={{mr: 1}}/> Відписатися ({members.length})</Button>
+                                        <Button onClick={() => followGroup(groupId)}><PersonRemoveAlt1Outlined sx={{mr: 1}}/> Відписатися</Button>
                                         :
-                                        <Button onClick={() => followGroup(groupId)}><GroupAddOutlined sx={{mr: 1}}/> Підписатися ({members.length})</Button>
+                                        <Button onClick={() => followGroup(groupId)}><GroupAddOutlined sx={{mr: 1}}/> Підписатися</Button>
                                 :
-                                <Button><Delete sx={{mr: 1}}/> Видалити спільноту ({members.length})</Button>
+                                <Button><Delete sx={{mr: 1}}/> Видалити спільноту</Button>
                             }
                             <Button><ForwardToInboxOutlined sx={{mr: 1}}/> Чат спільноти</Button>
                         </Stack>
@@ -55,10 +55,10 @@ const GroupBody = ({groupId, group, members, groupPosts, reload, setReload}) => 
                 <Divider/>
 
                 {group.creatorId === store?.user?._id ?
-                <CreatePostGroup/> : null}
+                <CreatePostGroup groupId={groupId} reload={reload} setReload={setReload}/> : null}
 
                 {groupPosts.map(post =>
-                    <PostGroup post={post}/>
+                    <PostGroup post={post} groupId={groupId} key={post._id} reload={reload} setReload={setReload}/>
                 )}
             </Box>
     );
