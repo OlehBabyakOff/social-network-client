@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     Box,
    Paper,
@@ -6,8 +6,14 @@ import {
 } from "@mui/material";
 import GroupMembersSearch from "../Search/GroupMembersSearch";
 import GroupMembersList from "../GroupMembersList/GroupMembersList";
+import {Context} from "../../index";
+import {observer} from "mobx-react-lite";
+import {getPostLikeService} from "../../api/postService";
 
 const GroupMembers = ({members, loading, setLoading, reload, setReload}) => {
+
+    const {store} = useContext(Context)
+
     return (
         <Box flex={3} p={{ xs: 0, md: 2 }}>
             <Box sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
@@ -27,4 +33,4 @@ const GroupMembers = ({members, loading, setLoading, reload, setReload}) => {
     );
 };
 
-export default GroupMembers;
+export default observer(GroupMembers);

@@ -5,7 +5,7 @@ import {
     CardActions,
     CardContent,
     CardHeader,
-    CardMedia, Checkbox, Divider, Grid,
+    CardMedia, Checkbox, CircularProgress, Divider, Grid,
     IconButton,
     Menu,
     MenuItem, Paper,
@@ -13,15 +13,7 @@ import {
 } from "@mui/material";
 import {ChatBubbleOutlineOutlined, Favorite, FavoriteBorder, MoreVert} from "@mui/icons-material";
 import Comment from "../Comment/Comment";
-import CreateComment from "../Comment/CreateComment";
 import {useParams} from "react-router-dom";
-import {
-    deletePostService,
-    getPost,
-    getPostCommentsService,
-    getPostLikeService,
-    likePostService
-} from "../../api/postService";
 import Moment from "react-moment";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
@@ -31,6 +23,8 @@ import {
     getGroupPostService,
     likeGroupPostService
 } from "../../api/groupService";
+import CreateCommentGroup from "../Comment/CreateCommentGroup";
+import GroupComment from "../Comment/GroupComment";
 
 const PostInfoGroup = () => {
 
@@ -52,6 +46,7 @@ const PostInfoGroup = () => {
 
     const [loading, setLoading] = useState(true)
     const [isLiked, setIsLiked] = useState(false)
+    const [fetchUser, setFetchUser] = useState(null)
 
     const [post, setPost] = useState({})
     const [comments, setComments] = useState([])
@@ -65,6 +60,8 @@ const PostInfoGroup = () => {
             if (likedPost.data !== null) setIsLiked(true)
             setPost(fetchPost.data)
             setComments(fetchComments.data)
+            await store.getUsers()
+            setFetchUser(store.users.find(user => user._id === fetchPost.data.userId))
         }
         fetchData().then(() => setLoading(false))
     }, [post.likes, post.comments, reload])
@@ -82,13 +79,13 @@ const PostInfoGroup = () => {
     }
 
     return (
-        loading ? null : (
+        loading ? <CircularProgress/> : (
             <Box flex={7} p={{xs: 0, md: 2}}>
                 <Card sx={{margin: 5, mt: 0, width: "85%", ml: 11, background: "#f9fafb"}}>
                     <CardHeader
                         avatar={
-                            <Avatar sx={{bgcolor: "red"}} aria-label="recipe">
-                                {post.userId}
+                            <Avatar sx={{bgcolor: "red"}} aria-label="recipe" src={`data:buffer;base64,${fetchUser.avatar}`}>
+                                {fetchUser.username}
                             </Avatar>
                         }
                         action={
@@ -102,7 +99,7 @@ const PostInfoGroup = () => {
                                 </IconButton>
                                 : null
                         }
-                        title={post.userId}
+                        title={`${fetchUser.second_name} ${fetchUser.first_name}`}
                         subheader={<Moment format="DD.MM.YYYY HH:mm">{post.createdAt.toString()}</Moment>}
                     />
 
@@ -149,10 +146,10 @@ const PostInfoGroup = () => {
 
                 <Typography variant="h4" fontWeight={300} sx={{margin: "40px 5px 30px"}}>Коментарі</Typography>
 
-                <CreateComment postId={postId} reload={reload} setReload={setReload}/>
+                <CreateCommentGroup groupId={groupId} postId={postId} reload={reload} setReload={setReload}/>
 
                 {comments.map(comment => (
-                    <Comment comment={comment} reload={reload} setReload={setReload} postId={postId}/>
+                    <GroupComment groupId={groupId} comment={comment} reload={reload} setReload={setReload} postId={postId}/>
                 ))}
             </Box>
         )

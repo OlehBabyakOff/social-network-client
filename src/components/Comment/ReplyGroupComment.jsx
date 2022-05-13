@@ -1,19 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Avatar, Button, CircularProgress, Divider, Grid, IconButton, Menu, MenuItem, Paper} from "@mui/material";
-import ReplyComment from "./ReplyComment";
+import {Avatar, Button, CircularProgress, Divider, Grid, IconButton, Menu, MenuItem} from "@mui/material";
 import {MoreVert} from "@mui/icons-material";
-import CreateReplyComment from "./CreateReplyComment";
-import {deleteCommentService, getPostChildCommentsService} from "../../api/postService";
 import Moment from "react-moment";
+import {deleteCommentService} from "../../api/postService";
 import {Context} from "../../index.js";
 
-const Comment = ({comment, reload, setReload, postId}) => {
+const ReplyGroupComment = ({comment, postId, reload, setReload}) => {
 
     const {store} = useContext(Context)
 
     const [anchorEl, setAnchorEl] = useState(null);
-    const [reply, setReply] = useState(false)
-
     const open = Boolean(anchorEl);
 
     const handleClick = (event) => {
@@ -23,14 +19,11 @@ const Comment = ({comment, reload, setReload, postId}) => {
         setAnchorEl(null);
     };
 
-    const [childs, setChilds] = useState([])
     const [loading, setLoading] = useState(true)
     const [fetchUser, setFetchUser] = useState(null)
 
     useEffect(() => {
         const fetchData = async () => {
-            const fetchChilds = await getPostChildCommentsService(postId, comment._id)
-            setChilds(fetchChilds.data)
             await store.getUsers()
             setFetchUser(store.users.find(user => user._id === comment.userId))
         }
@@ -38,14 +31,15 @@ const Comment = ({comment, reload, setReload, postId}) => {
     }, [reload])
 
     const deleteComment = async (id, commentId) => {
-        await deleteCommentService(id, commentId)
-        setReload(!reload)
+        // await deleteCommentService(id, commentId)
+        // setReload(!reload)
     }
 
     return (
         loading ? <CircularProgress sx={{padding: "50px 560px"}}/> :
-               (<Paper style={{ padding: "40px 20px", width: "95%", background: "#f9fafb", marginBottom: 5 }} elevation={0}>
-                   <Grid container wrap="nowrap" spacing={2}>
+            <>
+               <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
+                   <Grid container wrap="nowrap" spacing={2} sx={{width: "97%", ml: 5}}>
                        <Grid item>
                            <Avatar alt="" src={`data:buffer;base64,${fetchUser.avatar}`}>{fetchUser.username}</Avatar>
                        </Grid>
@@ -53,7 +47,7 @@ const Comment = ({comment, reload, setReload, postId}) => {
                            <h4 style={{ margin: 0, textAlign: "left" }}>{`${fetchUser.second_name} ${fetchUser.first_name}`}
                                <Moment format="DD.MM.YYYY HH:mm" style={{color: 'inherit', fontWeight: "300", float: "right"}}>{comment.createdAt.toString()}</Moment>
                            </h4>
-                           <p style={{ textAlign: "left", margin: "5px 0"}}>
+                           <p style={{ textAlign: "left", margin: "5px" }}>
                                {comment.content}
                            </p>
                            <p style={{ textAlign: "left", color: "gray" }}>
@@ -65,8 +59,7 @@ const Comment = ({comment, reload, setReload, postId}) => {
                                                  aria-expanded={open ? 'true' : undefined}
                                                  onClick={handleClick}/>
                                    </IconButton>
-                                   : null}
-                               <Button onClick={() => setReply(!reply)} sx={{float: "right"}}>Відповісти</Button>
+                               : null}
                            </p>
                        </Grid>
                        <Menu
@@ -81,19 +74,8 @@ const Comment = ({comment, reload, setReload, postId}) => {
                            <MenuItem onClick={() => deleteComment(postId, comment._id).then(() => handleClose())}>Видалити</MenuItem>
                        </Menu>
                    </Grid>
-
-                   {reply ? (<CreateReplyComment reload={reload} setReload={setReload} postId={postId} parentId={comment._id} reply={reply} setReply={setReply}/>) : null}
-
-
-                   {loading ? null :
-                   comment.childs.length > 0 ?
-                       childs.map(child => (
-                           <ReplyComment comment={child} postId={postId} key={child._id} reload={reload} setReload={setReload}/>
-                       ))
-                    : null}
-
-               </Paper>)
+            </>
     );
 };
 
-export default Comment;
+export default ReplyGroupComment;

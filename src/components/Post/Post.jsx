@@ -6,7 +6,7 @@ import {
     CardContent,
     CardHeader,
     CardMedia,
-    Checkbox,
+    Checkbox, CircularProgress,
     IconButton, Menu, MenuItem,
     Typography
 } from "@mui/material";
@@ -32,13 +32,17 @@ const Post = ({post, reload, setReload}) => {
     };
 
     const [isLiked, setIsLiked] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [fetchUser, setFetchUser] = useState(null)
 
     useEffect(() => {
         const fetchData = async () => {
             const likedPost = await getPostLikeService(post._id)
             if (likedPost.data !== null) setIsLiked(true)
+            await store.getUsers()
+            setFetchUser(store.users.find(user => user._id === post.user))
         }
-        fetchData()
+        fetchData().then(() => setLoading(false))
     }, [reload])
 
     const likePost = async (id) => {
@@ -53,11 +57,12 @@ const Post = ({post, reload, setReload}) => {
     }
 
     return (
-          <Card sx={{ margin: 5, mt: 0, width: "85%", ml:12, background: "#f9fafb" }}>
+        loading ? <CircularProgress sx={{padding: "50px 560px"}}/> :
+          (<Card sx={{ margin: 5, mt: 0, width: "85%", ml:12, background: "#f9fafb" }}>
               <CardHeader
                   avatar={
-                      <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-                          {post.user}
+                      <Avatar sx={{ bgcolor: "red" }} aria-label="recipe" src={`data:buffer;base64,${fetchUser.avatar}`}>
+                          {fetchUser.username}
                       </Avatar>
                   }
                   action={
@@ -71,7 +76,7 @@ const Post = ({post, reload, setReload}) => {
                       </IconButton>
                           : null
                   }
-                  title={post.user}
+                  title={`${fetchUser.second_name} ${fetchUser.first_name}`}
                   subheader={<Moment format="DD.MM.YYYY HH:mm">{post.createdAt.toString()}</Moment>}
               />
 
@@ -117,7 +122,7 @@ const Post = ({post, reload, setReload}) => {
                       <ChatBubbleOutlineOutlined/>
                   </IconButton>
               </CardActions>
-          </Card>
+          </Card>)
     );
 };
 

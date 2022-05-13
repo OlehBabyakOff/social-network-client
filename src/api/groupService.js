@@ -12,6 +12,14 @@ export const subscribeGroupService = async (id) => {
     return api.post(`/group/${id}/follow`)
 }
 
+export const createGroupCommentService = async (id, postId, data) => {
+    return api.post(`/group/${id}/${postId}/comment/create`, data)
+}
+
+export const createGroupChildCommentService = async (id, postId, parentId, data) => {
+    return api.post(`/group/${id}/${postId}/comment/${parentId}/create`, data)
+}
+
 export const getGroupService = async (id) => {
     return api.get(`/group/${id}`)
 }
@@ -49,5 +57,9 @@ export const getGroupPostService = async (id, postId) => {
 }
 
 export const getGroupPostCommentsService = async (id, postId) => {
-    return api.get(`/group/${id}/${postId}/comments/get`)
+    return api.get(`/group/${id}/post/${postId}/comments/parent`)
+}
+
+export const getGroupChildCommentsService = async (id, postId, commentId) => {
+    return api.get(`/group/${id}/post/${postId}/comments/${commentId}/child`)
 }

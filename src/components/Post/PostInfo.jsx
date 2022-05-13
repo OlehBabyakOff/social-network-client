@@ -5,7 +5,7 @@ import {
     CardActions,
     CardContent,
     CardHeader,
-    CardMedia, Checkbox, Divider, Grid,
+    CardMedia, Checkbox, CircularProgress, Divider, Grid,
     IconButton,
     Menu,
     MenuItem, Paper,
@@ -46,6 +46,7 @@ const PostInfo = () => {
 
     const [loading, setLoading] = useState(true)
     const [isLiked, setIsLiked] = useState(false)
+    const [fetchUser, setFetchUser] = useState(null)
 
     const [post, setPost] = useState({})
     const [comments, setComments] = useState([])
@@ -59,6 +60,8 @@ const PostInfo = () => {
             if (likedPost.data !== null) setIsLiked(true)
             setPost(fetchPost.data)
             setComments(fetchComments.data)
+            await store.getUsers()
+            setFetchUser(store.users.find(user => user._id === fetchPost.data.user))
         }
         fetchData().then(() => setLoading(false))
     }, [post.likes, post.comments, reload])
@@ -76,13 +79,13 @@ const PostInfo = () => {
     }
 
     return (
-        loading ? null : (
+        loading ? <CircularProgress/> : (
             <Box flex={7} p={{xs: 0, md: 2}}>
                 <Card sx={{margin: 5, mt: 0, width: "85%", ml: 11, background: "#f9fafb"}}>
                     <CardHeader
                         avatar={
-                            <Avatar sx={{bgcolor: "red"}} aria-label="recipe">
-                                {post.user}
+                            <Avatar sx={{bgcolor: "red"}} aria-label="recipe" src={`data:buffer;base64,${fetchUser.avatar}`}>
+                                {fetchUser.username}
                             </Avatar>
                         }
                         action={
@@ -96,7 +99,7 @@ const PostInfo = () => {
                                 </IconButton>
                                 : null
                         }
-                        title={post.user}
+                        title={`${fetchUser.second_name} ${fetchUser.first_name}`}
                         subheader={<Moment format="DD.MM.YYYY HH:mm">{post.createdAt.toString()}</Moment>}
                     />
 

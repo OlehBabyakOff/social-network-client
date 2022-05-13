@@ -2,9 +2,11 @@ import {makeAutoObservable} from "mobx"
 
 import {loginService, logoutService, registrationService} from "../api/authService.js";
 import axios from "axios";
+import {getAllUsers} from "../api/userService";
 
 export default class Store {
     user = null
+    users = null
 
     constructor() {
         makeAutoObservable(this)
@@ -12,6 +14,10 @@ export default class Store {
 
     setUser(user) {
         this.user = user
+    }
+
+    setUsers(users) {
+        this.users = users
     }
 
     async registration(data) {
@@ -47,6 +53,14 @@ export default class Store {
             const res = await axios.get(`http://localhost:5000/api/refresh`, {withCredentials: true})
             localStorage.setItem('token', res.data.accessToken)
             this.setUser(res.data.user)
+        } catch (e) {
+            console.log(e.response?.data?.message)
+        }
+    }
+    async getUsers() {
+        try {
+            const res = await getAllUsers()
+            this.setUsers(res.data)
         } catch (e) {
             console.log(e.response?.data?.message)
         }
