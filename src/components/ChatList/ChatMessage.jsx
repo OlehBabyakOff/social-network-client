@@ -1,24 +1,16 @@
 import React from 'react';
-import {Avatar, Grid, ListItem, ListItemIcon, ListItemText} from "@mui/material";
+import ChatMsg from "./ChatMsg";
 
-const ChatMessage = () => {
+const ChatMessage = ({user, socket}) => {
     return (
-        <ListItem>
-                <ListItemIcon>
-                    <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
-                </ListItemIcon>
-            <Grid container>
-                <Grid item xs={12}>
-                    <ListItemText align="left" primary="Oleh"></ListItemText>
-                </Grid>
-                <Grid item xs={12}>
-                    <ListItemText align="left" primary="Hey, Iam Good! What about you ?"></ListItemText>
-                </Grid>
-                <Grid item xs={12}>
-                    <ListItemText align="left" secondary="09:31"></ListItemText>
-                </Grid>
-            </Grid>
-        </ListItem>
+        <ChatMsg
+            avatar={'s'}
+            side={'right'}
+            name={'sss'}
+            time={Date.now().toString()}
+            image={null}
+            messages={'hi'}
+        />
     );
 };
 

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-    Avatar, Box, Button, Container,
+    Avatar, Box, Button, CircularProgress, Container,
     Divider, Fab,
     Grid, IconButton, Input,
     List,
@@ -11,11 +11,35 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import {AttachFileOutlined, DeleteOutlineOutlined, LocationOnOutlined, Send} from "@mui/icons-material";
+import {AttachFileOutlined, Close, DeleteOutlineOutlined, LocationOnOutlined, Send} from "@mui/icons-material";
 import ChatMessage from "./ChatMessage";
+import {useHistory, useParams} from "react-router-dom";
+import {getUser} from "../../api/userService";
 
-const ChatList = () => {
+const ChatList = ({socket}) => {
+
+    const {userId} = useParams()
+    const history = useHistory()
+
+    const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        socket.emit('joinRoom', userId)
+        const fetchData = async () => {
+            const fetchUser = await getUser(userId)
+            setUser(fetchUser.data)
+        }
+        fetchData().then(() => setLoading(false))
+    }, [])
+
+    const closeChat = async (id) => {
+        socket.emit('leaveRoom', id)
+        history.push('/messages')
+    }
+
     return (
+        loading ? <CircularProgress/> :
         <Box flex={10} p={{ xs: 0 }}>
             <Grid container component={Paper}>
                 <Grid item xs={12}>
@@ -23,19 +47,19 @@ const ChatList = () => {
                         <Stack direction="row" >
                             <ListItem>
                                 <ListItemIcon>
-                                    <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
+                                    <Avatar src={`data:buffer;base64,${user.avatar}`} />
                                 </ListItemIcon>
-                                <ListItemText primary="John Wick"></ListItemText>
+                                <ListItemText primary={`${user.second_name} ${user.first_name}`}></ListItemText>
                             </ListItem>
-                            <ListItem>
-                                <IconButton color="primary" component="span">
-                                    <DeleteOutlineOutlined/>
+                            <ListItem sx={{justifyContent: "end"}}>
+                                <IconButton onClick={() => closeChat(userId)} color="primary" component="span">
+                                    <Close/>
                                 </IconButton>
                             </ListItem>
                         </Stack>
                         <Divider/>
-                        <Box sx={{overflowY: "scroll", height: "73vh", mx: 5}}>
-                            <ChatMessage/>
+                        <Box sx={{overflowY: "scroll", height: "74.5vh", mx: 1}}>
+                            <ChatMessage user={user} socket={socket}/>
                         </Box>
                     </List>
                     <Divider />

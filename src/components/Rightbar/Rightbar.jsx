@@ -34,6 +34,7 @@ const Rightbar = () => {
             const {groups, groupMembers} = fetchGroups.data
             setGroups(groups)
             setGroupsMembers(groupMembers)
+            await store.getUsers()
         }
         fetchData().then(() => setLoading(false))
     }, [])
@@ -50,7 +51,9 @@ const Rightbar = () => {
                     {users.map(user => (
                         <ListItem key={user._id}
                                   secondaryAction={
-                                      <Button><ForwardToInboxOutlined/></Button>
+                                      <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/chat/${user._id}`}>
+                                            <Button><ForwardToInboxOutlined/></Button>
+                                      </Link>
                                   }
                                   disablePadding
                         >
@@ -80,9 +83,10 @@ const Rightbar = () => {
                                 secondaryAction={
                                     <AvatarGroup max={3}>
                                         {groupsMembers.map(member => {
+                                            const user = store.users.find(user => user._id === member.memberId)
                                             if (member.groupId === group._id) {
                                                 return (
-                                                    <Avatar alt={member._id} src={`data:buffer;base64,${member._id}`}/>
+                                                    <Avatar alt={member._id} src={`data:buffer;base64,${user.avatar}`}/>
                                                 )
                                             }
                                         })}

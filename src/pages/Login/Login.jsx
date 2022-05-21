@@ -4,19 +4,27 @@ import {Box, Button, CssBaseline, Grid, Paper, TextField, Typography} from "@mui
 import {Link} from "@mui/icons-material";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
+import {useHistory} from "react-router-dom";
 
 const Login = () => {
 
     const {store} = useContext(Context)
 
+    const history = useHistory()
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
     const login = async (email, password) => {
-        const data = new FormData()
-        data.append('email', email)
-        data.append('password', password)
-        await store.login(data)
+        if (email && password) {
+            const data = new FormData()
+            data.append('email', email)
+            data.append('password', password)
+            await store.login(data)
+            history.push("/")
+        } else {
+            alert('Дані не можуть бути порожніми')
+        }
     }
 
     return (
@@ -87,18 +95,6 @@ const Login = () => {
                         >
                             Увійти
                         </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    Вже є акаунт?
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </Box>
                 </Box>
             </Grid>

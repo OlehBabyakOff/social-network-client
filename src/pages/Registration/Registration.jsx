@@ -3,10 +3,13 @@ import {Box, Button, Checkbox, CssBaseline, FormControlLabel, Grid, Paper, TextF
 import {Image, Link} from "@mui/icons-material";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
+import {useHistory} from "react-router-dom";
 
 const Registration = () => {
 
     const {store} = useContext(Context)
+
+    const history = useHistory()
 
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
@@ -30,6 +33,7 @@ const Registration = () => {
         data.append('avatar', avatarImg)
         data.append('background', backgroundImg)
         await store.registration(data)
+        history.push("/")
     }
 
     return (

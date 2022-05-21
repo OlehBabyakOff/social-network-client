@@ -13,7 +13,7 @@ import {
     Typography
 } from "@mui/material";
 import {AccountCircle, Group, Home, Logout, Mail, Menu, Settings} from "@mui/icons-material";
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
 
@@ -44,10 +44,13 @@ const Navbar = () => {
 
     const {store} = useContext(Context)
 
+    const history = useHistory();
+
     const [open, setOpen] = useState(false)
 
     const logout = async () => {
         await store.logout()
+        history.push("/login")
     }
 
     return (

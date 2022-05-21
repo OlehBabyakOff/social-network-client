@@ -23,3 +23,11 @@ export const getFollowingsService = async (id) => {
 export const followUserService = async (id) => {
     return api.post(`/user/${id}/follow`)
 }
+
+export const reportUserService = async (id, violation) => {
+    return api.post(`/user/${id}/report`, {violation})
+}
+
+export const getReportsService = async (id) => {
+    return api.get(`/user/${id}/reports`)
+}

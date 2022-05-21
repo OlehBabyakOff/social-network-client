@@ -83,7 +83,9 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                             </Link>
 
                                             <Button>
-                                                <EmailOutlined sx={{width: 25, height: 25}}/>
+                                                <Link style={{ textDecoration: 'inherit', color: 'inherit', marginTop: "10px" }} to={`/chat/${user._id}`}>
+                                                    <EmailOutlined sx={{width: 25, height: 25}}/>
+                                                </Link>
                                             </Button>
                                             <IconButton aria-label="settings">
                                                 <MoreVert id="basic-button"
@@ -139,7 +141,9 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                             </Link>
 
                                             <Button>
-                                                <EmailOutlined sx={{width: 25, height: 25}}/>
+                                                <Link style={{ textDecoration: 'inherit', color: 'inherit', marginTop: "10px" }} to={`/chat/${user._id}`}>
+                                                    <EmailOutlined sx={{width: 25, height: 25}}/>
+                                                </Link>
                                             </Button>
                                         </ListItem>
                                     )
@@ -175,7 +179,9 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                             </Link>
 
                                             <Button>
-                                                <EmailOutlined sx={{width: 25, height: 25}}/>
+                                                <Link style={{ textDecoration: 'inherit', color: 'inherit', marginTop: "10px" }} to={`/chat/${user._id}`}>
+                                                    <EmailOutlined sx={{width: 25, height: 25}}/>
+                                                </Link>
                                             </Button>
                                         </ListItem>
                                 ))}

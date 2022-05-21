@@ -1,5 +1,6 @@
 import {useContext, useEffect, useState} from "react";
-import {createTheme, ThemeProvider} from "@mui/material";
+import {io} from "socket.io-client"
+import {CircularProgress, createTheme, ThemeProvider} from "@mui/material";
 import News from "./pages/News/News";
 import Homepage from "./pages/Homepage/Homepage";
 import Friends from "./pages/Friends/Friends";
@@ -17,6 +18,8 @@ import {observer} from "mobx-react-lite";
 import {Context} from "./index.js";
 import PostDetailGroup from "./pages/PostDetail/PostDetailGroup";
 
+const socket = io.connect("http://localhost:5000")
+
 const App = () => {
 
     const {store} = useContext(Context)
@@ -31,6 +34,8 @@ const App = () => {
     useEffect(() => {
         if (localStorage.getItem('token')) {
             store.checkAuth()
+        } else {
+            store.setLoading(false)
         }
     }, [])
 
@@ -40,46 +45,102 @@ const App = () => {
             <Router>
                 <Switch>
                     <Route exact path='/'>
-                        {store.user ? <News/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <News/> : <Login/>}
                     </Route>
                     <Route exact path='/me'>
-                        {store.user ? <Homepage/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <Homepage/> : <Login/>}
                     </Route>
                     <Route exact path='/friends'>
-                        {store.user ? <Friends/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <Friends/> : <Login/>}
                     </Route>
                     <Route exact path='/groups'>
-                        {store.user ? <Groups/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <Groups/> : <Login/>}
                     </Route>
                     <Route exact path='/messages'>
-                        {store.user ? <Messages/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <Messages/> : <Login/>}
                     </Route>
                     <Route exact path='/post/:postId'>
-                        {store.user ? <PostDetail/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <PostDetail/> : <Login/>}
                     </Route>
                     <Route exact path='/group/:groupId/post/:postId'>
-                        {store.user ? <PostDetailGroup/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <PostDetailGroup/> : <Login/>}
                     </Route>
                     <Route exact path='/user/:userId'>
-                        {store.user ? <User/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <User/> : <Login/>}
                     </Route>
                     <Route exact path='/group/:groupId'>
-                        {store.user ? <Group/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <Group/> : <Login/>}
                     </Route>
-                    <Route exact path='/chat'>
-                        {store.user ? <Chat/> : <Login/>}
+                    <Route exact path='/chat/:userId'>
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                            store.user ? <Chat socket={socket}/> : <Login/>}
                     </Route>
                     <Route exact path='/groupChat'>
-                        {store.user ? <GroupChat/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <GroupChat/> : <Login/>}
                     </Route>
                     <Route exact path='/registration'>
-                        {store.user ? <Redirect to='/'/> : <Registration/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <Redirect to='/'/> : <Registration/>}
                     </Route>
                     <Route exact path='/login'>
-                        {store.user ? <Redirect to='/'/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <Redirect to='/'/> : <Login/>}
                     </Route>
                     <Route path='*'>
-                        {store.user ? <Redirect to='/'/> : <Login/>}
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                        store.user ? <Redirect to='/'/> : <Login/>}
                     </Route>
                 </Switch>
             </Router>
