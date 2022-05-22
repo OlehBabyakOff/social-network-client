@@ -66,7 +66,7 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
                     <List dense sx={{width: '100%', maxWidth: 900, mt: 3,  bgcolor: 'background.paper'}}>
 
                         {groups.map(group => (
-                        <ListItem sx={{lineHeight: 2, background: "#f9fafb"}}
+                        <ListItem sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
                                   disablePadding
                         >
                             <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/group/${group._id}`}>
@@ -175,7 +175,7 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
                         <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
 
                             {searchedGroups?.map(group => (
-                                <ListItem sx={{lineHeight: 2, background: "#f9fafb"}}
+                                <ListItem sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
                                           disablePadding
                                 >
                                     <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/group/${group._id}`}>

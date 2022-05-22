@@ -64,7 +64,7 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                 {followings.map(followed => {
                                     const user = users.find(user => user._id === followed.followedId)
                                     return (
-                                        <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb"}}
+                                        <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
                                                   disablePadding
                                         >
                                             <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/user/${user._id}`}>
@@ -122,7 +122,7 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                 {followers.map(follower => {
                                     const user = users.find(user => user._id === follower.followerId)
                                     return (
-                                        <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb"}}
+                                        <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
                                                   disablePadding
                                         >
                                             <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/user/${user._id}`}>
@@ -160,7 +160,7 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                 <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
 
                                 {searchedUsers?.map(user => (
-                                        <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb"}}
+                                        <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
                                                   disablePadding
                                         >
                                             <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/user/${user._id}`}>

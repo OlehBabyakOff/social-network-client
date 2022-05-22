@@ -1,17 +1,29 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import ChatMsg from "./ChatMsg";
+import {observer} from "mobx-react-lite";
+import {Context} from "../../index";
 
-const ChatMessage = ({user, socket}) => {
+const ChatMessage = ({message, user, socket}) => {
+
+    const {store} = useContext(Context)
+
     return (
+        message.sender === store?.user._id ?
         <ChatMsg
-            avatar={'s'}
             side={'right'}
-            name={'sss'}
-            time={Date.now().toString()}
-            image={null}
-            messages={'hi'}
+            time={message.createdAt.toString()}
+            image={message.image}
+            messages={message.text}
+        /> :
+        <ChatMsg
+            avatar={user.avatar}
+            side={'left'}
+            name={`${user.second_name} ${user.first_name}`}
+            time={message.createdAt.toString()}
+            image={message.image}
+            messages={message.text}
         />
     );
 };
 
-export default ChatMessage;
+export default observer(ChatMessage);
