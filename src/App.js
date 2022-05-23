@@ -17,6 +17,7 @@ import Login from "./pages/Login/Login";
 import {observer} from "mobx-react-lite";
 import {Context} from "./index.js";
 import PostDetailGroup from "./pages/PostDetail/PostDetailGroup";
+import Gallery from "./pages/Gallery/Gallery";
 
 const socket = io.connect("http://localhost:5000")
 
@@ -120,6 +121,13 @@ const App = () => {
                                 top: '50%',
                                 transform: 'translate(-50%, -50%)'}}/> :
                         store.user ? <GroupChat/> : <Login/>}
+                    </Route>
+                    <Route exact path='/gallery'>
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                            store.user ? <Gallery/> : <Login/>}
                     </Route>
                     <Route exact path='/registration'>
                         {store.loading ? <CircularProgress sx={{position: 'absolute',

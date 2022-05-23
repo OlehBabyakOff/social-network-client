@@ -31,3 +31,11 @@ export const reportUserService = async (id, violation) => {
 export const getReportsService = async (id) => {
     return api.get(`/user/${id}/reports`)
 }
+
+export const addGalleryService = async (data) => {
+    return api.post(`/user/gallery/add`, data)
+}
+
+export const getGallery = async (id) => {
+    return api.get(`/user/${id}/gallery`)
+}

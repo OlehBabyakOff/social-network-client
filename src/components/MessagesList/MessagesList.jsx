@@ -76,7 +76,7 @@ const MessagesList = () => {
                                                         fontWeight: 300,
                                                         ml: 2,
                                                         fontSize: 14
-                                                    }}>{conversation.messages.length > 0 ? conversation.messages[conversation?.messages.length - 1].text.slice(0, 80) + '...' : 'Чат порожній'}</Typography>
+                                                    }}>{conversation.messages.length > 0 ? conversation.messages[conversation?.messages.length - 1].text.slice(0, 53) + '...' : 'Чат порожній'}</Typography>
                                                     <Typography variant="span" sx={{fontWeight: 300, fontSize: 14}}>{conversation.messages.length > 0 ? <Moment format='HH:mm'>{conversation.messages[conversation.messages.length - 1].createdAt.toString()}</Moment> : null}</Typography>
                                                 </Stack>
                                             </Stack>

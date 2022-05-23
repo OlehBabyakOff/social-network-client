@@ -16,7 +16,7 @@ import PostProfile from "../Post/PostProfile";
 import {observer} from "mobx-react-lite";
 import {getMyPosts} from "../../api/postService";
 import {Link} from "react-router-dom";
-import {getFollowingsService} from "../../api/userService";
+import {getFollowingsService, getGallery} from "../../api/userService";
 import {Context} from "../../index.js";
 import {getMyGroupsService} from "../../api/groupService";
 
@@ -28,6 +28,7 @@ const ProfileBodyRight = () => {
     const [reload, setReload] = useState(false)
     const [followings, setFollowings] = useState(0)
     const [groups, setGroups] = useState(0)
+    const [gallery, setGallery] = useState(0)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,6 +38,8 @@ const ProfileBodyRight = () => {
             setFollowings(fetchFollowers.data.length)
             const fetchMyGroups = await getMyGroupsService()
             setGroups(fetchMyGroups.data.length)
+            const fetchGallery = await getGallery(store.user._id)
+            setGallery(fetchGallery.data.length)
         }
         fetchData()
     }, [reload])
@@ -70,7 +73,7 @@ const ProfileBodyRight = () => {
                                     <CollectionsOutlined />
                                 </ListItemIcon>
                                 <ListItemText primary="Галерея" />
-                                <Typography variant="span">10</Typography>
+                                <Typography variant="span">{gallery}</Typography>
                             </ListItemButton>
                         </Link>
                     </Stack>

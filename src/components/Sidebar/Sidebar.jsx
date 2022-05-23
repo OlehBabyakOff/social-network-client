@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
-import {Article, Email, Group, Home, Person, Settings} from "@mui/icons-material";
+import {Article, Email, Group, Home, Person, Photo, Settings} from "@mui/icons-material";
 import {observer} from "mobx-react-lite";
 import {Link} from "react-router-dom";
 
@@ -56,6 +56,16 @@ const Sidebar = () => {
                                     <Email />
                                 </ListItemIcon>
                                 <ListItemText primary="Повідомлення" />
+                            </ListItemButton>
+                        </Link>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/gallery`}>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <Photo />
+                                </ListItemIcon>
+                                <ListItemText primary="Галерея" />
                             </ListItemButton>
                         </Link>
                     </ListItem>

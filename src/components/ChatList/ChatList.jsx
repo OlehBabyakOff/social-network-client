@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     Avatar, Box, Button, CircularProgress, Container,
     Divider, Fab,
@@ -42,6 +42,12 @@ const ChatList = ({socket}) => {
     const [reload, setReload] = useState(false)
     const [loading, setLoading] = useState(true)
 
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
     useEffect(() => {
         socket.emit('joinRoom', userId)
         const fetchData = async () => {
@@ -50,6 +56,7 @@ const ChatList = ({socket}) => {
             setMessages(fetchMessages.data)
             const fetchUser = await getUser(userId)
             setUser(fetchUser.data)
+            await scrollToBottom()
         }
         fetchData().then(() => setLoading(false))
     }, [reload])
@@ -57,10 +64,12 @@ const ChatList = ({socket}) => {
     useEffect( () => {
         socket.on('receiveMessage', msg => {
             setMessages(msg)
+            scrollToBottom()
         })
 
         socket.on('locationMessage', msg => {
             setMessages(msg)
+            scrollToBottom()
         })
 
     }, [socket])
@@ -131,10 +140,11 @@ const ChatList = ({socket}) => {
                             </ListItem>
                         </Stack>
                         <Divider/>
-                        <Box sx={{overflowY: "scroll", height: `${height}vh`, mx: 1}}>
+                        <Box sx={{overflowY: "auto", height: `${height}vh`, mx: 1}}>
                             {messages.messages.map(message => (
                                 <ChatMessage message={message} user={user} socket={socket} key={message._id}/>
                             ))}
+                            <div ref={messagesEndRef} />
                         </Box>
                     </List>
                     <Divider />
