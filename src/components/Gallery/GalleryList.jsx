@@ -8,14 +8,15 @@ import {
     List,
     ListItem,
     ListItemAvatar,
-    ListItemButton, Menu, MenuItem,
+    ListItemButton, Menu, MenuItem, Paper, Stack,
     Tab, TextField,
     Typography
 } from "@mui/material";
-import {EmailOutlined, Image, MoreVert} from "@mui/icons-material";
-import {addGalleryService, getGallery} from "../../api/userService";
+import {Delete, DeleteOutlineOutlined, EmailOutlined, Image, MoreHoriz, MoreVert} from "@mui/icons-material";
+import {addGalleryService, deleteGalleryService, getGallery} from "../../api/userService";
 import {Context} from "../../index";
 import Moment from "react-moment";
+import GalleryImg from "./GalleryImg";
 
 const GalleryList = () => {
 
@@ -65,21 +66,13 @@ const GalleryList = () => {
                     <TabPanel value="Gallery">
 
                         {loading ? null :
-                            <ImageList sx={{ width: 1000, height: 'auto', overflow: "hidden"}}>
-                                {gallery.map((image) => (
-                                    <ImageListItem sx={{width: 'auto', height: "auto"}} key={image._id}>
-                                        <img
-                                            src={`data:buffer;base64,${image.image}`}
-                                            srcSet={`data:buffer;base64,${image.image}`}
-                                            loading="lazy"
-                                        />
-                                        <ImageListItemBar
-                                            title={<Moment format='DD MM YYYY'>{image.createdAt.toString()}</Moment>}
-                                            position="below"
-                                        />
-                                    </ImageListItem>
+                        <Paper elevation={1} sx={{p: 3, background: "#f9fafb"}}>
+                            <ImageList sx={{ width: 850, height: 'auto', overflow: "hidden"}}>
+                                {gallery.map(image => (
+                                    <GalleryImg image={image} reload={reload} setReload={setReload} key={image._id}/>
                                 ))}
-                            </ImageList>}
+                            </ImageList>
+                        </Paper>}
                     </TabPanel>
 
                     <TabPanel value="AddPhoto">

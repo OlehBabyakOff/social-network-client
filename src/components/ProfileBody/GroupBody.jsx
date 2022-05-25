@@ -14,6 +14,7 @@ import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
 import {followUserService} from "../../api/userService";
 import {subscribeGroupService} from "../../api/groupService";
+import {Link} from "react-router-dom";
 
 const GroupBody = ({groupId, group, members, groupPosts, reload, setReload}) => {
 
@@ -47,7 +48,6 @@ const GroupBody = ({groupId, group, members, groupPosts, reload, setReload}) => 
                                 :
                                 <Button><Delete sx={{mr: 1}}/> Видалити спільноту</Button>
                             }
-                            <Button><ForwardToInboxOutlined sx={{mr: 1}}/> Чат спільноти</Button>
                         </Stack>
                     </List>
                 </Box>

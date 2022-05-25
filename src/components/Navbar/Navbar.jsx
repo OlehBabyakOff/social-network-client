@@ -7,13 +7,13 @@ import {
     Drawer,
     IconButton,
     List,
-    ListItem, ListItemText, MenuItem,
+    ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem,
     styled, TextField,
     Toolbar,
     Typography
 } from "@mui/material";
 import {AccountCircle, Group, Home, Logout, Mail, Menu, Settings} from "@mui/icons-material";
-import {NavLink, useHistory} from "react-router-dom";
+import {Link, NavLink, useHistory} from "react-router-dom";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
 
@@ -103,25 +103,30 @@ const Navbar = () => {
                             onClose={() => setOpen(false)}
                     >
                         <List>
-                            <NavLink to="/me" style={{textDecoration: "none", color: "black"}}>
-                                <ListItem>
-                                    <MenuItem>
-                                        <Home sx={{mr: 2}}/>
-                                        Моя сторінка</MenuItem>
-                                </ListItem>
-                            </NavLink>
-                            <NavLink to="/dashboard" style={{textDecoration: "none", color: "black"}}>
-                                <ListItem>
-                                    <MenuItem>
-                                        <Settings sx={{mr:2}}/>
-                                        Панель адміністратора</MenuItem>
-                                </ListItem>
-                            </NavLink>
-                            <ListItem>
-                                <MenuItem onClick={() => logout()} sx={{ml:0.5}}>
-                                    <Logout sx={{mr:2}}/>
-                                    Вихід</MenuItem>
-                            </ListItem>
+                            <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/me`}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <Home />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Моя сторінка" />
+                                </ListItemButton>
+                            </Link>
+                            {store.user.roles.isAdmin ? <ListItem disablePadding>
+                                <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/dashboard/home`}>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <Settings />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Панель адміністратора" />
+                                    </ListItemButton>
+                                </Link>
+                            </ListItem> : null}
+                            <ListItemButton onClick={() => logout()}>
+                                <ListItemIcon>
+                                    <Logout />
+                                </ListItemIcon>
+                                <ListItemText primary="Вихід" />
+                            </ListItemButton>
                         </List>
                     </Drawer>
                 </Icons>

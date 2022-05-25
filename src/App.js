@@ -11,13 +11,13 @@ import PostDetail from "./pages/PostDetail/PostDetail";
 import User from "./pages/User/User";
 import Group from "./pages/Group/Group";
 import Chat from "./pages/Chat/Chat";
-import GroupChat from "./pages/GroupChat/GroupChat";
 import Registration from "./pages/Registration/Registration";
 import Login from "./pages/Login/Login";
 import {observer} from "mobx-react-lite";
 import {Context} from "./index.js";
 import PostDetailGroup from "./pages/PostDetail/PostDetailGroup";
 import Gallery from "./pages/Gallery/Gallery";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 const socket = io.connect("http://localhost:5000")
 
@@ -115,13 +115,6 @@ const App = () => {
                                 transform: 'translate(-50%, -50%)'}}/> :
                             store.user ? <Chat socket={socket}/> : <Login/>}
                     </Route>
-                    <Route exact path='/groupChat'>
-                        {store.loading ? <CircularProgress sx={{position: 'absolute',
-                                left: '50%',
-                                top: '50%',
-                                transform: 'translate(-50%, -50%)'}}/> :
-                        store.user ? <GroupChat/> : <Login/>}
-                    </Route>
                     <Route exact path='/gallery'>
                         {store.loading ? <CircularProgress sx={{position: 'absolute',
                                 left: '50%',
@@ -142,6 +135,13 @@ const App = () => {
                                 top: '50%',
                                 transform: 'translate(-50%, -50%)'}}/> :
                         store.user ? <Redirect to='/'/> : <Login/>}
+                    </Route>
+                    <Route exact path='/dashboard/*'>
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                            store.user ? <Dashboard/> : <Login/>}
                     </Route>
                     <Route path='*'>
                         {store.loading ? <CircularProgress sx={{position: 'absolute',

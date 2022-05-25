@@ -81,9 +81,6 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
                                     </Stack>
                                 </ListItemButton>
                             </Link>
-                            <Button>
-                                <EmailOutlined sx={{width: 25, height: 25}}/>
-                            </Button>
                             <IconButton aria-label="settings">
                                 <MoreVert id="basic-button"
                                           aria-controls={open ? 'basic-menu' : undefined}
@@ -190,9 +187,6 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
                                             </Stack>
                                         </ListItemButton>
                                     </Link>
-                                    <Button>
-                                        <EmailOutlined sx={{width: 25, height: 25}}/>
-                                    </Button>
                                 </ListItem>
                             ))}
 
