@@ -7,7 +7,14 @@ import Box from "@mui/material/Box";
 import {Typography} from "@mui/material";
 import Moment from "react-moment";
 import { DataGrid } from '@mui/x-data-grid';
-import {getGroupsService, getPostsService, getReportsService, getUsersService} from "../../api/adminService";
+import {
+    getGroupsService,
+    getPostsService,
+    getReportsService,
+    getUsersService,
+    unAdminService
+} from "../../api/adminService";
+import {Close, Done} from "@mui/icons-material";
 
 const DashboardStatistics = () => {
 
@@ -16,6 +23,13 @@ const DashboardStatistics = () => {
     const [groups, setGroups] = useState(0)
     const [posts, setPosts] = useState(0)
     const [reports, setReports] = useState(0)
+
+    const [reload, setReload] = useState(true)
+
+    const unAdmin = async (userId) => {
+        await unAdminService(userId)
+        setReload(!reload)
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,15 +58,30 @@ const DashboardStatistics = () => {
             setReports(fetchReports.data.length)
         }
         fetchData()
-    }, [])
+    }, [reload])
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 230 },
-        { field: 'second_name', headerName: 'Прізвище', width: 150 },
-        { field: 'first_name', headerName: 'Ім`я', width: 150 },
-        { field: 'username', headerName: 'Логін', width: 150 },
+        { field: 'second_name', headerName: 'Прізвище', width: 140 },
+        { field: 'first_name', headerName: 'Ім`я', width: 140 },
+        { field: 'username', headerName: 'Логін', width: 140 },
         { field: 'email', headerName: 'Електронна адреса', width: 200 },
-        { field: 'phone', headerName: 'Номер телефону', width: 180 }
+        { field: 'phone', headerName: 'Номер телефону', width: 150 },
+        { field: "Зняти",
+            renderCell: (cellValues) => {
+                return (
+                    <Close
+                        variant="contained"
+                        color="error"
+                        onClick={e => {
+                            unAdmin(cellValues.row.id)
+                        }}
+                        sx={{cursor: 'pointer', margin: 'auto', width: '50%'}}
+                    >
+                        Print
+                    </Close>
+                );
+            }, width: 100},
     ];
 
     return (
@@ -168,7 +197,7 @@ const DashboardStatistics = () => {
                             <Typography component="h2" variant="h6" sx={{marginBottom: "10px"}}>
                                 Адміністратори
                             </Typography>
-                            <div style={{ height: 400, width: '100%' }}>
+                            <div style={{ height: 650, width: '100%' }}>
                                 <DataGrid
                                     rows={usersData}
                                     columns={columns}

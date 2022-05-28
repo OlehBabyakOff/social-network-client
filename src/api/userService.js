@@ -43,3 +43,7 @@ export const getGallery = async (id) => {
 export const deleteGalleryService = async (id) => {
     return api.delete(`/user/gallery/${id}/delete`)
 }
+
+export const updateInfoService = async (email, username, first_name, second_name, phone) => {
+    return api.put(`/user/updateInfo`, {email, username, first_name, second_name, phone})
+}

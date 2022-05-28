@@ -18,6 +18,7 @@ import {Context} from "./index.js";
 import PostDetailGroup from "./pages/PostDetail/PostDetailGroup";
 import Gallery from "./pages/Gallery/Gallery";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Settings from "./pages/Settings/Settings";
 
 const socket = io.connect("http://localhost:5000")
 
@@ -121,6 +122,13 @@ const App = () => {
                                 top: '50%',
                                 transform: 'translate(-50%, -50%)'}}/> :
                             store.user ? <Gallery/> : <Login/>}
+                    </Route>
+                    <Route exact path='/settings'>
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                            store.user ? <Settings/> : <Login/>}
                     </Route>
                     <Route exact path='/registration'>
                         {store.loading ? <CircularProgress sx={{position: 'absolute',

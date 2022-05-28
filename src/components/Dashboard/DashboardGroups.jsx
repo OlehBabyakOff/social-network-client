@@ -23,12 +23,11 @@ const DashboardGroups = () => {
             let posts = 0
             fetchGroups.data.map(group => {
                 fetchGroupPosts.data.map(post => {
-                    const userName = fetchUsers.data.find(user => user._id === post.creatorId)
+                    const userName = fetchUsers.data.find(user => user._id === post.userId)
                     const groupName = fetchGroups.data.find(group => group._id === post.groupId)
                     if (post.groupId === group._id) {
                      posts++
                     }
-
                     const postsDto = {
                         id: post._id,
                         creator: `${userName.second_name} ${userName.first_name}`,
@@ -93,7 +92,7 @@ const DashboardGroups = () => {
                             <Typography component="h2" variant="h6" sx={{marginBottom: "10px"}}>
                                 Спільноти
                             </Typography>
-                            <div style={{ height: 400, width: '100%' }}>
+                            <div style={{ height: 650, width: '100%' }}>
                                 <DataGrid
                                     rows={groups}
                                     columns={columns}
@@ -108,7 +107,7 @@ const DashboardGroups = () => {
                             <Typography component="h2" variant="h6" sx={{marginBottom: "10px"}}>
                                 Пости спільнот
                             </Typography>
-                            <div style={{ height: 400, width: '100%' }}>
+                            <div style={{ height: 650, width: '100%' }}>
                                 <DataGrid
                                     rows={posts}
                                     columns={columnsPosts}

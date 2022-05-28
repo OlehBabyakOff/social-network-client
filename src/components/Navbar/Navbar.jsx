@@ -12,7 +12,16 @@ import {
     Toolbar,
     Typography
 } from "@mui/material";
-import {AccountCircle, Group, Home, Logout, Mail, Menu, Settings} from "@mui/icons-material";
+import {
+    AccountCircle,
+    AdminPanelSettingsOutlined,
+    Group,
+    Home,
+    Logout,
+    Mail,
+    Menu,
+    Settings
+} from "@mui/icons-material";
 import {Link, NavLink, useHistory} from "react-router-dom";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
@@ -111,11 +120,19 @@ const Navbar = () => {
                                     <ListItemText primary="Моя сторінка" />
                                 </ListItemButton>
                             </Link>
+                            <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/settings`}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <Settings />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Налаштування" />
+                                </ListItemButton>
+                            </Link>
                             {store.user.roles.isAdmin ? <ListItem disablePadding>
                                 <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/dashboard/home`}>
                                     <ListItemButton>
                                         <ListItemIcon>
-                                            <Settings />
+                                            <AdminPanelSettingsOutlined />
                                         </ListItemIcon>
                                         <ListItemText primary="Панель адміністратора" />
                                     </ListItemButton>

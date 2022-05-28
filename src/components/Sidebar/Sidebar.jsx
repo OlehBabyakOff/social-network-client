@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
-import {Article, Email, Group, Home, Person, Photo, Settings} from "@mui/icons-material";
+import {AdminPanelSettingsOutlined, Article, Email, Group, Home, Person, Photo, Settings} from "@mui/icons-material";
 import {observer} from "mobx-react-lite";
 import {Link} from "react-router-dom";
 import {Context} from "../../index";
@@ -77,7 +77,7 @@ const Sidebar = () => {
                         <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/dashboard/home`}>
                             <ListItemButton>
                                 <ListItemIcon>
-                                    <Settings />
+                                    <AdminPanelSettingsOutlined />
                                 </ListItemIcon>
                                 <ListItemText primary="Панель адміністратора" />
                             </ListItemButton>
