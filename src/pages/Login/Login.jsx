@@ -17,13 +17,21 @@ const Login = () => {
 
     const login = async (email, password) => {
         if (email && password) {
-            const data = new FormData()
-            data.append('email', email)
-            data.append('password', password)
-            await store.login(data)
-            history.push("/")
+            if (!email.includes('@')) {
+                store.setErrors('Невірний формат електронної адреси')
+                // } else if (password.length <= 5) {
+                //     store.setErrors('Пароль повинен містити не менше 6 символів')
+                // }
+            } else {
+                const data = new FormData()
+                data.append('email', email)
+                data.append('password', password)
+                await store.login(data)
+                history.push("/")
+            }
         } else {
-            alert('Дані не можуть бути порожніми')
+            store.clearErrors()
+            store.setErrors('Дані не можуть бути порожніми')
         }
     }
 

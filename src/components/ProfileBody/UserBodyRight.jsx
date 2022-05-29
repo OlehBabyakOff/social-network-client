@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {
     Avatar,
     Box, Button, ButtonGroup, CircularProgress, Divider,
-    List,
+    List, ListItemButton, ListItemIcon, ListItemText,
     Stack,
     TextField,
     Typography
@@ -51,13 +51,28 @@ const UserBodyRight = ({user, userPosts, reload, setReload, followings}) => {
                 <List component="nav" aria-label="main mailbox folders">
                     <Stack direction="row" spacing={1} justifyContent="space-evenly" sx={{mr:2, mb: 1}}>
                         {isFollowed ?
-                            <Button onClick={() => followUser(user._id)}><PersonRemoveAlt1Outlined sx={{mr: 1}}/> Відписатися</Button>
+                            <ListItemButton sx={{maxWidth: 250}} onClick={() => followUser(user._id)}>
+                                <ListItemIcon>
+                                    <PersonRemoveAlt1Outlined />
+                                </ListItemIcon>
+                                <ListItemText primary="Відписатися" />
+                            </ListItemButton>
                             :
-                            <Button onClick={() => followUser(user._id)}><PersonAddAltOutlined sx={{mr: 1}}/> Підписатися</Button>
+                            <ListItemButton sx={{maxWidth: 250}} onClick={() => followUser(user._id)}>
+                                <ListItemIcon>
+                                    <PersonAddAltOutlined />
+                                </ListItemIcon>
+                                <ListItemText primary="Підписатися" />
+                            </ListItemButton>
                         }
 
                         <Link style={{ textDecoration: 'inherit', color: 'inherit' }} to={`/chat/${user._id}`}>
-                            <Button><ForwardToInboxOutlined sx={{mr: 1}}/> Повідомлення</Button>
+                            <ListItemButton sx={{maxWidth: 250, mr: 5}} onClick={() => followUser(user._id)}>
+                                <ListItemIcon>
+                                    <ForwardToInboxOutlined />
+                                </ListItemIcon>
+                                <ListItemText primary="Повідомлення" />
+                            </ListItemButton>
                         </Link>
                         <ReportModal user={user} isReported={isReported} setIsReported={setIsReported}/>
                     </Stack>

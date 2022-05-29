@@ -18,10 +18,10 @@ const Groups = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const fetchGroups = await getMyGroupsService()
-            setGroups(fetchGroups.data)
             const fetchAllGroups = await getAllGroupsService()
             setAllGroups(fetchAllGroups.data)
+            const fetchGroups = await getMyGroupsService()
+            setGroups(fetchGroups.data)
         }
         fetchData().then(() => setLoading(false))
     }, [reload])

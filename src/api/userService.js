@@ -47,3 +47,11 @@ export const deleteGalleryService = async (id) => {
 export const updateInfoService = async (email, username, first_name, second_name, phone) => {
     return api.put(`/user/updateInfo`, {email, username, first_name, second_name, phone})
 }
+
+export const updateAvatarService = async (avatar) => {
+    return api.put(`/user/updateAvatar`, avatar)
+}
+
+export const updateBgService = async (bg) => {
+    return api.put(`/user/updateBackground`, bg)
+}

@@ -22,18 +22,37 @@ const Registration = () => {
     const [bg, setBg] = useState(null)
 
     const registration = async (email, password, username, first_name, second_name, phone, birthday, avatarImg, backgroundImg) => {
-        const data = new FormData()
-        data.append('email', email)
-        data.append('password', password)
-        data.append('username', username)
-        data.append('first_name', first_name)
-        data.append('second_name', second_name)
-        data.append('phone', phone)
-        data.append('birthday', birthday)
-        data.append('avatar', avatarImg)
-        data.append('background', backgroundImg)
-        await store.registration(data)
-        history.push("/")
+        if (email && password && username && first_name && second_name && phone && birthday && avatarImg && backgroundImg) {
+            if (!email.includes('@')) {
+                store.setErrors('Невірний формат електронної адреси')
+            } else if (password.length <= 5) {
+                store.setErrors('Пароль повинен містити не менше 6 символів')
+            } else if (username.length < 3) {
+                store.setErrors('Логін повинен містити не менше 3 символів')
+            } else if (first_name.length < 2) {
+                store.setErrors('Ім`я повинно містити не менше 2 символів')
+            } else if (second_name.length < 2) {
+                store.setErrors('Прізвище повинно містити не менше 2 символів')
+            } else if (phone.length < 8) {
+                store.setErrors('Номер телефона повинен містити не менше 8 символів')
+            } else {
+                const data = new FormData()
+                data.append('email', email)
+                data.append('password', password)
+                data.append('username', username)
+                data.append('first_name', first_name)
+                data.append('second_name', second_name)
+                data.append('phone', phone)
+                data.append('birthday', birthday)
+                data.append('avatar', avatarImg)
+                data.append('background', backgroundImg)
+                await store.registration(data)
+                history.push("/")
+            }
+        } else {
+            store.clearErrors()
+            store.setErrors('Дані не можуть бути порожніми')
+        }
     }
 
     return (

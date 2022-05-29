@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Box, Button, Grid, TextField, Typography} from "@mui/material";
 import {Image, Link} from "@mui/icons-material";
-import {getUser, updateInfoService} from "../../api/userService";
+import {getUser, updateAvatarService, updateBgService, updateInfoService} from "../../api/userService";
 import {Context} from "../../index";
 import {useHistory} from "react-router-dom";
 
@@ -37,6 +37,20 @@ const SettingsUser = () => {
         setFirstName(first_name)
         setSecondName(second_name)
         setPhone(phone)
+    }
+
+    const updateAvatar = async (avatar) => {
+        const fd = new FormData
+        fd.append('avatar', avatar)
+        await updateAvatarService(fd)
+        setAvatar(null)
+    }
+
+    const updateBg = async (background) => {
+        const fd = new FormData
+        fd.append('background', background)
+        await updateBgService(fd)
+        setBg(null)
     }
 
     return (
@@ -107,8 +121,10 @@ const SettingsUser = () => {
                     id="raised-button-file1"
                     multiple
                     type="file"
-                    value={avatar}
-                    onChange={e => setAvatar(e.target.files[0])}
+                    onChange={e => {
+                        setAvatar(e.target.files[0])
+                        updateAvatar(e.target.files[0])
+                    }}
                 />
                 <label htmlFor="raised-button-file1">
                     <Button variant="raised" component="span">
@@ -123,8 +139,10 @@ const SettingsUser = () => {
                     id="raised-button-file"
                     multiple
                     type="file"
-                    value={bg}
-                    onChange={e => setBg(e.target.files[0])}
+                    onChange={e => {
+                        setBg(e.target.files[0])
+                        updateBg(e.target.files[0])
+                    }}
                 />
                 <label htmlFor="raised-button-file">
                     <Button variant="raised" component="span">

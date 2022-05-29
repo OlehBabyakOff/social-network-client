@@ -8,6 +8,7 @@ export default class Store {
     user = null
     users = null
     loading = true
+    errors = []
 
     constructor() {
         makeAutoObservable(this)
@@ -25,6 +26,14 @@ export default class Store {
         this.loading = loading
     }
 
+    setErrors(error) {
+        this.errors.push(error)
+    }
+
+    clearErrors() {
+        this.errors = []
+    }
+
     async registration(data) {
         try {
             const res = await registrationService(data)
@@ -40,6 +49,7 @@ export default class Store {
             const res = await loginService(data)
             localStorage.setItem('token', res.data.accessToken)
             this.setUser(res.data.user)
+            this.setLoading(true)
         } catch (e) {
             console.log(e.response?.data?.message)
         }

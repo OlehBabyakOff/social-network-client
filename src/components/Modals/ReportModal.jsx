@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Box, Button, Modal, TextField, Typography} from "@mui/material";
-import {Report} from "@mui/icons-material";
+import {Box, Button, ListItemButton, ListItemIcon, ListItemText, Modal, TextField, Typography} from "@mui/material";
+import {PersonOutlineOutlined, Report} from "@mui/icons-material";
 import {reportUserService} from "../../api/userService";
 
 const style = {
@@ -32,10 +32,19 @@ const ReportModal = ({user, isReported, setIsReported}) => {
     return (
         <>
             {isReported ?
-                <Button onClick={handleOpen} disabled><Report sx={{mr: 1}}/> Поскаржитися</Button>
+                <ListItemButton sx={{maxWidth: 250}} onClick={handleOpen} disabled>
+                    <ListItemIcon>
+                        <Report />
+                    </ListItemIcon>
+                    <ListItemText primary="Поскаржитися" />
+                </ListItemButton>
                 :
-                <Button onClick={handleOpen}><Report sx={{mr: 1}}/> Поскаржитися</Button>}
-
+                <ListItemButton sx={{maxWidth: 250}} onClick={handleOpen}>
+                    <ListItemIcon>
+                        <Report />
+                    </ListItemIcon>
+                    <ListItemText primary="Поскаржитися" />
+                </ListItemButton>}
 
             <Modal
                 open={open}

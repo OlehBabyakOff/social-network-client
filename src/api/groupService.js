@@ -63,3 +63,19 @@ export const getGroupPostCommentsService = async (id, postId) => {
 export const getGroupChildCommentsService = async (id, postId, commentId) => {
     return api.get(`/group/${id}/post/${postId}/comments/${commentId}/child`)
 }
+
+export const updateGroupInfoService = async (id, title) => {
+    return api.put(`/group/${id}/updateInfo`, {title})
+}
+
+export const updateGroupAvatarService = async (id, avatar) => {
+    return api.put(`/group/${id}/updateAvatar`, avatar)
+}
+
+export const updateGroupBgService = async (id, bg) => {
+    return api.put(`/group/${id}/updateBackground`, bg)
+}
+
+export const deleteGroupService = async (id) => {
+    return api.delete(`/group/${id}/delete`)
+}
