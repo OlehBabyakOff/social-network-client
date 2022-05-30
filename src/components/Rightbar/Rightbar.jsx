@@ -16,6 +16,7 @@ import {Link} from "react-router-dom";
 import {Context} from "../../index.js";
 import {ForwardToInboxOutlined} from "@mui/icons-material";
 import {getLimitedGroupsService} from "../../api/groupService";
+import {Skeleton} from "@mui/lab";
 
 const Rightbar = () => {
 
@@ -40,45 +41,53 @@ const Rightbar = () => {
     }, [])
 
     return (
-        loading ? <CircularProgress sx={{p: 15}}/> :
         <Box flex={1.5} p="20px 46px" pl={0} sx={{ display: { xs: "none", sm: "block" }}}>
             <Box position="fixed" width={300} sx={{background: "#f9fafb", height: "100vh"}}>
-                <Typography variant="h6" fontWeight={300}>
+                <Typography variant="h6" fontWeight={300} sx={{textAlign: 'center'}}>
                     Знайомтесь з новими людьми
                 </Typography>
 
                 <List sx={{ width: '100%', maxWidth: 360, background: "#f9fafb" }}>
-                    {users.map(user => (
-                        <ListItem key={user._id}
-                                  secondaryAction={
-                                      <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/chat/${user._id}`}>
-                                            <Button><ForwardToInboxOutlined/></Button>
-                                      </Link>
-                                  }
-                                  disablePadding
-                        >
-                            <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/user/${user._id}`}>
-                                <ListItemButton>
-                                    <ListItemAvatar>
-                                        <Avatar
-                                            src={`data:buffer;base64,${user.avatar}`}
-                                        />
-                                    </ListItemAvatar>
-                                    <ListItemText primary={`${user.second_name} ${user.first_name}`} />
-                                </ListItemButton>
-                            </Link>
-                        </ListItem>))}
+                    {users.map(user => {
+                        if (loading) {
+                            return (<Skeleton variant="text" height={50} />)
+                        } else {
+                            return (
+                                <ListItem key={user._id}
+                                          secondaryAction={
+                                              <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/chat/${user._id}`}>
+                                                    <Button><ForwardToInboxOutlined/></Button>
+                                              </Link>
+                                          }
+                                          disablePadding
+                                >
+                                    <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/user/${user._id}`}>
+                                        <ListItemButton>
+                                            <ListItemAvatar>
+                                                <Avatar
+                                                    src={`data:buffer;base64,${user.avatar}`}
+                                                />
+                                            </ListItemAvatar>
+                                            <ListItemText primary={`${user.second_name} ${user.first_name}`} />
+                                        </ListItemButton>
+                                    </Link>
+                                </ListItem>)}})}
                 </List>
 
                 <Divider/>
 
-                <Typography variant="h6" fontWeight={300} sx={{mt:3}}>
+                <Typography variant="h6" fontWeight={300} sx={{mt:3, textAlign: 'center'}}>
                     Вступайте до спільнот
                 </Typography>
 
                 <List sx={{ width: '100%', maxWidth: 360, background: "#f9fafb" }}>
-                    {groups.map(group =>
-                        <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/group/${group._id}`}>
+                    {groups.map(group => {
+                        if (loading) {
+                            return (<Skeleton variant="text" height={50} />)
+                        } else {
+                        return (
+                        <Link style={{textDecoration: 'inherit', color: 'inherit', width: 1000}}
+                              to={`/group/${group._id}`}>
                             <ListItem
                                 secondaryAction={
                                     <AvatarGroup max={3}>
@@ -95,11 +104,11 @@ const Rightbar = () => {
                                 disablePadding
                             >
                                 <ListItemButton>
-                                    <ListItemText primary={group.title} />
+                                    <ListItemText primary={group.title}/>
                                 </ListItemButton>
                             </ListItem>
                         </Link>
-                    )}
+                        )}})}
                 </List>
             </Box>
         </Box>

@@ -64,15 +64,13 @@ const GalleryList = () => {
                     </TabList>
 
                     <TabPanel value="Gallery">
-
-                        {loading ? null :
                         <Paper elevation={1} sx={{p: 3, background: "#f9fafb"}}>
                             <ImageList sx={{ width: 850, height: 'auto', overflow: "hidden"}}>
                                 {gallery.map(image => (
-                                    <GalleryImg image={image} reload={reload} setReload={setReload} key={image._id}/>
+                                    <GalleryImg image={image} loading={loading} reload={reload} setReload={setReload} key={image._id}/>
                                 ))}
                             </ImageList>
-                        </Paper>}
+                        </Paper>
                     </TabPanel>
 
                     <TabPanel value="AddPhoto">

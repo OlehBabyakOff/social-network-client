@@ -25,6 +25,8 @@ import {
 import {Link, NavLink, useHistory} from "react-router-dom";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
+import {getAllUsers, getFollowersService, getFollowingsService} from "../../api/userService";
+import {getConversationService} from "../../api/chatService";
 
 const StyledToolBar = styled(Toolbar)({
     display: "flex",
@@ -57,10 +59,23 @@ const Navbar = () => {
 
     const [open, setOpen] = useState(false)
 
+    const [followings, setFollowings] = useState([])
+    const [conversations, setConversations] = useState([])
+
     const logout = async () => {
         await store.logout()
         history.push("/login")
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const fetchFollowings = await getFollowingsService(store.user._id)
+            setFollowings(fetchFollowings.data)
+            const fetchConversations = await getConversationService()
+            setConversations(fetchConversations.data)
+        }
+        fetchData()
+    }, [])
 
     return (
         <AppBar position="sticky">
@@ -80,7 +95,7 @@ const Navbar = () => {
                 <Icons sx={{ display: { xs: 'none', md: 'flex' } }}>
                     <NavLink to="/messages" style={{textDecoration: "none", color: "white"}}>
                         <IconButton size="large" color="inherit">
-                            <Badge badgeContent={1} color="error">
+                            <Badge badgeContent={conversations.length} color="error">
                                 <Mail />
                             </Badge>
                         </IconButton>
@@ -90,7 +105,7 @@ const Navbar = () => {
                             size="large"
                             color="inherit"
                         >
-                            <Badge badgeContent={1} color="error">
+                            <Badge badgeContent={followings.length} color="error">
                                 <Group />
                             </Badge>
                         </IconButton>

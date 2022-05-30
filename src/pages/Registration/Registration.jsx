@@ -1,9 +1,9 @@
 import React, {useContext, useState} from 'react';
 import {Box, Button, Checkbox, CssBaseline, FormControlLabel, Grid, Paper, TextField, Typography} from "@mui/material";
-import {Image, Link} from "@mui/icons-material";
+import {Image} from "@mui/icons-material";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 const Registration = () => {
 
@@ -64,7 +64,7 @@ const Registration = () => {
                     sm={4}
                     md={7}
                     sx={{
-                        backgroundImage: 'url(https://source.unsplash.com/random)',
+                        backgroundImage: 'url(https://businessman.ru/static/img/a/46193/398624/67036.jpg)',
                         backgroundRepeat: 'no-repeat',
                         backgroundColor: (t) =>
                             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -204,12 +204,7 @@ const Registration = () => {
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
-                                <Grid item>
-                                    <Link href="#" variant="body2">
+                                    <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/login`}>
                                         Вже є акаунт?
                                     </Link>
                                 </Grid>

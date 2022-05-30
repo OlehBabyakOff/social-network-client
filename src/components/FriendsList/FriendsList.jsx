@@ -11,7 +11,7 @@ import {
     MenuItem, Tab,
     Typography
 } from "@mui/material";
-import {TabContext, TabList, TabPanel} from '@mui/lab';
+import {Skeleton, TabContext, TabList, TabPanel} from '@mui/lab';
 import {EmailOutlined, MoreVert} from "@mui/icons-material";
 import FriendSearch from "../Search/FriendSearch";
 import {observer} from "mobx-react-lite";
@@ -57,136 +57,147 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
 
                             <FriendSearch users={followings}/>
 
-                            {loading ? null :
-
                             <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
 
                                 {followings.map(followed => {
                                     const user = users.find(user => user._id === followed.followedId)
-                                    return (
-                                        <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
-                                                  disablePadding
-                                        >
-                                            <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/user/${user._id}`}>
-                                                <ListItemButton>
-                                                    <ListItemAvatar>
-                                                        <Avatar sx={{width: 60, height: 60}}
-                                                                src={`data:buffer;base64,${user.avatar}`}
-                                                        />
-                                                    </ListItemAvatar>
-                                                    <Typography variant="span" sx={{
-                                                        fontWeight: 500,
-                                                        ml: 2,
-                                                        fontSize: 18
-                                                    }}>{`${user.first_name} ${user.second_name}`}</Typography>
-                                                </ListItemButton>
-                                            </Link>
-
-                                            <Button>
-                                                <Link style={{ textDecoration: 'inherit', color: 'inherit', marginTop: "10px" }} to={`/chat/${user._id}`}>
-                                                    <EmailOutlined sx={{width: 25, height: 25}}/>
-                                                </Link>
-                                            </Button>
-                                            <IconButton aria-label="settings">
-                                                <MoreVert id="basic-button"
-                                                          aria-controls={open ? 'basic-menu' : undefined}
-                                                          aria-haspopup="true"
-                                                          aria-expanded={open ? 'true' : undefined}
-                                                          onClick={handleClick}/>
-                                                <Menu
-                                                    id="basic-menu"
-                                                    anchorEl={anchorEl}
-                                                    open={open}
-                                                    onClose={handleClose}
-                                                    MenuListProps={{
-                                                        'aria-labelledby': 'basic-button',
-                                                    }}
+                                    if (loading) {
+                                        return <Skeleton variant="text" height={100} />
+                                    } else {
+                                        return (
+                                                <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
+                                                          disablePadding
                                                 >
-                                                    <MenuItem onClick={() => unfollowUser(user._id)}>Відписатися</MenuItem>
-                                                </Menu>
-                                            </IconButton>
-                                        </ListItem>
-                                    )
+                                                    <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/user/${user._id}`}>
+                                                        <ListItemButton>
+                                                            <ListItemAvatar>
+                                                                <Avatar sx={{width: 60, height: 60}}
+                                                                        src={`data:buffer;base64,${user.avatar}`}
+                                                                />
+                                                            </ListItemAvatar>
+                                                            <Typography variant="span" sx={{
+                                                                fontWeight: 500,
+                                                                ml: 2,
+                                                                fontSize: 18
+                                                            }}>{`${user.first_name} ${user.second_name}`}</Typography>
+                                                        </ListItemButton>
+                                                    </Link>
+
+                                                    <Button>
+                                                        <Link style={{ textDecoration: 'inherit', color: 'inherit', marginTop: "10px" }} to={`/chat/${user._id}`}>
+                                                            <EmailOutlined sx={{width: 25, height: 25}}/>
+                                                        </Link>
+                                                    </Button>
+                                                    <IconButton aria-label="settings">
+                                                        <MoreVert id="basic-button"
+                                                                  aria-controls={open ? 'basic-menu' : undefined}
+                                                                  aria-haspopup="true"
+                                                                  aria-expanded={open ? 'true' : undefined}
+                                                                  onClick={handleClick}/>
+                                                        <Menu
+                                                            id="basic-menu"
+                                                            anchorEl={anchorEl}
+                                                            open={open}
+                                                            onClose={handleClose}
+                                                            MenuListProps={{
+                                                                'aria-labelledby': 'basic-button',
+                                                            }}
+                                                        >
+                                                            <MenuItem onClick={() => unfollowUser(user._id)}>Відписатися</MenuItem>
+                                                        </Menu>
+                                                    </IconButton>
+                                                </ListItem>
+                                        )}
                                 })}
-                            </List> }
+                            </List>
                         </TabPanel>
 
                         <TabPanel value="Subscribers">
 
                             <FriendSearch users={followers}/>
 
-                            {loading ? null :
-
                             <List dense sx={{width: '100%', maxWidth: 900, mt: 3,  bgcolor: 'background.paper'}}>
 
                                 {followers.map(follower => {
                                     const user = users.find(user => user._id === follower.followerId)
-                                    return (
-                                        <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
-                                                  disablePadding
-                                        >
-                                            <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/user/${user._id}`}>
-                                                <ListItemButton>
-                                                    <ListItemAvatar>
-                                                        <Avatar sx={{width: 60, height: 60}}
-                                                                src={`data:buffer;base64,${user.avatar}`}
-                                                        />
-                                                    </ListItemAvatar>
-                                                    <Typography variant="span" sx={{
-                                                        fontWeight: 500,
-                                                        ml: 2,
-                                                        fontSize: 18
-                                                    }}>{`${user.first_name} ${user.second_name}`}</Typography>
-                                                </ListItemButton>
-                                            </Link>
-
-                                            <Button>
-                                                <Link style={{ textDecoration: 'inherit', color: 'inherit', marginTop: "10px" }} to={`/chat/${user._id}`}>
-                                                    <EmailOutlined sx={{width: 25, height: 25}}/>
+                                    if (loading) {
+                                        return <Skeleton variant="text" height={100} />
+                                    } else {
+                                        return (
+                                            <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
+                                                      disablePadding
+                                            >
+                                                <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/user/${user._id}`}>
+                                                    <ListItemButton>
+                                                        <ListItemAvatar>
+                                                            <Avatar sx={{width: 60, height: 60}}
+                                                                    src={`data:buffer;base64,${user.avatar}`}
+                                                            />
+                                                        </ListItemAvatar>
+                                                        <Typography variant="span" sx={{
+                                                            fontWeight: 500,
+                                                            ml: 2,
+                                                            fontSize: 18
+                                                        }}>{`${user.first_name} ${user.second_name}`}</Typography>
+                                                    </ListItemButton>
                                                 </Link>
-                                            </Button>
-                                        </ListItem>
-                                    )
+
+                                                <Button>
+                                                    <Link style={{ textDecoration: 'inherit', color: 'inherit', marginTop: "10px" }} to={`/chat/${user._id}`}>
+                                                        <EmailOutlined sx={{width: 25, height: 25}}/>
+                                                    </Link>
+                                                </Button>
+                                            </ListItem>
+                                        )}
                                 })}
-                            </List> }
+                            </List>
                         </TabPanel>
 
                         <TabPanel value="Search">
 
                             <FriendSearch/>
 
-                            {loading ? null :
-
                                 <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
 
-                                {searchedUsers?.map(user => (
-                                        <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
-                                                  disablePadding
-                                        >
-                                            <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/user/${user._id}`}>
-                                                <ListItemButton>
-                                                    <ListItemAvatar>
-                                                        <Avatar sx={{width: 60, height: 60}}
-                                                                src={`data:buffer;base64,${user.avatar}`}
-                                                        />
-                                                    </ListItemAvatar>
-                                                    <Typography variant="span" sx={{
-                                                        fontWeight: 500,
-                                                        ml: 2,
-                                                        fontSize: 18
-                                                    }}>{`${user.first_name} ${user.second_name}`}</Typography>
-                                                </ListItemButton>
-                                            </Link>
-
-                                            <Button>
-                                                <Link style={{ textDecoration: 'inherit', color: 'inherit', marginTop: "10px" }} to={`/chat/${user._id}`}>
-                                                    <EmailOutlined sx={{width: 25, height: 25}}/>
+                                {searchedUsers?.map(user => {
+                                    if (loading) {
+                                        return <Skeleton variant="text" height={100}/>
+                                    } else {
+                                        return (
+                                            <ListItem key={user._id}
+                                                      sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
+                                                      disablePadding
+                                            >
+                                                <Link style={{textDecoration: 'inherit', color: 'inherit', width: 1000}}
+                                                      to={`/user/${user._id}`}>
+                                                    <ListItemButton>
+                                                        <ListItemAvatar>
+                                                            <Avatar sx={{width: 60, height: 60}}
+                                                                    src={`data:buffer;base64,${user.avatar}`}
+                                                            />
+                                                        </ListItemAvatar>
+                                                        <Typography variant="span" sx={{
+                                                            fontWeight: 500,
+                                                            ml: 2,
+                                                            fontSize: 18
+                                                        }}>{`${user.first_name} ${user.second_name}`}</Typography>
+                                                    </ListItemButton>
                                                 </Link>
-                                            </Button>
-                                        </ListItem>
-                                ))}
 
-                            </List> }
+                                                <Button>
+                                                    <Link style={{
+                                                        textDecoration: 'inherit',
+                                                        color: 'inherit',
+                                                        marginTop: "10px"
+                                                    }} to={`/chat/${user._id}`}>
+                                                        <EmailOutlined sx={{width: 25, height: 25}}/>
+                                                    </Link>
+                                                </Button>
+                                            </ListItem>
+                                        )
+                                    }
+                                })}
+                            </List>
                         </TabPanel>
                 </Box>
             </TabContext>

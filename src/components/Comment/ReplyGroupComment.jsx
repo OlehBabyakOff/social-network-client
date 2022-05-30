@@ -4,6 +4,7 @@ import {MoreVert} from "@mui/icons-material";
 import Moment from "react-moment";
 import {deleteCommentService} from "../../api/postService";
 import {Context} from "../../index.js";
+import {Skeleton} from "@mui/lab";
 
 const ReplyGroupComment = ({comment, postId, reload, setReload}) => {
 
@@ -36,7 +37,7 @@ const ReplyGroupComment = ({comment, postId, reload, setReload}) => {
     }
 
     return (
-        loading ? <CircularProgress sx={{padding: "50px 560px"}}/> :
+        loading ? <Skeleton variant="text" height={200} /> :
             <>
                <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
                    <Grid container wrap="nowrap" spacing={2} sx={{width: "97%", ml: 5}}>

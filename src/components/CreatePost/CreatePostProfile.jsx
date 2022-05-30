@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {Avatar, Box, Button, ButtonGroup, Paper, Stack, styled, TextField, Typography} from "@mui/material";
-import {Image, Room} from "@mui/icons-material";
+import {CheckCircleOutline, Image, Room} from "@mui/icons-material";
 import {Context} from "../../index.js";
 import {createPostService} from "../../api/postService";
 import {observer} from "mobx-react-lite";
@@ -12,6 +12,8 @@ const CreatePostProfile = ({reload, setReload}) => {
     const [text, setText] = useState("")
     const [image, setImage] = useState(null)
     const [location, setLocation] = useState(null)
+    const [doneImage, setDoneImage] = useState(false)
+    const [doneLocation, setDoneLocation] = useState(false)
 
     const createPost = async (text, image) => {
         const data = new FormData()
@@ -23,6 +25,8 @@ const CreatePostProfile = ({reload, setReload}) => {
         setText("")
         setImage(null)
         setLocation(null)
+        setDoneImage(false)
+        setDoneLocation(false)
     }
 
     const sendLocation = async () => {
@@ -37,7 +41,7 @@ const CreatePostProfile = ({reload, setReload}) => {
 
     return (
             <Box
-                sx={{width: "80%", mt: 5, ml: 14, height: 280, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
+                sx={{width: "80%", ml: 14, height: 280, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
             >
                 <Paper elevation={2} sx={{p:5, background: "#f9fafb"}}>
                 <TextField
@@ -51,23 +55,58 @@ const CreatePostProfile = ({reload, setReload}) => {
                     onChange={e => setText(e.target.value)}
                 />
                 <Stack direction="row" gap={1} mt={2} mb={3} sx={{justifyContent: "space-around"}}>
-                    <input
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        id="raised-button-file"
-                        multiple
-                        type="file"
-                        onChange={e => setImage(e.target.files[0])}
-                    />
-                    <label htmlFor="raised-button-file">
-                        <Button variant="raised" component="span">
-                            <Image color="secondary"/>
-                        </Button>
-                    </label>
+                    {doneImage ?
+                        <>
+                            <input
+                                accept="image/*"
+                                style={{display: 'none'}}
+                                id="raised-button-file"
+                                type="file"
+                                onChange={e => {
+                                    setImage(e.target.files[0])
+                                    setDoneImage(true)
+                                }}
+                            />
+                            <label htmlFor="raised-button-file">
+                                <Button variant="raised" component="span">
+                                    <CheckCircleOutline color={"secondary"}/>
+                                </Button>
+                            </label>
+                        </>
+                        :
+                        <>
+                            <input
+                                accept="image/*"
+                                style={{display: 'none'}}
+                                id="raised-button-file"
+                                type="file"
+                                onChange={e => {
+                                    setImage(e.target.files[0])
+                                    setDoneImage(true)
+                                }}
+                            />
+                            <label htmlFor="raised-button-file">
+                                <Button variant="raised" component="span">
+                                    <Image color="secondary"/>
+                                </Button>
+                            </label>
+                        </>
+                    }
 
-                    <Button onClick={() => sendLocation()} variant="raised" component="span">
-                        <Room color="success" />
-                    </Button>
+                    {doneLocation ?
+                        <label htmlFor="raised-button-file">
+                            <Button variant="raised" component="span">
+                                <CheckCircleOutline color={"success"}/>
+                            </Button>
+                        </label>
+                        :
+                        <Button onClick={() => {
+                            sendLocation()
+                            setDoneLocation(true)
+                        }} variant="raised" component="span">
+                            <Room color="success" />
+                        </Button>
+                    }
 
                 </Stack>
                 <ButtonGroup

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import {EmailOutlined, Image, MoreVert} from "@mui/icons-material";
 import GroupSearch from "../Search/GroupSearch";
-import {TabContext, TabList, TabPanel} from "@mui/lab";
+import {Skeleton, TabContext, TabList, TabPanel} from "@mui/lab";
 import {createGroupService} from "../../api/groupService";
 import {Link} from "react-router-dom";
 
@@ -62,34 +62,39 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
 
                     <GroupSearch/>
 
-                    {loading ? null :
                     <List dense sx={{width: '100%', maxWidth: 900, mt: 3,  bgcolor: 'background.paper'}}>
 
-                        {groups.map(group => (
-                        <ListItem sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
-                                  disablePadding
-                        >
-                            <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/group/${group._id}`}>
-                                <ListItemButton>
-                                    <ListItemAvatar>
-                                        <Avatar sx={{width: 60, height: 60}}
-                                                src={`data:buffer;base64,${group.avatar}`}
-                                        />
-                                    </ListItemAvatar>
-                                    <Stack direction="column">
-                                        <Typography variant="span" sx={{fontWeight: 500, ml: 2, fontSize: 18}}>{group.title}</Typography>
-                                    </Stack>
-                                </ListItemButton>
-                            </Link>
-                            <IconButton aria-label="settings">
-                                <MoreVert id="basic-button"
-                                          aria-controls={open ? 'basic-menu' : undefined}
-                                          aria-haspopup="true"
-                                          aria-expanded={open ? 'true' : undefined}
-                                          onClick={handleClick}/>
-                            </IconButton>
-                        </ListItem>))}
-                    </List>}
+                        {groups.map(group => {
+                            if (loading) {
+                                return <Skeleton variant="text" height={100} />
+                            } else {
+                                return (
+                                    <ListItem sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
+                                              disablePadding
+                                    >
+                                        <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/group/${group._id}`}>
+                                            <ListItemButton>
+                                                <ListItemAvatar>
+                                                    <Avatar sx={{width: 60, height: 60}}
+                                                            src={`data:buffer;base64,${group.avatar}`}
+                                                    />
+                                                </ListItemAvatar>
+                                                <Stack direction="column">
+                                                    <Typography variant="span" sx={{fontWeight: 500, ml: 2, fontSize: 18}}>{group.title}</Typography>
+                                                </Stack>
+                                            </ListItemButton>
+                                        </Link>
+                                        <IconButton aria-label="settings">
+                                            <MoreVert id="basic-button"
+                                                      aria-controls={open ? 'basic-menu' : undefined}
+                                                      aria-haspopup="true"
+                                                      aria-expanded={open ? 'true' : undefined}
+                                                      onClick={handleClick}/>
+                                        </IconButton>
+                                    </ListItem>
+                                )
+                            }})}
+                    </List>
                     <Menu
                         id="basic-menu"
                         anchorEl={anchorEl}
@@ -167,15 +172,18 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
 
                     <GroupSearch/>
 
-                    {loading ? null :
-
                         <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
 
-                            {searchedGroups?.map(group => (
+                            {searchedGroups?.map(group => {
+                                if (loading) {
+                                    return <Skeleton variant="text" height={100} />
+                                } else {
+                                    return (
                                 <ListItem sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
                                           disablePadding
                                 >
-                                    <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/group/${group._id}`}>
+                                    <Link style={{textDecoration: 'inherit', color: 'inherit', width: 1000}}
+                                          to={`/group/${group._id}`}>
                                         <ListItemButton>
                                             <ListItemAvatar>
                                                 <Avatar sx={{width: 60, height: 60}}
@@ -183,14 +191,17 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
                                                 />
                                             </ListItemAvatar>
                                             <Stack direction="column">
-                                                <Typography variant="span" sx={{fontWeight: 500, ml: 2, fontSize: 18}}>{group.title}</Typography>
+                                                <Typography variant="span" sx={{
+                                                    fontWeight: 500,
+                                                    ml: 2,
+                                                    fontSize: 18
+                                                }}>{group.title}</Typography>
                                             </Stack>
                                         </ListItemButton>
                                     </Link>
                                 </ListItem>
-                            ))}
-
-                        </List> }
+                                )}})}
+                        </List>
                 </TabPanel>
 
             </Box>

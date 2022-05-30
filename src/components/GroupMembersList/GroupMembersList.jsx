@@ -13,6 +13,7 @@ import {
 import {Link} from "react-router-dom";
 import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
+import {Skeleton} from "@mui/lab";
 
 const GroupMembersList = ({member}) => {
 
@@ -30,7 +31,7 @@ const GroupMembersList = ({member}) => {
     }, [])
 
     return (
-        loading ? <CircularProgress/> :
+        loading ? <Skeleton variant="text" height={100} /> :
             (<List dense sx={{width: '100%', maxWidth: 900, mt: 1,  background: "#f9fafb"}}>
                 {member.memberId !== store?.user?._id ?
                 (<ListItem sx={{lineHeight: 2, background: "#f9fafb"}}

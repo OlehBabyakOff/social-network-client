@@ -7,12 +7,11 @@ import {
     CardHeader,
     CardMedia,
     Checkbox, CircularProgress,
-    IconButton, Menu, MenuItem,
+    IconButton, Menu, MenuItem, Skeleton,
     Typography
 } from "@mui/material";
 import {ChatBubbleOutlineOutlined, Favorite, FavoriteBorder, MoreVert, Share} from "@mui/icons-material";
 import {Context} from "../../index";
-import {deletePostService, getPostLikeService, likePostService} from "../../api/postService";
 import {observer} from "mobx-react-lite";
 import Moment from "react-moment";
 import {Link} from "react-router-dom";
@@ -58,7 +57,7 @@ const PostGroup = ({post, groupId, reload, setReload}) => {
     }
 
     return (
-        loading ? <CircularProgress sx={{padding: "50px 560px"}}/> :
+        loading ? <Skeleton variant="text" height={300} /> :
             (<Card sx={{ margin: 5, mt: 5, width: "85%", ml:12, background: "#f9fafb" }}>
                 <CardHeader
                     avatar={

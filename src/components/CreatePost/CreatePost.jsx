@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {Avatar, Box, Button, ButtonGroup, Paper, Stack, styled, TextField, Typography} from "@mui/material";
-import {Image, Room} from "@mui/icons-material";
+import {CheckCircleOutline, Image, Room} from "@mui/icons-material";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
 import {createPostService} from "../../api/postService";
@@ -19,6 +19,8 @@ const CreatePost = ({reload, setReload}) => {
     const [text, setText] = useState("")
     const [image, setImage] = useState(null)
     const [location, setLocation] = useState(null)
+    const [doneImage, setDoneImage] = useState(false)
+    const [doneLocation, setDoneLocation] = useState(false)
 
     const createPost = async (text, image, location) => {
         const data = new FormData()
@@ -30,6 +32,8 @@ const CreatePost = ({reload, setReload}) => {
         setText("")
         setImage(null)
         setLocation(null)
+        setDoneImage(false)
+        setDoneLocation(false)
     }
 
     const sendLocation = async () => {
@@ -72,22 +76,58 @@ const CreatePost = ({reload, setReload}) => {
                     onChange={e => setText(e.target.value)}
                 />
                 <Stack direction="row" gap={1} mt={2} mb={3} sx={{justifyContent: "space-around"}}>
-                    <input
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        id="raised-button-file"
-                        type="file"
-                        onChange={e => setImage(e.target.files[0])}
-                    />
-                    <label htmlFor="raised-button-file">
-                        <Button variant="raised" component="span">
-                            <Image color="secondary"/>
-                        </Button>
-                    </label>
+                    {doneImage ?
+                        <>
+                            <input
+                                accept="image/*"
+                                style={{display: 'none'}}
+                                id="raised-button-file"
+                                type="file"
+                                onChange={e => {
+                                    setImage(e.target.files[0])
+                                    setDoneImage(true)
+                                }}
+                            />
+                            <label htmlFor="raised-button-file">
+                                <Button variant="raised" component="span">
+                                    <CheckCircleOutline color={"secondary"}/>
+                                </Button>
+                            </label>
+                        </>
+                        :
+                        <>
+                            <input
+                                accept="image/*"
+                                style={{display: 'none'}}
+                                id="raised-button-file"
+                                type="file"
+                                onChange={e => {
+                                    setImage(e.target.files[0])
+                                    setDoneImage(true)
+                                }}
+                            />
+                            <label htmlFor="raised-button-file">
+                                <Button variant="raised" component="span">
+                                    <Image color="secondary"/>
+                                </Button>
+                            </label>
+                        </>
+                    }
 
-                    <Button onClick={() => sendLocation()} variant="raised" component="span">
-                        <Room color="success" />
-                    </Button>
+                    {doneLocation ?
+                        <label htmlFor="raised-button-file">
+                            <Button variant="raised" component="span">
+                                <CheckCircleOutline color={"success"}/>
+                            </Button>
+                        </label>
+                        :
+                        <Button onClick={() => {
+                            sendLocation()
+                            setDoneLocation(true)
+                        }} variant="raised" component="span">
+                            <Room color="success" />
+                        </Button>
+                    }
 
                 </Stack>
                 <ButtonGroup

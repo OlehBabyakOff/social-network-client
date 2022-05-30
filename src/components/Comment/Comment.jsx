@@ -6,6 +6,7 @@ import CreateReplyComment from "./CreateReplyComment";
 import {deleteCommentService, getPostChildCommentsService} from "../../api/postService";
 import Moment from "react-moment";
 import {Context} from "../../index.js";
+import {Skeleton} from "@mui/lab";
 
 const Comment = ({comment, reload, setReload, postId}) => {
 
@@ -43,7 +44,7 @@ const Comment = ({comment, reload, setReload, postId}) => {
     }
 
     return (
-        loading ? <CircularProgress sx={{padding: "50px 560px"}}/> :
+        loading ? <Skeleton variant="text" height={200} /> :
                (<Paper style={{ padding: "40px 20px", width: "95%", background: "#f9fafb", marginBottom: 5 }} elevation={0}>
                    <Grid container wrap="nowrap" spacing={2}>
                        <Grid item>
@@ -85,8 +86,7 @@ const Comment = ({comment, reload, setReload, postId}) => {
                    {reply ? (<CreateReplyComment reload={reload} setReload={setReload} postId={postId} parentId={comment._id} reply={reply} setReply={setReply}/>) : null}
 
 
-                   {loading ? null :
-                   comment.childs.length > 0 ?
+                   {comment.childs.length > 0 ?
                        childs.map(child => (
                            <ReplyComment comment={child} postId={postId} key={child._id} reload={reload} setReload={setReload}/>
                        ))

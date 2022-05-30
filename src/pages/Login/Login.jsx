@@ -1,10 +1,9 @@
 import React, {useContext, useState} from 'react';
 import {loginService} from "../../api/authService";
 import {Box, Button, CssBaseline, Grid, Paper, TextField, Typography} from "@mui/material";
-import {Link} from "@mui/icons-material";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 const Login = () => {
 
@@ -44,7 +43,7 @@ const Login = () => {
                 sm={4}
                 md={7}
                 sx={{
-                    backgroundImage: 'url(https://source.unsplash.com/random)',
+                    backgroundImage: 'url(https://businessman.ru/static/img/a/46193/398624/67036.jpg)',
                     backgroundRepeat: 'no-repeat',
                     backgroundColor: (t) =>
                         t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -103,6 +102,13 @@ const Login = () => {
                         >
                             Увійти
                         </Button>
+                        <Grid container>
+                            <Grid item xs>
+                                <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/registration`}>
+                                    Ще не зареєстровані?
+                                </Link>
+                            </Grid>
+                        </Grid>
                     </Box>
                 </Box>
             </Grid>

@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardMedia,
     Checkbox, CircularProgress,
-    IconButton, Menu, MenuItem,
+    IconButton, Menu, MenuItem, Skeleton,
     Typography
 } from "@mui/material";
 import {ChatBubbleOutlineOutlined, Favorite, FavoriteBorder, MoreVert, Share} from "@mui/icons-material";
@@ -57,7 +57,7 @@ const Post = ({post, reload, setReload}) => {
     }
 
     return (
-        loading ? <CircularProgress sx={{padding: "50px 560px"}}/> :
+        loading ? <Skeleton variant="text" height={300} /> :
           (<Card sx={{ margin: 5, mt: 0, width: "85%", ml:12, background: "#f9fafb" }}>
               <CardHeader
                   avatar={

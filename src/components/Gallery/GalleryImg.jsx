@@ -3,8 +3,9 @@ import {IconButton, ImageListItem, ImageListItemBar, Menu, MenuItem, Stack} from
 import Moment from "react-moment";
 import {MoreHoriz} from "@mui/icons-material";
 import {deleteGalleryService} from "../../api/userService";
+import {Skeleton} from "@mui/lab";
 
-const GalleryImg = ({image, reload, setReload}) => {
+const GalleryImg = ({image, loading, reload, setReload}) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -22,6 +23,7 @@ const GalleryImg = ({image, reload, setReload}) => {
     }
 
     return (
+        loading ? <Skeleton variant="rectangular" height={300} /> :
         <>
             <ImageListItem sx={{width: 'auto', height: "auto"}} key={image._id}>
                 <img

@@ -5,7 +5,7 @@ import Moment from "react-moment";
 const InfoUser = ({user}) => {
     return (
        <>
-           <Paper elevation={3} sx={{p:2, background: "#f9fafb"}}>
+           <Paper elevation={3} sx={{p:2, background: "#f9fafb", marginTop: 5}}>
                <Typography variant="h6" fontWeight={300} mt={2} mb={2}>
                    Інформація про користувача
                </Typography>

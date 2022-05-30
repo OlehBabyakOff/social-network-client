@@ -9,6 +9,7 @@ import {Context} from "../../index.js";
 import {getGroupChildCommentsService} from "../../api/groupService";
 import CreateReplyGroupComment from "./CreateReplyGroupComment";
 import ReplyGroupComment from "./ReplyGroupComment";
+import {Skeleton} from "@mui/lab";
 
 const GroupComment = ({groupId, postId, comment, reload, setReload}) => {
 
@@ -46,7 +47,7 @@ const GroupComment = ({groupId, postId, comment, reload, setReload}) => {
     }
 
     return (
-        loading ? <CircularProgress sx={{padding: "50px 560px"}}/> :
+        loading ? <Skeleton variant="text" height={200} /> :
            (<Paper style={{ padding: "40px 20px", width: "95%", background: "#f9fafb", marginBottom: 5 }} elevation={0}>
                <Grid container wrap="nowrap" spacing={2}>
                    <Grid item>
@@ -88,8 +89,7 @@ const GroupComment = ({groupId, postId, comment, reload, setReload}) => {
                {reply ? (<CreateReplyGroupComment reload={reload} setReload={setReload} groupId={groupId} postId={postId} parentId={comment._id} reply={reply} setReply={setReply}/>) : null}
 
 
-               {loading ? null :
-               comment.childs.length > 0 ?
+               {comment.childs.length > 0 ?
                    childs.map(child => (
                        <ReplyGroupComment comment={child} postId={postId} key={child._id} reload={reload} setReload={setReload}/>
                    ))

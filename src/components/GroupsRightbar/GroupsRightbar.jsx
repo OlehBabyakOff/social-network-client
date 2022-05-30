@@ -19,7 +19,7 @@ const GroupsRightbar = ({allGroups, searchGroups, value, setValue, reload, setRe
         <>
             <Box flex={1.5} p="20px 50px" pl={0} sx={{ display: { xs: "none", sm: "block" } }}>
                 <Box position="fixed" width={300} sx={{background: "#f9fafb", height: "100vh"}}>
-                    <Typography variant="h6" fontWeight={300}>
+                    <Typography variant="h6" fontWeight={300} sx={{textAlign: "center"}}>
                         Пошук нових спільнот
                     </Typography>
                     <Autocomplete

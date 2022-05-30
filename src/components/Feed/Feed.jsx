@@ -10,8 +10,6 @@ const Feed = () => {
 
     const {store} = useContext(Context)
 
-    const [loading, setLoading] = useState(false)
-
     const [posts, setPosts] = useState([])
     const [reload, setReload] = useState(false)
 
@@ -26,20 +24,11 @@ const Feed = () => {
     return (
         <Box flex={7} p={{ xs: 0, md: 2 }}>
             <CreatePost reload={reload} setReload={setReload}/>
-            {loading ? (
-                <Stack spacing={1} sx={{ml:5}}>
-                    <Skeleton variant="text" height={100} />
-                    <Skeleton variant="text" height={20} />
-                    <Skeleton variant="text" height={20} />
-                    <Skeleton variant="rectangular" height={300} />
-                </Stack>
-            ) : (
                 <>
                     {posts.map(post => (
                         <Post post={post} reload={reload} setReload={setReload} key={post._id}/>
                     ))}
                 </>
-            )}
         </Box>
     );
 };
