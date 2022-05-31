@@ -55,9 +55,7 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
 
                         <TabPanel value="Subscriptions">
 
-                            <FriendSearch users={followings}/>
-
-                            <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
+                            <List dense sx={{width: '100%', maxWidth: 900, bgcolor: 'background.paper'}}>
 
                                 {followings.map(followed => {
                                     const user = users.find(user => user._id === followed.followedId)
@@ -114,9 +112,7 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
 
                         <TabPanel value="Subscribers">
 
-                            <FriendSearch users={followers}/>
-
-                            <List dense sx={{width: '100%', maxWidth: 900, mt: 3,  bgcolor: 'background.paper'}}>
+                            <List dense sx={{width: '100%', maxWidth: 900,  bgcolor: 'background.paper'}}>
 
                                 {followers.map(follower => {
                                     const user = users.find(user => user._id === follower.followerId)
@@ -155,9 +151,7 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
 
                         <TabPanel value="Search">
 
-                            <FriendSearch/>
-
-                                <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
+                                <List dense sx={{width: '100%', maxWidth: 900, bgcolor: 'background.paper'}}>
 
                                 {searchedUsers?.map(user => {
                                     if (loading) {

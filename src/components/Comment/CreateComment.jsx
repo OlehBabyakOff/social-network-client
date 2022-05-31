@@ -1,16 +1,25 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Avatar, Box, Button, ButtonGroup, Paper, Stack, TextField, Typography} from "@mui/material";
 import {observer} from "mobx-react-lite";
 import {createCommentService} from "../../api/postService";
+import {Context} from "../../index";
 
 const CreateComment = ({postId, reload, setReload}) => {
+
+    const {store} = useContext(Context)
 
     const [content, setContent] = useState("")
 
     const createComment = async (id, content) => {
-        await createCommentService(id, content)
-        setReload(!reload)
-        setContent("")
+        if (store.user.roles.isActivated) {
+            await createCommentService(id, content)
+            setReload(!reload)
+            setContent("")
+        } else {
+            store.clearErrors()
+            store.setErrors('Ви не можете створювати коментарі, поки не підтвердите свій акаунт за посиланням на пошті!')
+            setContent("")
+        }
     }
 
     return (

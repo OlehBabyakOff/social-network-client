@@ -1,12 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Navbar from "../../components/Navbar/Navbar";
 import {Box, Stack} from "@mui/material";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import GroupsList from "../../components/GroupsList/GroupsList";
 import GroupsRightbar from "../../components/GroupsRightbar/GroupsRightbar";
 import {getAllGroupsService, getMyGroupsService} from "../../api/groupService";
+import {Context} from "../../index";
+import {useHistory} from "react-router-dom";
 
 const Groups = () => {
+
+    const {store} = useContext(Context)
+    const history = useHistory()
+
+    useEffect(() => {
+        if (store.user.roles.isBlocked) {
+            history.push('/me')
+        }
+    }, [])
 
     const [allGroups, setAllGroups] = useState([])
     const [groups, setGroups] = useState([])
@@ -18,10 +29,16 @@ const Groups = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const fetchAllGroups = await getAllGroupsService()
-            setAllGroups(fetchAllGroups.data)
             const fetchGroups = await getMyGroupsService()
             setGroups(fetchGroups.data)
+        }
+        fetchData().then(() => setLoading(false))
+    }, [reload])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const fetchAllGroups = await getAllGroupsService()
+            setAllGroups(fetchAllGroups.data)
         }
         fetchData().then(() => setLoading(false))
     }, [reload])

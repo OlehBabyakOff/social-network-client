@@ -5,7 +5,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import {Link} from "react-router-dom";
-import {Article, Group, Home, Logout, Person, Report} from "@mui/icons-material";
+import {Article, Group, Home, Logout, Person, Report, Settings} from "@mui/icons-material";
 
 export const mainListItems = (
     <>
@@ -63,6 +63,14 @@ export const secondaryListItems = (
                     <Home />
                 </ListItemIcon>
                 <ListItemText primary="Головна сторінка" />
+            </ListItemButton>
+        </Link>
+        <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/settings`}>
+            <ListItemButton>
+                <ListItemIcon>
+                    <Settings />
+                </ListItemIcon>
+                <ListItemText primary="Налаштування" />
             </ListItemButton>
         </Link>
     </>

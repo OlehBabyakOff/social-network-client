@@ -6,7 +6,7 @@ import CreateReplyComment from "./CreateReplyComment";
 import {deleteCommentService, getPostChildCommentsService} from "../../api/postService";
 import Moment from "react-moment";
 import {Context} from "../../index.js";
-import {getGroupChildCommentsService} from "../../api/groupService";
+import {deleteGroupCommentService, getGroupChildCommentsService} from "../../api/groupService";
 import CreateReplyGroupComment from "./CreateReplyGroupComment";
 import ReplyGroupComment from "./ReplyGroupComment";
 import {Skeleton} from "@mui/lab";
@@ -41,9 +41,9 @@ const GroupComment = ({groupId, postId, comment, reload, setReload}) => {
         fetchData().then(() => setLoading(false))
     }, [reload])
 
-    const deleteComment = async (id, commentId) => {
-        // await deleteCommentService(id, commentId)
-        // setReload(!reload)
+    const deleteComment = async (groupId, postId, commentId) => {
+        await deleteGroupCommentService(groupId, postId, commentId)
+        setReload(!reload)
     }
 
     return (
@@ -82,7 +82,7 @@ const GroupComment = ({groupId, postId, comment, reload, setReload}) => {
                            'aria-labelledby': 'basic-button',
                        }}
                    >
-                       <MenuItem onClick={() => deleteComment(postId, comment._id).then(() => handleClose())}>Видалити</MenuItem>
+                       <MenuItem onClick={() => deleteComment(groupId, postId, comment._id).then(() => handleClose())}>Видалити</MenuItem>
                    </Menu>
                </Grid>
 
@@ -91,7 +91,7 @@ const GroupComment = ({groupId, postId, comment, reload, setReload}) => {
 
                {comment.childs.length > 0 ?
                    childs.map(child => (
-                       <ReplyGroupComment comment={child} postId={postId} key={child._id} reload={reload} setReload={setReload}/>
+                       <ReplyGroupComment comment={child} postId={postId} groupId={groupId} key={child._id} reload={reload} setReload={setReload}/>
                    ))
                 : null}
 

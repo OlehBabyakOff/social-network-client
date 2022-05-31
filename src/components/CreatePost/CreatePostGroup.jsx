@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Box, Button, ButtonGroup, Paper, Stack, TextField} from "@mui/material";
 import {CheckCircleOutline, Image, Room} from "@mui/icons-material";
 import {createGroupPostService} from "../../api/groupService";
 import {observer} from "mobx-react-lite";
+import {Context} from "../../index";
 
 const CreatePostGroup = ({groupId, reload, setReload}) => {
+
+    const {store} = useContext(Context)
 
     const [text, setText] = useState("")
     const [image, setImage] = useState(null)
@@ -13,17 +16,27 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
     const [doneLocation, setDoneLocation] = useState(false)
 
     const createPost = async (text, image) => {
-        const data = new FormData()
-        data.append('text', text)
-        if (image) data.append('image', image)
-        if (location) data.append('location', location)
-        await createGroupPostService(groupId, data)
-        setReload(!reload)
-        setText("")
-        setImage(null)
-        setLocation(null)
-        setDoneImage(false)
-        setDoneLocation(false)
+        if (store.user.roles.isActivated) {
+            const data = new FormData()
+            data.append('text', text)
+            if (image) data.append('image', image)
+            if (location) data.append('location', location)
+            await createGroupPostService(groupId, data)
+            setReload(!reload)
+            setText("")
+            setImage(null)
+            setLocation(null)
+            setDoneImage(false)
+            setDoneLocation(false)
+        } else {
+            store.clearErrors()
+            store.setErrors('Ви не можете створювати пости, поки не підтвердите свій акаунт за посиланням на пошті!')
+            setText("")
+            setImage(null)
+            setLocation(null)
+            setDoneImage(false)
+            setDoneLocation(false)
+        }
     }
 
     const sendLocation = async () => {

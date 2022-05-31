@@ -7,10 +7,18 @@ import FriendsRightbar from "../../components/FriendsRightbar/FriendsRightbar";
 import {observer} from "mobx-react-lite";
 import {getAllUsers, getFollowersService, getFollowingsService} from "../../api/userService";
 import {Context} from "../../index.js";
+import {useHistory} from "react-router-dom";
 
 const Friends = () => {
 
     const {store} = useContext(Context)
+    const history = useHistory()
+
+    useEffect(() => {
+        if (store.user.roles.isBlocked) {
+            history.push('/me')
+        }
+    }, [])
 
     const [followers, setFollowers] = useState([])
     const [followings, setFollowings] = useState([])

@@ -54,43 +54,43 @@ const App = () => {
                 <Router>
                     <Switch>
                         <Route exact path='/'>
-                            {store.user ? <News/> : <Login/>}
+                            {store.user ? <News/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/me'>
-                            {store.user ? <Homepage/> : <Login/>}
+                            {store.user ? <Homepage/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/friends'>
-                            {store.user ? <Friends/> : <Login/>}
+                            {store.user ? <Friends/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/groups'>
-                            {store.user ? <Groups/> : <Login/>}
+                            {store.user ? <Groups/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/messages'>
-                            {store.user ? <Messages/> : <Login/>}
+                            {store.user ? <Messages/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/post/:postId'>
-                            {store.user ? <PostDetail/> : <Login/>}
+                            {store.user ? <PostDetail/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/group/:groupId/post/:postId'>
-                            {store.user ? <PostDetailGroup/> : <Login/>}
+                            {store.user ? <PostDetailGroup/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/user/:userId'>
-                            {store.user ? <User/> : <Login/>}
+                            {store.user ? <User/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/group/:groupId'>
-                            {store.user ? <Group/> : <Login/>}
+                            {store.user ? <Group/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/chat/:userId'>
-                            {store.user ? <Chat socket={socket}/> : <Login/>}
+                            {store.user ? <Chat socket={socket}/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/gallery'>
-                            {store.user ? <Gallery/> : <Login/>}
+                            {store.user ? <Gallery/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/settings'>
-                            {store.user ? <Settings/> : <Login/>}
+                            {store.user ? <Settings/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/group/:groupId/settingsGroup'>
-                            {store.user ? <GroupSettings/> : <Login/>}
+                            {store.user ? <GroupSettings/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/registration'>
                             {store.user ? <Redirect to='/'/> : <Registration/>}
@@ -99,10 +99,10 @@ const App = () => {
                             {store.user ? <Redirect to='/'/> : <Login/>}
                         </Route>
                         <Route exact path='/dashboard/*'>
-                            {store.user ? <Dashboard/> : <Login/>}
+                            {store.user ? <Dashboard/> : <Redirect to='/login'/>}
                         </Route>
                         <Route path='*'>
-                            {store.user ? <Redirect to='/'/> : <Login/>}
+                            {store.user ? <Redirect to='/'/> : <Redirect to='/login'/>}
                         </Route>
                     </Switch>
                 </Router>

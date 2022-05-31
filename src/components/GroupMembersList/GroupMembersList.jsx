@@ -32,7 +32,7 @@ const GroupMembersList = ({member}) => {
 
     return (
         loading ? <Skeleton variant="text" height={100} /> :
-            (<List dense sx={{width: '100%', maxWidth: 900, mt: 1,  background: "#f9fafb"}}>
+            (<List dense sx={{width: '100%', maxWidth: 900, mt: 0,  background: "#f9fafb"}}>
                 {member.memberId !== store?.user?._id ?
                 (<ListItem sx={{lineHeight: 2, background: "#f9fafb"}}
                           disablePadding

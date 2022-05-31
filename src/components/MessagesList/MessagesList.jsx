@@ -43,9 +43,7 @@ const MessagesList = () => {
                     justifyContent: "center",
                 }}>
 
-                    <MessageSearch/>
-
-                    <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
+                    <List dense sx={{width: '100%', maxWidth: 900, bgcolor: 'background.paper'}}>
                         {conversations.map(conversation => {
 
                             if (loading) {
@@ -78,7 +76,7 @@ const MessagesList = () => {
                                                         fontWeight: 300,
                                                         ml: 2,
                                                         fontSize: 14
-                                                    }}>{conversation.messages.length > 0 ? conversation.messages[conversation?.messages.length - 1].text.slice(0, 53) + '...' : 'Чат порожній'}</Typography>
+                                                    }}>{conversation.messages.length > 0 ? conversation.messages[conversation?.messages.length - 1].text.slice(0, 53) : 'Чат порожній'}</Typography>
                                                 </Stack>
                                             </ListItemButton>
                                         </ListItem>

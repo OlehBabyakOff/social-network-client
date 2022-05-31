@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,9 +16,6 @@ import {Avatar, CircularProgress} from "@mui/material";
 import {Context} from "../../index";
 import {BrowserRouter as Router, Redirect, Route, Switch, Link, useHistory} from "react-router-dom";
 import DashboardStatistics from "./DashboardStatistics";
-import News from "../../pages/News/News";
-import Login from "../../pages/Login/Login";
-import Homepage from "../../pages/Homepage/Homepage";
 import DashboardUsers from "./DashboardUsers";
 import DashboardGroups from "./DashboardGroups";
 import DashboardPosts from "./DashboardPosts";
@@ -80,7 +77,13 @@ const DashboardMain = () => {
         setOpen(!open);
     };
 
-    const history = useHistory()
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            store.checkAuth()
+        } else {
+            store.setLoading(false)
+        }
+    }, [])
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -141,53 +144,52 @@ const DashboardMain = () => {
                     {secondaryListItems}
                 </List>
             </Drawer>
-            <DashboardGroups/>
-            {/*<Router>*/}
-            {/*    <Switch>*/}
-            {/*        <Route exact path='/home'>*/}
-            {/*            {store.loading ? <CircularProgress sx={{position: 'absolute',*/}
-            {/*                    left: '50%',*/}
-            {/*                    top: '50%',*/}
-            {/*                    transform: 'translate(-50%, -50%)'}}/> :*/}
-            {/*                store.user && store.user.roles.isAdmin ?  <DashboardStatistics/> : <Redirect to='/me'/>}*/}
-            {/*        </Route>*/}
-            {/*        <Route exact path='/users'>*/}
-            {/*            {store.loading ? <CircularProgress sx={{position: 'absolute',*/}
-            {/*                    left: '50%',*/}
-            {/*                    top: '50%',*/}
-            {/*                    transform: 'translate(-50%, -50%)'}}/> :*/}
-            {/*                store.user && store.user.roles.isAdmin ?  <DashboardUsers/> : <Redirect to='/me'/>}*/}
-            {/*        </Route>*/}
-            {/*        <Route exact path='/groups'>*/}
-            {/*            {store.loading ? <CircularProgress sx={{position: 'absolute',*/}
-            {/*                    left: '50%',*/}
-            {/*                    top: '50%',*/}
-            {/*                    transform: 'translate(-50%, -50%)'}}/> :*/}
-            {/*                store.user && store.user.roles.isAdmin ?  <DashboardGroups/> : <Redirect to='/me'/>}*/}
-            {/*        </Route>*/}
-            {/*        <Route exact path='/posts'>*/}
-            {/*            {store.loading ? <CircularProgress sx={{position: 'absolute',*/}
-            {/*                    left: '50%',*/}
-            {/*                    top: '50%',*/}
-            {/*                    transform: 'translate(-50%, -50%)'}}/> :*/}
-            {/*                store.user && store.user.roles.isAdmin ?  <DashboardPosts/> : <Redirect to='/me'/>}*/}
-            {/*        </Route>*/}
-            {/*        <Route exact path='/reports'>*/}
-            {/*            {store.loading ? <CircularProgress sx={{position: 'absolute',*/}
-            {/*                    left: '50%',*/}
-            {/*                    top: '50%',*/}
-            {/*                    transform: 'translate(-50%, -50%)'}}/> :*/}
-            {/*                store.user && store.user.roles.isAdmin ?  <DashboardReports/> : <Redirect to='/me'/>}*/}
-            {/*        </Route>*/}
-            {/*        <Route exact path='/*'>*/}
-            {/*            {store.loading ? <CircularProgress sx={{position: 'absolute',*/}
-            {/*                    left: '50%',*/}
-            {/*                    top: '50%',*/}
-            {/*                    transform: 'translate(-50%, -50%)'}}/> :*/}
-            {/*                store.user && store.user.roles.isAdmin ?  <Redirect to='/dashboard/home'/> : <Redirect to='/me'/>}*/}
-            {/*        </Route>*/}
-            {/*    </Switch>*/}
-            {/*</Router>*/}
+            <Router>
+                <Switch>
+                    <Route exact path='/dashboard/home'>
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                            store.user && store.user.roles.isAdmin ?  <DashboardStatistics/> : <Redirect to='/me'/>}
+                    </Route>
+                    <Route exact path='/dashboard/users'>
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                            store.user && store.user.roles.isAdmin ?  <DashboardUsers/> : <Redirect to='/me'/>}
+                    </Route>
+                    <Route exact path='/dashboard/groups'>
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                            store.user && store.user.roles.isAdmin ?  <DashboardGroups/> : <Redirect to='/me'/>}
+                    </Route>
+                    <Route exact path='/dashboard/posts'>
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                            store.user && store.user.roles.isAdmin ?  <DashboardPosts/> : <Redirect to='/me'/>}
+                    </Route>
+                    <Route exact path='/dashboard/reports'>
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                            store.user && store.user.roles.isAdmin ?  <DashboardReports/> : <Redirect to='/me'/>}
+                    </Route>
+                    <Route exact path='/*'>
+                        {store.loading ? <CircularProgress sx={{position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'}}/> :
+                            store.user && store.user.roles.isAdmin ?  <Redirect to='/dashboard/home'/> : <Redirect to='/me'/>}
+                    </Route>
+                </Switch>
+            </Router>
         </Box>
     );
 };

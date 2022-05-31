@@ -1,18 +1,26 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, ButtonGroup, Paper, TextField} from "@mui/material";
 import {createChildCommentService} from "../../api/postService";
 import {createGroupChildCommentService} from "../../api/groupService";
+import {Context} from "../../index";
 
 const CreateReplyGroupComment = ({reload, setReload, groupId, postId, parentId, reply, setReply}) => {
+
+    const {store} = useContext(Context)
 
     const [content, setContent] = useState("")
 
     const createChildComment = async (id, postId, parentId, content) => {
-        const fd = new FormData()
-        fd.append('content', content)
-        await createGroupChildCommentService(id, postId, parentId, fd)
-        setReload(!reload)
-        setReply(!reply)
+        if (store.user.roles.isActivated) {
+            const fd = new FormData()
+            fd.append('content', content)
+            await createGroupChildCommentService(id, postId, parentId, fd)
+            setReload(!reload)
+            setReply(!reply)
+        } else {
+            store.clearErrors()
+            store.setErrors('Ви не можете створювати коментарі, поки не підтвердите свій акаунт за посиланням на пошті!')
+        }
     }
 
     return (

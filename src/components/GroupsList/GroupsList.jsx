@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
     Avatar,
     Box,
@@ -13,19 +13,14 @@ import {
 import {EmailOutlined, Image, MoreVert} from "@mui/icons-material";
 import GroupSearch from "../Search/GroupSearch";
 import {Skeleton, TabContext, TabList, TabPanel} from "@mui/lab";
-import {createGroupService} from "../../api/groupService";
-import {Link} from "react-router-dom";
+import {createGroupService, deleteGroupService, subscribeGroupService} from "../../api/groupService";
+import {Link, useHistory} from "react-router-dom";
+import GroupItem from "./GroupItem";
+import {Context} from "../../index";
 
 const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, value, setValue, isDisabled, setIsDisabled, searchedGroups, setSearchedGroups}) => {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const {store} = useContext(Context)
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -36,13 +31,19 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
     const [bg, setBg] = useState(null)
 
     const createGroup = async (title, avatarImg, backgroundImg) => {
-        const data = new FormData()
-        data.append('title', title)
-        data.append('avatar', avatarImg)
-        data.append('background', backgroundImg)
-        await createGroupService(data)
-        setReload(!reload)
-        setValue("Groups")
+        if (store.user.roles.isActivated) {
+            const data = new FormData()
+            data.append('title', title)
+            data.append('avatar', avatarImg)
+            data.append('background', backgroundImg)
+            await createGroupService(data)
+            setReload(!reload)
+            setValue("Groups")
+        } else {
+            store.clearErrors()
+            store.setErrors('Ви не можете створювати спільноти, поки не підтвердите свій акаунт за посиланням на пошті!')
+            setValue("Groups")
+        }
     }
 
     return (
@@ -60,52 +61,17 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
 
                 <TabPanel value="Groups">
 
-                    <GroupSearch/>
-
-                    <List dense sx={{width: '100%', maxWidth: 900, mt: 3,  bgcolor: 'background.paper'}}>
+                    <List dense sx={{width: '100%', maxWidth: 900,  bgcolor: 'background.paper'}}>
 
                         {groups.map(group => {
                             if (loading) {
                                 return <Skeleton variant="text" height={100} />
                             } else {
                                 return (
-                                    <ListItem sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
-                                              disablePadding
-                                    >
-                                        <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/group/${group._id}`}>
-                                            <ListItemButton>
-                                                <ListItemAvatar>
-                                                    <Avatar sx={{width: 60, height: 60}}
-                                                            src={`data:buffer;base64,${group.avatar}`}
-                                                    />
-                                                </ListItemAvatar>
-                                                <Stack direction="column">
-                                                    <Typography variant="span" sx={{fontWeight: 500, ml: 2, fontSize: 18}}>{group.title}</Typography>
-                                                </Stack>
-                                            </ListItemButton>
-                                        </Link>
-                                        <IconButton aria-label="settings">
-                                            <MoreVert id="basic-button"
-                                                      aria-controls={open ? 'basic-menu' : undefined}
-                                                      aria-haspopup="true"
-                                                      aria-expanded={open ? 'true' : undefined}
-                                                      onClick={handleClick}/>
-                                        </IconButton>
-                                    </ListItem>
+                                    <GroupItem group={group} reload={reload} setReload={setReload} key={group._id}/>
                                 )
                             }})}
                     </List>
-                    <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                        }}
-                    >
-                        <MenuItem>Відписатися</MenuItem>
-                    </Menu>
                 </TabPanel>
 
                 <TabPanel value="CreateGroup" sx={{width: "100%"}}>
@@ -170,9 +136,7 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
 
                 <TabPanel value="Search">
 
-                    <GroupSearch/>
-
-                        <List dense sx={{width: '100%', maxWidth: 900, mt: 3, bgcolor: 'background.paper'}}>
+                        <List dense sx={{width: '100%', maxWidth: 900, bgcolor: 'background.paper'}}>
 
                             {searchedGroups?.map(group => {
                                 if (loading) {

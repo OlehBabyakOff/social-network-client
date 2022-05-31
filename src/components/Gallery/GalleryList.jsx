@@ -1,21 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import {
-    Avatar,
     Box,
-    Button,
-    IconButton, ImageList, ImageListItem, ImageListItemBar,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemButton, Menu, MenuItem, Paper, Stack,
-    Tab, TextField,
-    Typography
+    Button, ImageList, Paper,
+    Tab
 } from "@mui/material";
-import {Delete, DeleteOutlineOutlined, EmailOutlined, Image, MoreHoriz, MoreVert} from "@mui/icons-material";
-import {addGalleryService, deleteGalleryService, getGallery} from "../../api/userService";
+import {Image} from "@mui/icons-material";
+import {addGalleryService, getGallery} from "../../api/userService";
 import {Context} from "../../index";
-import Moment from "react-moment";
 import GalleryImg from "./GalleryImg";
 
 const GalleryList = () => {
@@ -43,11 +35,17 @@ const GalleryList = () => {
     }, [reload])
 
     const addGallery = async (img) => {
-        const fd = new FormData()
-        fd.append('image', img)
-        await addGalleryService(fd)
-        setReload(!reload)
-        setValue('Gallery')
+        if (store.user.roles.isActivated) {
+            const fd = new FormData()
+            fd.append('image', img)
+            await addGalleryService(fd)
+            setReload(!reload)
+            setValue('Gallery')
+        } else {
+            store.clearErrors()
+            store.setErrors('Ви не можете додавати фото в галерею, поки не підтвердите свій акаунт за посиланням на пошті!')
+            setValue('Gallery')
+        }
     }
 
     return (

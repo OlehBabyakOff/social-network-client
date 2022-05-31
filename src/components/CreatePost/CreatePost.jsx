@@ -23,17 +23,28 @@ const CreatePost = ({reload, setReload}) => {
     const [doneLocation, setDoneLocation] = useState(false)
 
     const createPost = async (text, image, location) => {
-        const data = new FormData()
-        data.append('text', text)
-        if (image) data.append('image', image)
-        if (location) data.append('location', location)
-        await createPostService(data)
-        setReload(!reload)
-        setText("")
-        setImage(null)
-        setLocation(null)
-        setDoneImage(false)
-        setDoneLocation(false)
+        if (store.user.roles.isActivated) {
+            const data = new FormData()
+            data.append('text', text)
+            if (image) data.append('image', image)
+            if (location) data.append('location', location)
+            await createPostService(data)
+            setReload(!reload)
+            setText("")
+            setImage(null)
+            setLocation(null)
+            setDoneImage(false)
+            setDoneLocation(false)
+        } else {
+            store.clearErrors()
+            store.setErrors('Ви не можете створювати пости, поки не підтвердите свій акаунт за посиланням на пошті!')
+            setText("")
+            setImage(null)
+            setLocation(null)
+            setDoneImage(false)
+            setDoneLocation(false)
+        }
+
     }
 
     const sendLocation = async () => {

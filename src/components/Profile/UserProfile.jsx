@@ -13,17 +13,19 @@ import {
 } from "@mui/material";
 import UserBodyLeft from "../ProfileBody/UserBodyLeft";
 import UserBodyRight from "../ProfileBody/UserBodyRight";
-import {Link, useParams} from "react-router-dom";
+import {Link, useHistory, useParams} from "react-router-dom";
 import {followUserService, getFollowingsService, getReportsService, getUser} from "../../api/userService";
 import {getUserPosts} from "../../api/postService";
 import {Context} from "../../index.js";
 import {ForwardToInboxOutlined, PersonAddAltOutlined, PersonRemoveAlt1Outlined} from "@mui/icons-material";
 import ReportModal from "../Modals/ReportModal";
+import {Alert} from "@mui/lab";
 
 const UserProfile = () => {
 
     const {userId} = useParams()
     const {store} = useContext(Context)
+    const history = useHistory()
 
     const [user, setUser] = useState({})
     const [userPosts, setUserPosts] = useState([])
@@ -35,6 +37,9 @@ const UserProfile = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (store.user._id === userId) {
+                history.push('/me')
+            }
             const fetchUser = await getUser(userId)
             setUser(fetchUser.data)
             const fetchPosts = await getUserPosts(userId)
@@ -42,7 +47,7 @@ const UserProfile = () => {
             const fetchFollowings = await getFollowingsService(store.user._id)
             setFollowings(fetchFollowings.data)
             const fetchReports = await getReportsService(fetchUser.data._id)
-            fetchFollowings.data.filter(followed => followed.followedId === fetchUser.data._id && followed.followerId === store.user._id ? setIsFollowed(true) : setIsFollowed(false))
+            fetchFollowings.data.find(followed => followed.followedId === fetchUser.data._id && followed.followerId === store.user._id ? setIsFollowed(true) : setIsFollowed(false))
             fetchReports.data.find(report => report.reporterId === store?.user._id ? setIsReported(true) : setIsReported(false))
         }
         fetchData().then(() => setLoading(false))
@@ -117,10 +122,22 @@ const UserProfile = () => {
                    </List>
                 </Box>
                 <Divider/>
+                {user.roles.isBlocked ?
+                    <Alert severity="error">Акаунт користувача {`${user.second_name} ${user.first_name}`} - заблоковано</Alert>
+                    :
+                    !user.roles.isActivated ?
+                        <>
+                            <Alert severity="warning">Обережно, акаунт користувача {`${user.second_name} ${user.first_name}`} - не підтверджений</Alert>
+                            <Stack direction="row" spacing={2} justifyContent="space-between">
+                                <UserBodyLeft user={user}/>
+                                <UserBodyRight user={user} userPosts={userPosts} reload={reload} setReload={setReload} followings={followings}/>
+                            </Stack>
+                        </>
+                        :
                 <Stack direction="row" spacing={2} justifyContent="space-between">
                     <UserBodyLeft user={user}/>
                     <UserBodyRight user={user} userPosts={userPosts} reload={reload} setReload={setReload} followings={followings}/>
-                </Stack>
+                </Stack>}
             </Box>
     );
 };

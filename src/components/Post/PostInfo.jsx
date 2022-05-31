@@ -68,9 +68,15 @@ const PostInfo = () => {
     }, [post.likes, post.comments, reload])
 
     const likePost = async (id) => {
-        await likePostService(id)
-        setReload(!reload)
-        setIsLiked(!isLiked)
+        if (store.user.roles.isActivated) {
+            await likePostService(id)
+            setReload(!reload)
+            setIsLiked(!isLiked)
+        } else {
+            store.clearErrors()
+            store.setErrors('Ви не можете поставити лайк, поки не підтвердите свій акаунт за посиланням на пошті!')
+        }
+
     }
 
     const deletePost = async (id) => {

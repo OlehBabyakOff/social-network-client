@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 import {CollectionsOutlined, GroupsOutlined, PersonOutlineOutlined} from "@mui/icons-material";
 import {getFollowingsService, getGallery} from "../../api/userService";
 import {getMyGroupsService} from "../../api/groupService";
+import {Alert} from "@mui/lab";
 
 const Profile = () => {
 
@@ -97,11 +98,19 @@ const Profile = () => {
                 </List>
             </Box>
             <Divider/>
-            <Stack direction="row" spacing={2} justifyContent="space-between">
-                <ProfileBodyLeft/>
-                <ProfileBodyRight reload={reload} setReload={setReload}/>
-            </Stack>
-
+            {!store.user.roles.isActivated ?
+                <>
+                    <Alert severity="warning">Увага, ваш акаунт не підтверджено. Ви не зможете користуватися усім функціоналом сайту. Щоб активувати акаунт - перейдіть за посиланням відправленим вам на пошту при реєстрації.</Alert>
+                    <Stack direction="row" spacing={2} justifyContent="space-between">
+                        <ProfileBodyLeft/>
+                        <ProfileBodyRight reload={reload} setReload={setReload}/>
+                    </Stack>
+                </>
+                :
+                <Stack direction="row" spacing={2} justifyContent="space-between">
+                    <ProfileBodyLeft/>
+                    <ProfileBodyRight reload={reload} setReload={setReload}/>
+                </Stack>}
         </Box>
     );
 };

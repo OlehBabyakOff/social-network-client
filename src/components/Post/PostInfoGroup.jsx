@@ -17,6 +17,7 @@ import Moment from "react-moment";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
 import {
+    deleteGroupPostService,
     getGroupPostCommentsService,
     getGroupPostLikeService,
     getGroupPostService,
@@ -67,15 +68,20 @@ const PostInfoGroup = () => {
     }, [post.likes, post.comments, reload])
 
     const likePost = async (postId, groupId) => {
-        await likeGroupPostService(groupId, postId)
-        setReload(!reload)
-        setIsLiked(!isLiked)
+        if (store.user.roles.isActivated) {
+            await likeGroupPostService(groupId, postId)
+            setReload(!reload)
+            setIsLiked(!isLiked)
+        } else {
+            store.clearErrors()
+            store.setErrors('Ви не можете поставити лайк, поки не підтвердите свій акаунт за посиланням на пошті!')
+        }
     }
 
-    const deletePost = async (id) => {
-        // await deletePostService(id)
-        // setReload(!reload)
-        // history.push('/')
+    const deletePost = async (groupId, postId) => {
+        await deleteGroupPostService(groupId, postId)
+        setReload(!reload)
+        history.push(`/group/${groupId}`)
     }
 
     return (
@@ -121,7 +127,7 @@ const PostInfoGroup = () => {
                                     'aria-labelledby': 'basic-button',
                                 }}
                             >
-                                <MenuItem onClick={() => deletePost(post._id).then(() => handleClose())}>Видалити</MenuItem>
+                                <MenuItem onClick={() => deletePost(groupId, postId).then(() => handleClose())}>Видалити</MenuItem>
                             </Menu>
                             {post.image ? (<CardMedia
                                 component="img"

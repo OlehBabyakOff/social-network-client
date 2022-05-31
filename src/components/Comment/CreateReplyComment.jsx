@@ -1,15 +1,23 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, ButtonGroup, Paper, TextField} from "@mui/material";
 import {createChildCommentService} from "../../api/postService";
+import {Context} from "../../index";
 
 const CreateReplyComment = ({reload, setReload, postId, parentId, reply, setReply}) => {
+
+    const {store} = useContext(Context)
 
     const [content, setContent] = useState("")
 
     const createChildComment = async (id, parentId, content) => {
-        await createChildCommentService(id, parentId, content)
-        setReload(!reload)
-        setReply(!reply)
+        if (store.user.roles.isActivated) {
+            await createChildCommentService(id, parentId, content)
+            setReload(!reload)
+            setReply(!reply)
+        } else {
+            store.clearErrors()
+            store.setErrors('Ви не можете створювати коментарі, поки не підтвердите свій акаунт за посиланням на пошті!')
+        }
     }
 
     return (

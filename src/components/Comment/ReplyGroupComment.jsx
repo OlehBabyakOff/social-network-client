@@ -2,11 +2,11 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Avatar, Button, CircularProgress, Divider, Grid, IconButton, Menu, MenuItem} from "@mui/material";
 import {MoreVert} from "@mui/icons-material";
 import Moment from "react-moment";
-import {deleteCommentService} from "../../api/postService";
 import {Context} from "../../index.js";
 import {Skeleton} from "@mui/lab";
+import {deleteGroupCommentService} from "../../api/groupService";
 
-const ReplyGroupComment = ({comment, postId, reload, setReload}) => {
+const ReplyGroupComment = ({comment, postId, groupId, reload, setReload}) => {
 
     const {store} = useContext(Context)
 
@@ -31,9 +31,9 @@ const ReplyGroupComment = ({comment, postId, reload, setReload}) => {
         fetchData().then(() => setLoading(false))
     }, [reload])
 
-    const deleteComment = async (id, commentId) => {
-        // await deleteCommentService(id, commentId)
-        // setReload(!reload)
+    const deleteComment = async (groupId, postId, commentId) => {
+        await deleteGroupCommentService(groupId, postId, commentId)
+        setReload(!reload)
     }
 
     return (
@@ -72,7 +72,7 @@ const ReplyGroupComment = ({comment, postId, reload, setReload}) => {
                                'aria-labelledby': 'basic-button',
                            }}
                        >
-                           <MenuItem onClick={() => deleteComment(postId, comment._id).then(() => handleClose())}>Видалити</MenuItem>
+                           <MenuItem onClick={() => deleteComment(groupId, postId, comment._id).then(() => handleClose())}>Видалити</MenuItem>
                        </Menu>
                    </Grid>
             </>

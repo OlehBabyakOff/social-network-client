@@ -79,3 +79,11 @@ export const updateGroupBgService = async (id, bg) => {
 export const deleteGroupService = async (id) => {
     return api.delete(`/group/${id}/delete`)
 }
+
+export const deleteGroupPostService = async (groupId, postId) => {
+    return api.delete(`/group/${groupId}/delete/${postId}`)
+}
+
+export const deleteGroupCommentService = async (groupId, postId, commentId) => {
+    return api.delete(`/group/${groupId}/${postId}/comment/${commentId}/delete`)
+}
