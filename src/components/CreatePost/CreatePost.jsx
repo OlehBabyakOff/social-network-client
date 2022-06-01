@@ -24,17 +24,22 @@ const CreatePost = ({reload, setReload}) => {
 
     const createPost = async (text, image, location) => {
         if (store.user.roles.isActivated) {
-            const data = new FormData()
-            data.append('text', text)
-            if (image) data.append('image', image)
-            if (location) data.append('location', location)
-            await createPostService(data)
-            setReload(!reload)
-            setText("")
-            setImage(null)
-            setLocation(null)
-            setDoneImage(false)
-            setDoneLocation(false)
+            if (text.trim()) {
+                const data = new FormData()
+                data.append('text', text)
+                if (image) data.append('image', image)
+                if (location) data.append('location', location)
+                await createPostService(data)
+                setReload(!reload)
+                setText("")
+                setImage(null)
+                setLocation(null)
+                setDoneImage(false)
+                setDoneLocation(false)
+            } else {
+                store.clearErrors()
+                store.setErrors('Ви не можете створювати порожній пост!')
+            }
         } else {
             store.clearErrors()
             store.setErrors('Ви не можете створювати пости, поки не підтвердите свій акаунт за посиланням на пошті!')

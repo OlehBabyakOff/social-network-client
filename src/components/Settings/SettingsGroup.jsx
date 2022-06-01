@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Box, Button, Grid, TextField, Typography} from "@mui/material";
-import {Image, Link} from "@mui/icons-material";
+import {AccountBox, Image, Link} from "@mui/icons-material";
 import {getUser, updateAvatarService, updateBgService, updateInfoService} from "../../api/userService";
 import {Context} from "../../index";
 import {useHistory, useParams} from "react-router-dom";
@@ -52,19 +52,7 @@ const SettingsGroup = () => {
             <Typography component="h1" variant="h5">
                 Налаштування спільноти
             </Typography>
-            <Box component="form" noValidate sx={{ mt: 1 }}>
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="title"
-                    label="Назва"
-                    name="title"
-                    autoComplete="title"
-                    autoFocus
-                    value={title}
-                    onChange={e => setTitle(e.target.value)}
-                />
+            <Box component="form" noValidate sx={{ mt: 1, textAlign: "center" }}>
                 <input
                     accept="image/*"
                     style={{ display: 'none' }}
@@ -77,9 +65,8 @@ const SettingsGroup = () => {
                     }}
                 />
                 <label htmlFor="raised-button-file1">
-                    <Button variant="raised" component="span">
-                        Аватар
-                        <Image color="secondary"/>
+                    <Button variant="raised" component="span" sx={{width: 200, height: 200}}>
+                        <AccountBox color="primary" sx={{width: 200, height: 200}}/>
                     </Button>
                 </label>
 
@@ -95,11 +82,23 @@ const SettingsGroup = () => {
                     }}
                 />
                 <label htmlFor="raised-button-file">
-                    <Button variant="raised" component="span">
-                        Фон
-                        <Image color="secondary"/>
+                    <Button variant="raised" component="span" sx={{width: 200, height: 200}}>
+                        <Image color="primary" sx={{width: 200, height: 200}}/>
                     </Button>
                 </label>
+
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="title"
+                    label="Назва"
+                    name="title"
+                    autoComplete="title"
+                    autoFocus
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                />
 
                 <Button
                     type="submit"

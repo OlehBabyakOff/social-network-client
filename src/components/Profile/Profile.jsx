@@ -7,7 +7,7 @@ import ProfileBodyRight from "../ProfileBody/ProfileBodyRight";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
 import {Link} from "react-router-dom";
-import {CollectionsOutlined, GroupsOutlined, PersonOutlineOutlined} from "@mui/icons-material";
+import {CollectionsOutlined, GroupsOutlined, PersonOutlineOutlined, Verified} from "@mui/icons-material";
 import {getFollowingsService, getGallery} from "../../api/userService";
 import {getMyGroupsService} from "../../api/groupService";
 import {Alert} from "@mui/lab";
@@ -53,7 +53,9 @@ const Profile = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 fontWeight: 500}}>
-                    {`${store.user.second_name} ${store.user.first_name}`}
+                    <Stack direction='row'>
+                        {`${store.user.second_name} ${store.user.first_name}`} {store.user.roles.isAdmin ? <Verified sx={{mt: 0.5, ml: 1}} color='info'/> : null}
+                    </Stack>
                 </Typography>
                 <Typography variant="h6" sx={{display: "flex",
                     flexDirection: "column",

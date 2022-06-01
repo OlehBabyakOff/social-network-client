@@ -2,10 +2,10 @@ import React, {useContext, useEffect, useState} from 'react';
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import {
     Box,
-    Button, ImageList, Paper,
+    Button, CardMedia, ImageList, Paper,
     Tab
 } from "@mui/material";
-import {Image} from "@mui/icons-material";
+import {AddBox, Image} from "@mui/icons-material";
 import {addGalleryService, getGallery} from "../../api/userService";
 import {Context} from "../../index";
 import GalleryImg from "./GalleryImg";
@@ -40,6 +40,7 @@ const GalleryList = () => {
             fd.append('image', img)
             await addGalleryService(fd)
             setReload(!reload)
+            setImage(null)
             setValue('Gallery')
         } else {
             store.clearErrors()
@@ -62,17 +63,18 @@ const GalleryList = () => {
                     </TabList>
 
                     <TabPanel value="Gallery">
+                        {gallery.length > 0 ?
                         <Paper elevation={1} sx={{p: 3, background: "#f9fafb"}}>
                             <ImageList sx={{ width: 850, height: 'auto', overflow: "hidden"}}>
                                 {gallery.map(image => (
                                     <GalleryImg image={image} loading={loading} reload={reload} setReload={setReload} key={image._id}/>
                                 ))}
                             </ImageList>
-                        </Paper>
+                        </Paper> : null }
                     </TabPanel>
 
                     <TabPanel value="AddPhoto">
-                        <Box component="form" noValidate sx={{ mt: 1 }}>
+                        <Box component="form" noValidate sx={{ mt: 1, textAlign: "center" }}>
                             <input
                                 accept="image/*"
                                 style={{ display: 'none' }}
@@ -82,11 +84,19 @@ const GalleryList = () => {
                                 onChange={e => setImage(e.target.files[0])}
                             />
                             <label htmlFor="raised-button-file">
-                                <Button variant="raised" component="span">
-                                    Фото
-                                    <Image color="secondary"/>
+                                <Button variant="raised" component="span" sx={{width: 200, height: 200}}>
+                                    <AddBox color="primary" sx={{width: 200, height: 200}}/>
                                 </Button>
                             </label>
+
+                            {image ?
+                                <CardMedia
+                                    component="img"
+                                    height="200"
+                                    image={URL.createObjectURL(image)}
+                                    alt="Фото"
+                                />
+                                : null}
 
                             <Button
                                 type="submit"

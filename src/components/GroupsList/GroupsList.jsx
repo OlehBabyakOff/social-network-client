@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import {
     Avatar,
     Box,
-    Button,
+    Button, CardMedia,
     IconButton,
     List,
     ListItem,
@@ -10,7 +10,7 @@ import {
     ListItemButton, Menu, MenuItem, Stack, Tab, TextField,
     Typography
 } from "@mui/material";
-import {EmailOutlined, Image, MoreVert} from "@mui/icons-material";
+import {AccountBox, EmailOutlined, Image, MoreVert} from "@mui/icons-material";
 import GroupSearch from "../Search/GroupSearch";
 import {Skeleton, TabContext, TabList, TabPanel} from "@mui/lab";
 import {createGroupService, deleteGroupService, subscribeGroupService} from "../../api/groupService";
@@ -76,19 +76,8 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
 
                 <TabPanel value="CreateGroup" sx={{width: "100%"}}>
 
-                    <Box component="form" noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="title"
-                            label="Назва спільноти"
-                            name="title"
-                            autoComplete="title"
-                            autoFocus
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                        />
+                    <Box component="form" noValidate sx={{ mt: 1, textAlign: "center" }}>
+
                         <input
                             accept="image/*"
                             style={{ display: 'none' }}
@@ -98,9 +87,8 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
                             onChange={e => setAvatar(e.target.files[0])}
                         />
                         <label htmlFor="raised-button-file1">
-                            <Button variant="raised" component="span">
-                                Аватар
-                                <Image color="secondary"/>
+                            <Button variant="raised" component="span" sx={{width: 200, height: 200}}>
+                                <AccountBox color="primary" sx={{width: 200, height: 200}}/>
                             </Button>
                         </label>
 
@@ -113,11 +101,23 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
                             onChange={e => setBg(e.target.files[0])}
                         />
                         <label htmlFor="raised-button-file">
-                            <Button variant="raised" component="span">
-                                Фон
-                                <Image color="secondary"/>
+                            <Button variant="raised" component="span" sx={{width: 200, height: 200}}>
+                                <Image color="primary" sx={{width: 200, height: 200}}/>
                             </Button>
                         </label>
+
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="title"
+                            label="Назва спільноти"
+                            name="title"
+                            autoComplete="title"
+                            autoFocus
+                            value={title}
+                            onChange={e => setTitle(e.target.value)}
+                        />
 
                         <Button
                             type="submit"

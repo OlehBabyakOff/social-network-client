@@ -17,7 +17,7 @@ import {Link, useHistory, useParams} from "react-router-dom";
 import {followUserService, getFollowingsService, getReportsService, getUser} from "../../api/userService";
 import {getUserPosts} from "../../api/postService";
 import {Context} from "../../index.js";
-import {ForwardToInboxOutlined, PersonAddAltOutlined, PersonRemoveAlt1Outlined} from "@mui/icons-material";
+import {ForwardToInboxOutlined, PersonAddAltOutlined, PersonRemoveAlt1Outlined, Verified} from "@mui/icons-material";
 import ReportModal from "../Modals/ReportModal";
 import {Alert} from "@mui/lab";
 
@@ -79,7 +79,10 @@ const UserProfile = () => {
                         alignItems: "center",
                         justifyContent: "center",
                         fontWeight: 500}}>
-                        {`${user.second_name} ${user.first_name}`}
+                        <Stack direction='row'>
+                            {`${user.second_name} ${user.first_name}`} {user.roles.isAdmin ? <Verified sx={{mt: 0.5, ml: 1}} color='info'/> : null}
+                        </Stack>
+
                     </Typography>
                     <Typography variant="h6" sx={{display: "flex",
                         flexDirection: "column",

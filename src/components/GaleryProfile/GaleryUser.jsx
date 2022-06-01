@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {CircularProgress, ImageList, ImageListItem, Typography} from "@mui/material";
+import {CircularProgress, ImageList, ImageListItem, Skeleton, Typography} from "@mui/material";
 import {getGallery} from "../../api/userService";
 import {useParams} from "react-router-dom";
 
@@ -19,7 +19,8 @@ const GaleryUser = () => {
     }, [])
 
     return (
-        loading ? <CircularProgress/> :
+        gallery.length > 0 ?
+        loading ? <Skeleton variant="text" height={300} /> :
             <>
                 <Typography variant="h6" fontWeight={300} mt={2} mb={2}>
                     Галерея
@@ -35,7 +36,7 @@ const GaleryUser = () => {
                         </ImageListItem>
                     ))}
                 </ImageList>
-            </>
+            </> : null
     );
 };
 

@@ -64,7 +64,7 @@ const Registration = () => {
                     sm={4}
                     md={7}
                     sx={{
-                        backgroundImage: 'url(https://businessman.ru/static/img/a/46193/398624/67036.jpg)',
+                        backgroundImage: 'url(https://nmschoolbuildings.org/wp-content/uploads/sites/184/2022/04/34-3-scaled-1.jpg)',
                         backgroundRepeat: 'no-repeat',
                         backgroundColor: (t) =>
                             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -82,6 +82,9 @@ const Registration = () => {
                             alignItems: 'center',
                         }}
                     >
+                        <Typography component="h1" variant="h4" sx={{mb: 1}}>
+                            Social Network
+                        </Typography>
                         <Typography component="h1" variant="h5">
                             Реєстрація
                         </Typography>
