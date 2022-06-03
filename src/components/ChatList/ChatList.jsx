@@ -12,17 +12,22 @@ import {
     Typography
 } from "@mui/material";
 import {
-    AttachFileOutlined,
+    AttachFileOutlined, CheckCircleOutline,
     Close,
     DeleteOutlineOutlined,
-    LocationOnOutlined,
+    LocationOnOutlined, Room,
     Send,
     SentimentSatisfiedAlt
 } from "@mui/icons-material";
 import ChatMessage from "./ChatMessage";
 import {useHistory, useParams} from "react-router-dom";
 import {getUser} from "../../api/userService";
-import {createConversationService, getMessagesService, sendMessageService} from "../../api/chatService";
+import {
+    createConversationService,
+    getConversationService,
+    getMessagesService, getOneConversationService,
+    sendMessageService
+} from "../../api/chatService";
 import {observer} from "mobx-react-lite";
 import Picker from 'emoji-picker-react';
 import {Context} from "../../index";
@@ -31,7 +36,7 @@ import {Alert} from "@mui/lab";
 const ChatList = ({socket}) => {
 
     const {store} = useContext(Context)
-    const {userId} = useParams()
+    const {conversationId} = useParams()
     const history = useHistory()
 
     const [user, setUser] = useState(null)
@@ -44,6 +49,7 @@ const ChatList = ({socket}) => {
 
     const [reload, setReload] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [doneImage, setDoneImage] = useState(false)
 
     const messagesEndRef = useRef(null)
 
@@ -52,30 +58,34 @@ const ChatList = ({socket}) => {
     }
 
     useEffect(() => {
-        socket.emit('joinRoom', userId)
+        socket.emit('joinRoom', conversationId)
         const fetchData = async () => {
-            await createConversationService(userId)
-            const fetchMessages = await getMessagesService(userId)
+            const fetchMessages = await getMessagesService(conversationId)
             setMessages(fetchMessages.data)
-            const fetchUser = await getUser(userId)
+
+            const fetchConversations = await getOneConversationService(conversationId)
+
+            const fetchUser = await getUser(fetchConversations.data.participant1 === store.user._id ? fetchConversations.data.participant2 : fetchConversations.data.participant1)
             setUser(fetchUser.data)
-            await scrollToBottom()
         }
-        fetchData().then(() => setLoading(false))
+        fetchData().then(() => {
+            setLoading(false)
+            scrollToBottom()
+        })
     }, [reload])
 
     useEffect( () => {
         socket.on('receiveMessage', msg => {
-            setMessages(msg)
+            setMessages([...messages, msg])
             scrollToBottom()
         })
 
         socket.on('locationMessage', msg => {
-            setMessages(msg)
+            setMessages([...messages, msg])
             scrollToBottom()
         })
 
-    }, [socket])
+    })
 
     const closeChat = async (id) => {
         socket.emit('leaveRoom', id)
@@ -93,17 +103,19 @@ const ChatList = ({socket}) => {
                     fd.append('image', image)
                 }
                 await sendMessageService(id, fd).then(data => {
-                    socket.emit('sendMessage', [data.data, id])
+                    socket.emit('sendMessage', data.data)
+                    setReload(!reload)
+                    setMessage('')
+                    setImage(null)
+                    setDoneImage(false)
+                    setShowPicker(false)
+                    setHeight(74.5)
                 })
-                setReload(!reload)
-                setMessage('')
-                setImage(null)
-                setShowPicker(false)
-                setHeight(74.5)
             } else {
                 store.clearErrors()
                 store.setErrors('Ви не можете відправляти повідомлення заблокованим користувачам!')
                 setMessage('')
+                setDoneImage(false)
                 setImage(null)
                 setShowPicker(false)
                 setHeight(74.5)
@@ -113,6 +125,7 @@ const ChatList = ({socket}) => {
             store.clearErrors()
             store.setErrors('Ви не можете відправляти повідомлення користувачам, поки не підтвердите свій акаунт за посиланням на пошті!')
             setMessage('')
+            setDoneImage(false)
             setImage(null)
             setShowPicker(false)
             setHeight(74.5)
@@ -121,27 +134,40 @@ const ChatList = ({socket}) => {
 
     const sendLocation = async (id) => {
         if (store.user.roles.isActivated) {
-            if (!navigator.geolocation) {
-                return alert('Дана функція недоступна у вашому браузері!')
-            }
-            navigator.geolocation.getCurrentPosition(async (position) => {
-                const message = `https://google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`
-                const fd = new FormData()
-                fd.append('text', message)
-                await sendMessageService(id, fd).then(data => {
-                    socket.emit('sendLocation', [data.data, id])
+            if (!user.roles.isBlocked) {
+                if (!navigator.geolocation) {
+                    return alert('Дана функція недоступна у вашому браузері!')
+                }
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const message = `https://google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`
+                    const fd = new FormData()
+                    fd.append('text', message)
+                    await sendMessageService(id, fd).then(data => {
+                        socket.emit('sendLocation', data.data)
+                        setReload(!reload)
+                        setMessage('')
+                        setImage(null)
+                        setDoneImage(false)
+                        setShowPicker(false)
+                        setHeight(74.5)
+                    })
                 })
-            })
-            setReload(!reload)
-            setMessage('')
-            setImage(null)
-            setShowPicker(false)
-            setHeight(74.5)
+            } else {
+                store.clearErrors()
+                store.setErrors('Ви не можете відправляти повідомлення заблокованим користувачам!')
+                setMessage('')
+                setImage(null)
+                setDoneImage(false)
+                setShowPicker(false)
+                setHeight(74.5)
+            }
+
         } else {
             store.clearErrors()
             store.setErrors('Ви не можете відправляти повідомлення користувачам, поки не підтвердите свій акаунт за посиланням на пошті!')
             setMessage('')
             setImage(null)
+            setDoneImage(false)
             setShowPicker(false)
             setHeight(74.5)
         }
@@ -165,7 +191,7 @@ const ChatList = ({socket}) => {
                                 <ListItemText primary={`${user.second_name} ${user.first_name}`}></ListItemText>
                             </ListItem>
                             <ListItem sx={{justifyContent: "end"}}>
-                                <IconButton onClick={() => closeChat(userId)} color="primary" component="span">
+                                <IconButton onClick={() => closeChat(conversationId)} color="primary" component="span">
                                     <Close/>
                                 </IconButton>
                             </ListItem>
@@ -175,7 +201,7 @@ const ChatList = ({socket}) => {
                             : null}
                         <Divider/>
                         <Box sx={{overflowY: "auto", height: `${height}vh`, mx: 1}}>
-                            {messages.messages.map(message => (
+                            {messages.map(message => (
                                 <ChatMessage message={message} user={user} socket={socket} key={message._id}/>
                             ))}
                             <div ref={messagesEndRef} />
@@ -185,7 +211,7 @@ const ChatList = ({socket}) => {
                     <Grid container style={{padding: '20px'}}>
                         <Grid item xs={10.5}>
                             <TextField value={message} onChange={e => setMessage(e.target.value)} id="outlined-basic-email" label="Введіть повідомлення..." fullWidth
-                                       onKeyPress={e => e.key === 'Enter' && sendMessage(userId)}
+                                       onKeyPress={e => e.key === 'Enter' && sendMessage(conversationId)}
                                        InputProps={{
                                            endAdornment: (
                                                <InputAdornment position="end">
@@ -207,8 +233,8 @@ const ChatList = ({socket}) => {
                         <Grid xs={1.5} align="center" sx={{marginTop: 0.5}}>
                             {user.roles.isBlocked ?
                                 <>
-                                    <IconButton disabled onClick={() => sendMessage(userId)} size="large" color="primary"><Send/></IconButton>
-                                    <IconButton disabled onClick={() => sendLocation(userId)} size="large" color="primary"><LocationOnOutlined/></IconButton>
+                                    <IconButton disabled onClick={() => sendMessage(conversationId)} size="large" color="primary"><Send/></IconButton>
+                                    <IconButton disabled onClick={() => sendLocation(conversationId)} size="large" color="primary"><LocationOnOutlined/></IconButton>
                                     <label htmlFor="icon-button-file">
                                         <Input disabled onChange={e => setImage(e.target.files[0])} style={{ display: 'none' }} accept="image/*" id="icon-button-file" type="file" />
                                         <IconButton disabled color="primary" aria-label="upload picture" component="span">
@@ -218,13 +244,23 @@ const ChatList = ({socket}) => {
                                 </>
                                 :
                                 <>
-                                    <IconButton onClick={() => sendMessage(userId)} size="large" color="primary"><Send/></IconButton>
-                                    <IconButton onClick={() => sendLocation(userId)} size="large" color="primary"><LocationOnOutlined/></IconButton>
+                                    <IconButton onClick={() => sendMessage(conversationId)} size="large" color="primary"><Send/></IconButton>
+                                    <IconButton onClick={() => sendLocation(conversationId)} size="large" color="primary"><LocationOnOutlined/></IconButton>
                                     <label htmlFor="icon-button-file">
-                                        <Input onChange={e => setImage(e.target.files[0])} style={{ display: 'none' }} accept="image/*" id="icon-button-file" type="file" />
-                                        <IconButton color="primary" aria-label="upload picture" component="span">
-                                            <AttachFileOutlined/>
-                                        </IconButton>
+                                        <Input onChange={e => {
+                                            setImage(e.target.files[0])
+                                            setDoneImage(true)
+                                        }} style={{ display: 'none' }} accept="image/*" id="icon-button-file" type="file" />
+
+                                        {doneImage ?
+                                            <IconButton color="primary" aria-label="upload picture" component="span">
+                                                <CheckCircleOutline/>
+                                            </IconButton>
+                                            :
+                                            <IconButton color="primary" aria-label="upload picture" component="span">
+                                                <AttachFileOutlined/>
+                                            </IconButton>
+                                        }
                                     </label>
                                 </>}
                         </Grid>

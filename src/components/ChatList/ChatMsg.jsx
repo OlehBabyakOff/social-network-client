@@ -1,11 +1,30 @@
 import withStyles from "@material-ui/core/styles/withStyles";
 import defaultChatMsgStyles from "./defaultChatMsgStyle";
-import {Avatar, Grid, Typography} from "@mui/material";
+import {Avatar, Box, Grid, Modal, Typography} from "@mui/material";
 import cx from "clsx";
 import Moment from "react-moment";
 import {Link} from "@material-ui/core";
+import {useState} from "react";
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 1000,
+    height: 600,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 0,
+    outline: 'none'
+};
 
 const ChatMsg = withStyles(defaultChatMsgStyles, { name: 'ChatMsg' })(props => {
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const {
         classes,
         avatar,
@@ -78,8 +97,19 @@ const ChatMsg = withStyles(defaultChatMsgStyles, { name: 'ChatMsg' })(props => {
                                     >
                                         {image ?
                                         <Grid item xs={12}>
-                                            <img src={`data:buffer;base64,${image}`} style={{width: 350, height: 300}}/>
+                                            <img src={`data:buffer;base64,${image}`} style={{width: 500, height: 350, cursor: 'pointer'}} onClick={handleOpen}/>
                                         </Grid> : null}
+
+                                        <Modal
+                                            open={open}
+                                            onClose={handleClose}
+                                            aria-labelledby="modal-modal-title"
+                                            aria-describedby="modal-modal-description"
+                                        >
+                                            <Box sx={style}>
+                                                <img src={`data:buffer;base64,${image}`} style={{width: 1000, height: 600}}/>
+                                            </Box>
+                                        </Modal>
 
                                         {messages.includes('https://google.com/maps') ?
                                             <Link style={{color: "inherit", textDecoration: "inherit"}} href={messages} target="_blank">Моя геолокація</Link>

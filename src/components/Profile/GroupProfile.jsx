@@ -24,6 +24,7 @@ import {
     subscribeGroupService
 } from "../../api/groupService";
 import {Delete, GroupAddOutlined, PersonRemoveAlt1Outlined, Settings} from "@mui/icons-material";
+import {Alert} from "@mui/lab";
 
 const GroupProfile = () => {
 
@@ -135,10 +136,13 @@ const GroupProfile = () => {
                     </List>
                 </Box>
                 <Divider/>
+                {isFollowed || group.creatorId === store.user._id ?
                 <Stack direction="row" spacing={2} justifyContent="space-between">
-                    <GroupMembers members={members} loading={loading} setLoading={setLoading}/>
+                    <GroupMembers group={group} members={members} loading={loading} setLoading={setLoading}/>
                     <GroupBody groupId={groupId} group={group} members={members} groupPosts={groupPosts} reload={reload} setReload={setReload}/>
-                </Stack>
+                </Stack> :
+                    <Alert severity="info">Підпишіться на спільноту, щоб бачити її пости</Alert>
+                }
             </Box>)
     );
 };

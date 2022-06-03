@@ -20,6 +20,7 @@ import {Context} from "../../index.js";
 import {ForwardToInboxOutlined, PersonAddAltOutlined, PersonRemoveAlt1Outlined, Verified} from "@mui/icons-material";
 import ReportModal from "../Modals/ReportModal";
 import {Alert} from "@mui/lab";
+import {createConversationService} from "../../api/chatService";
 
 const UserProfile = () => {
 
@@ -56,6 +57,11 @@ const UserProfile = () => {
     const followUser = async (id) => {
         await followUserService(id)
         setIsFollowed(!isFollowed)
+    }
+
+    const createChat = async (userId) => {
+        const chat = await createConversationService(userId)
+        history.push(`/chat/${chat.data._id}`)
     }
 
     return (
@@ -112,14 +118,12 @@ const UserProfile = () => {
                                </ListItemButton>
                            }
 
-                           <Link style={{ textDecoration: 'inherit', color: 'inherit' }} to={`/chat/${user._id}`}>
-                               <ListItemButton sx={{maxWidth: 250, mr: 5}}>
-                                   <ListItemIcon>
-                                       <ForwardToInboxOutlined />
-                                   </ListItemIcon>
-                                   <ListItemText primary="Повідомлення" />
-                               </ListItemButton>
-                           </Link>
+                           <ListItemButton sx={{maxWidth: 250, mr: 5}} onClick={() => createChat(user._id)}>
+                               <ListItemIcon>
+                                   <ForwardToInboxOutlined />
+                               </ListItemIcon>
+                               <ListItemText primary="Повідомлення" />
+                           </ListItemButton>
                            <ReportModal user={user} isReported={isReported} setIsReported={setIsReported}/>
                        </Stack>
                    </List>

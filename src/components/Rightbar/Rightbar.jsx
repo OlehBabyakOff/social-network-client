@@ -12,15 +12,17 @@ import {
 } from "@mui/material";
 import {observer} from "mobx-react-lite";
 import {getFollowingsService, getLimitedUsers} from "../../api/userService";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {Context} from "../../index.js";
 import {ForwardToInboxOutlined} from "@mui/icons-material";
 import {getLimitedGroupsService} from "../../api/groupService";
 import {Skeleton} from "@mui/lab";
+import {createConversationService} from "../../api/chatService";
 
 const Rightbar = () => {
 
     const {store} = useContext(Context)
+    const history = useHistory()
 
     const [users, setUsers] = useState([])
     const [groups, setGroups] = useState([])
@@ -40,6 +42,11 @@ const Rightbar = () => {
         fetchData().then(() => setLoading(false))
     }, [])
 
+    const createChat = async (userId) => {
+        const chat = await createConversationService(userId)
+        history.push(`/chat/${chat.data._id}`)
+    }
+
     return (
         <Box flex={1.5} p="20px 46px" pl={0} sx={{ display: { xs: "none", sm: "block" }}}>
             <Box position="fixed" width={300} sx={{background: "#f9fafb", height: "100vh"}}>
@@ -55,9 +62,7 @@ const Rightbar = () => {
                             return (
                                 <ListItem key={user._id}
                                           secondaryAction={
-                                              <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/chat/${user._id}`}>
-                                                    <Button><ForwardToInboxOutlined/></Button>
-                                              </Link>
+                                                <Button onClick={() => createChat(user._id)}><ForwardToInboxOutlined/></Button>
                                           }
                                           disablePadding
                                 >

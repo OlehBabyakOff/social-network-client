@@ -7,7 +7,7 @@ import MessagesList from "../../components/MessagesList/MessagesList";
 import {Context} from "../../index";
 import {useHistory} from "react-router-dom";
 
-const Messages = () => {
+const Messages = ({socket}) => {
 
     const {store} = useContext(Context)
     const history = useHistory()
@@ -24,7 +24,7 @@ const Messages = () => {
                 <Navbar/>
                 <Stack direction="row" spacing={2} justifyContent="space-between">
                     <Sidebar/>
-                    <MessagesList/>
+                    <MessagesList socket={socket}/>
                     <Rightbar/>
                 </Stack>
             </Box>

@@ -12,6 +12,10 @@ export const getConversationService = async () => {
     return api.get(`/user/conversations/get`)
 }
 
+export const getOneConversationService = async (id) => {
+    return api.get(`/user/conversation/${id}/get`)
+}
+
 export const getMessagesService = async (id) => {
     return api.get(`/user/${id}/messages/get`)
 }

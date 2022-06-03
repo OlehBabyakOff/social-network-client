@@ -1,5 +1,4 @@
 import {useContext, useEffect, useState} from "react";
-import {io} from "socket.io-client"
 import {Alert, CircularProgress, createTheme, ThemeProvider} from "@mui/material";
 import News from "./pages/News/News";
 import Homepage from "./pages/Homepage/Homepage";
@@ -21,6 +20,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Settings from "./pages/Settings/Settings";
 import GroupSettings from "./pages/Settings/GroupSettings";
 import AlertMain from "./components/Alert/Alert";
+import {io} from "socket.io-client";
 
 const socket = io.connect("http://localhost:5000")
 
@@ -66,7 +66,7 @@ const App = () => {
                             {store.user ? <Groups/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/messages'>
-                            {store.user ? <Messages/> : <Redirect to='/login'/>}
+                            {store.user ? <Messages socket={socket}/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/post/:postId'>
                             {store.user ? <PostDetail/> : <Redirect to='/login'/>}
@@ -80,7 +80,7 @@ const App = () => {
                         <Route exact path='/group/:groupId'>
                             {store.user ? <Group/> : <Redirect to='/login'/>}
                         </Route>
-                        <Route exact path='/chat/:userId'>
+                        <Route exact path='/chat/:conversationId'>
                             {store.user ? <Chat socket={socket}/> : <Redirect to='/login'/>}
                         </Route>
                         <Route exact path='/gallery'>

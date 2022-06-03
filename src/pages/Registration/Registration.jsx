@@ -1,11 +1,43 @@
 import React, {useContext, useState} from 'react';
-import {Box, Button, Checkbox, CssBaseline, FormControlLabel, Grid, Paper, TextField, Typography} from "@mui/material";
-import {Image} from "@mui/icons-material";
+import {
+    Box,
+    Button,
+    Checkbox,
+    CssBaseline,
+    FormControlLabel,
+    Grid,
+    Paper,
+    Popper,
+    TextField,
+    Typography
+} from "@mui/material";
+import {AccountBox, Image} from "@mui/icons-material";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
 import {Link, useHistory} from "react-router-dom";
 
 const Registration = () => {
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl2, setAnchorEl2] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(anchorEl ? null : event.currentTarget);
+    };
+
+    const handleClick2 = (event) => {
+        setAnchorEl2(anchorEl2 ? null : event.currentTarget);
+    };
+
+    const open = Boolean(anchorEl);
+    const open2 = Boolean(anchorEl2);
+
+    const id = open ? 'simple-popper' : undefined;
+    const id2 = open2 ? 'simple-popper' : undefined;
 
     const {store} = useContext(Context)
 
@@ -109,7 +141,6 @@ const Registration = () => {
                                 label="Логін"
                                 name="login"
                                 autoComplete="login"
-                                autoFocus
                                 value={username}
                                 onChange={e => setUsername(e.target.value)}
                             />
@@ -121,7 +152,6 @@ const Registration = () => {
                                 label="Прізвище"
                                 name="second_name"
                                 autoComplete="second_name"
-                                autoFocus
                                 value={second_name}
                                 onChange={e => setSecondName(e.target.value)}
                             />
@@ -133,7 +163,6 @@ const Registration = () => {
                                 label="Ім'я"
                                 name="first_name"
                                 autoComplete="first_name"
-                                autoFocus
                                 value={first_name}
                                 onChange={e => setFirstName(e.target.value)}
                             />
@@ -145,11 +174,21 @@ const Registration = () => {
                                 label="Номер телефону"
                                 name="phone"
                                 autoComplete="phone"
-                                autoFocus
                                 value={phone}
                                 onChange={e => setPhone(e.target.value)}
                             />
-                            <input type="date" value={birthday} onChange={e => setBirthday(e.target.value)}/>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    label="Дата народження"
+                                    value={birthday}
+                                    onChange={(newValue) => {
+                                        setBirthday(newValue);
+                                    }}
+                                    renderInput={(params) => <TextField {...params}  margin="normal"
+                                                                        required
+                                                                        fullWidth/>}
+                                />
+                            </LocalizationProvider>
                             <TextField
                                 margin="normal"
                                 required
@@ -172,10 +211,14 @@ const Registration = () => {
                                 onChange={e => setAvatar(e.target.files[0])}
                             />
                             <label htmlFor="raised-button-file1">
-                                <Button variant="raised" component="span">
-                                    Аватар
-                                    <Image color="secondary"/>
+                                <Button variant="raised" component="span" sx={{width: 50, height: 50}} onMouseOver={handleClick}>
+                                    <AccountBox color="primary" sx={{width: 50, height: 50}}/>
                                 </Button>
+                                <Popper id={id} open={open} anchorEl={anchorEl}>
+                                    <Box sx={{p: 1, bgcolor: 'background.paper' }}>
+                                        Ваш аватар
+                                    </Box>
+                                </Popper>
                             </label>
 
                             <input
@@ -187,10 +230,14 @@ const Registration = () => {
                                 onChange={e => setBg(e.target.files[0])}
                             />
                             <label htmlFor="raised-button-file">
-                                <Button variant="raised" component="span">
-                                    Фон
-                                    <Image color="secondary"/>
+                                <Button variant="raised" component="span" sx={{width: 50, height: 50}} onMouseOver={handleClick2}>
+                                    <Image color="primary" sx={{width: 50, height: 50}}/>
                                 </Button>
+                                <Popper id={id2} open={open2} anchorEl={anchorEl2}>
+                                    <Box sx={{p: 1, bgcolor: 'background.paper' }}>
+                                        Ваш задній фон
+                                    </Box>
+                                </Popper>
                             </label>
 
                             <Button
