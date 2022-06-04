@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     Avatar,
     Box, Button, Card,
@@ -15,10 +15,15 @@ import {Skeleton, TabContext, TabList, TabPanel} from '@mui/lab';
 import {EmailOutlined, MoreVert} from "@mui/icons-material";
 import FriendSearch from "../Search/FriendSearch";
 import {observer} from "mobx-react-lite";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {followUserService} from "../../api/userService";
+import {createConversationService} from "../../api/chatService";
+import {Context} from "../../index";
 
 const FriendsList = ({followers, followings, loading, users, value, setValue, isDisabled, searchedUsers, reload, setReload}) => {
+
+    const {store} = useContext(Context)
+    const history = useHistory()
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -37,6 +42,11 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
     const unfollowUser = async (id) => {
         await followUserService(id)
         setReload(!reload)
+    }
+
+    const createChat = async (userId) => {
+        const chat = await createConversationService(userId)
+        history.push(`/chat/${chat.data._id}`)
     }
 
     return (
@@ -60,7 +70,7 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                 {followings.map(followed => {
                                     const user = users.find(user => user._id === followed.followedId)
                                     if (loading) {
-                                        return <Skeleton variant="text" height={100} />
+                                        return <Skeleton variant="text" height={100} sx={{width: 890}} />
                                     } else {
                                         return (
                                                 <ListItem key={user._id} sx={{lineHeight: 2, background: "#f9fafb", margin: "20px 0"}}
@@ -82,9 +92,7 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                                     </Link>
 
                                                     <Button>
-                                                        <Link style={{ textDecoration: 'inherit', color: 'inherit', marginTop: "10px" }} to={`/chat/${user._id}`}>
-                                                            <EmailOutlined sx={{width: 25, height: 25}}/>
-                                                        </Link>
+                                                        <EmailOutlined sx={{width: 25, height: 25}} onClick={() => createChat(user._id)}/>
                                                     </Button>
                                                     <IconButton aria-label="settings">
                                                         <MoreVert id="basic-button"
@@ -139,9 +147,7 @@ const FriendsList = ({followers, followings, loading, users, value, setValue, is
                                                 </Link>
 
                                                 <Button>
-                                                    <Link style={{ textDecoration: 'inherit', color: 'inherit', marginTop: "10px" }} to={`/chat/${user._id}`}>
-                                                        <EmailOutlined sx={{width: 25, height: 25}}/>
-                                                    </Link>
+                                                    <EmailOutlined sx={{width: 25, height: 25}} onClick={() => createChat(user._id)}/>
                                                 </Button>
                                             </ListItem>
                                         )}

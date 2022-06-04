@@ -1,9 +1,10 @@
 import React, {useContext, useState} from 'react';
-import {Box, Button, ButtonGroup, Paper, Stack, TextField} from "@mui/material";
-import {CheckCircleOutline, Image, Room} from "@mui/icons-material";
+import {Box, Button, ButtonGroup, IconButton, InputAdornment, Paper, Stack, TextField} from "@mui/material";
+import {CheckCircleOutline, Image, Room, SentimentSatisfiedAlt} from "@mui/icons-material";
 import {createGroupPostService} from "../../api/groupService";
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
+import Picker from "emoji-picker-react";
 
 const CreatePostGroup = ({groupId, reload, setReload}) => {
 
@@ -14,6 +15,13 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
     const [location, setLocation] = useState(null)
     const [doneImage, setDoneImage] = useState(false)
     const [doneLocation, setDoneLocation] = useState(false)
+
+    const [margin, setMargin] = useState(2)
+    const [showPicker, setShowPicker] = useState(false);
+
+    const onEmojiClick = (event, emojiObject) => {
+        setText(prevInput => prevInput + emojiObject.emoji)
+    };
 
     const createPost = async (text, image) => {
         if (store.user.roles.isActivated) {
@@ -29,6 +37,8 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
                 setLocation(null)
                 setDoneImage(false)
                 setDoneLocation(false)
+                setShowPicker(false)
+                setMargin(2)
             } else {
                 store.clearErrors()
                 store.setErrors('Ви не можете створювати порожній пост!')
@@ -41,6 +51,8 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
             setLocation(null)
             setDoneImage(false)
             setDoneLocation(false)
+            setShowPicker(false)
+            setMargin(2)
         }
     }
 
@@ -56,7 +68,7 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
 
     return (
             <Box
-                sx={{width: "80%", ml: 10, height: 280, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
+                sx={{width: "80%", ml: 10, mb: margin, height: 280, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
             >
                 <Paper elevation={2} sx={{p:5, background: "#f9fafb"}}>
                     <TextField
@@ -68,7 +80,24 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
                         variant="standard"
                         value={text}
                         onChange={e => setText(e.target.value)}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton size="large" color="primary" onClick={() => {
+                                        setShowPicker(val => !val)
+                                        if (margin !== 2) {
+                                            setMargin(2)
+                                        } else {
+                                            setMargin(40)
+                                        }
+                                    }}><SentimentSatisfiedAlt/></IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
+                    {showPicker && <Picker
+                        pickerStyle={{ width: '100%' }}
+                        onEmojiClick={onEmojiClick} />}
                 <Stack direction="row" gap={1} mt={2} mb={3} sx={{justifyContent: "space-around"}}>
                     {doneImage ?
                         <>

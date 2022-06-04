@@ -38,9 +38,8 @@ export default class Store {
         try {
             const res = await registrationService(data)
             localStorage.setItem('token', res.data.accessToken)
-            this.setUser(res.data.user)
+            this.setUser(res.data.user.user)
         } catch (e) {
-            console.log(e.response?.data?.message)
         }
     }
 
@@ -48,10 +47,8 @@ export default class Store {
         try {
             const res = await loginService(data)
             localStorage.setItem('token', res.data.accessToken)
-            this.setUser(res.data.user)
-            this.setLoading(true)
+            this.setUser(res.data.user.user)
         } catch (e) {
-            console.log(e.response?.data?.message)
         }
     }
     async logout() {
@@ -61,17 +58,16 @@ export default class Store {
             this.setUser(null)
             this.setLoading(false)
         } catch (e) {
-            console.log(e.response?.data?.message)
         }
     }
     async checkAuth() {
         try {
+            this.setLoading(true)
             const res = await axios.get(`http://localhost:5000/api/refresh`, {withCredentials: true})
             localStorage.setItem('token', res.data.accessToken)
             this.setUser(res.data.user)
             this.setLoading(false)
         } catch (e) {
-            console.log(e.response?.data?.message)
         }
     }
     async getUsers() {
@@ -79,7 +75,6 @@ export default class Store {
             const res = await getAllUsers()
             this.setUsers(res.data)
         } catch (e) {
-            console.log(e.response?.data?.message)
         }
     }
 }

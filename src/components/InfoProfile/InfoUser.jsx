@@ -1,38 +1,61 @@
 import React from 'react';
-import {List, ListItem, ListItemText, Paper, Typography} from "@mui/material";
+import {Divider, List, ListItem, ListItemText, Paper, Stack, Typography} from "@mui/material";
 import Moment from "react-moment";
+import {
+    AssignmentIndOutlined,
+    BadgeOutlined,
+    CakeOutlined,
+    EmailOutlined,
+    PhoneIphoneOutlined
+} from "@mui/icons-material";
 
 const InfoUser = ({user}) => {
     return (
        <>
            <Paper elevation={3} sx={{p:2, background: "#f9fafb", marginTop: 5}}>
-               <Typography variant="h6" fontWeight={300} mt={2} mb={2}>
-                   Інформація про користувача
-               </Typography>
                <List>
                    <ListItem>
                        <ListItemText>
-                           Прізвище: {user.second_name}
+                           <Stack direction={'row'}>
+                               <BadgeOutlined sx={{mr: 1}}/>
+                               Прізвище: {user.second_name}
+                           </Stack>
                        </ListItemText>
                    </ListItem>
+                   <Divider/>
                    <ListItem>
                        <ListItemText>
-                           Ім'я: {user.first_name}
+                           <Stack direction={'row'}>
+                               <AssignmentIndOutlined sx={{mr: 1}}/>
+                               Ім'я: {user.first_name}
+                           </Stack>
                        </ListItemText>
                    </ListItem>
+                   <Divider/>
                    <ListItem>
                        <ListItemText>
-                           Електронна адреса: {user.email}
+                           <Stack direction={'row'}>
+                               <EmailOutlined sx={{mr: 1}}/>
+                               Електронна адреса: {user.email}
+                           </Stack>
                        </ListItemText>
                    </ListItem>
+                   <Divider/>
                    <ListItem>
                        <ListItemText>
-                           Номер телефону: {user.phone}
+                           <Stack direction={'row'}>
+                               <PhoneIphoneOutlined sx={{mr: 1}}/>
+                               Номер телефону: {user.phone}
+                           </Stack>
                        </ListItemText>
                    </ListItem>
+                   <Divider/>
                    <ListItem>
                        <ListItemText>
-                           Дата народження: <Moment format="DD.MM.YYYY">{user.birthday.toString()}</Moment>
+                           <Stack direction={'row'}>
+                               <CakeOutlined sx={{mr: 1}}/>
+                               Дата народження: <Moment format="DD.MM.YYYY" style={{marginLeft: '5px'}}>{user.birthday.toString()}</Moment>
+                           </Stack>
                        </ListItemText>
                    </ListItem>
                </List>

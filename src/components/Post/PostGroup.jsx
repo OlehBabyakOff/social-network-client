@@ -63,7 +63,7 @@ const PostGroup = ({post, groupId, reload, setReload}) => {
 
     return (
         loading ? <Skeleton variant="text" height={300} /> :
-            (<Card sx={{ margin: 5, mt: 5, width: "85%", ml:12, background: "#f9fafb" }}>
+            (<Card sx={{ margin: 5, width: "85%", ml:12, background: "#f9fafb" }}>
                 <CardHeader
                     avatar={
                         <Avatar sx={{ bgcolor: "red" }} aria-label="recipe" src={`data:buffer;base64,${fetchUser.avatar}`}>

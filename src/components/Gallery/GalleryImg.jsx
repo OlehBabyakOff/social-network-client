@@ -33,7 +33,7 @@ const GalleryImg = ({image, loading, reload, setReload}) => {
                 />
                 <Stack direction="row" spacing={1} justifyContent="space-between">
                     <ImageListItemBar
-                        title={<Moment format='DD MM YYYY'>{image.createdAt.toString()}</Moment>}
+                        title={<Moment format='DD.MM.YYYY'>{image.createdAt.toString()}</Moment>}
                         position="below"
                     />
                     <IconButton aria-label="settings">

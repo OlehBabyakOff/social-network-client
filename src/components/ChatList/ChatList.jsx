@@ -178,7 +178,10 @@ const ChatList = ({socket}) => {
     };
 
     return (
-        loading ? <CircularProgress/> :
+        loading ? <CircularProgress sx={{position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)'}}/> :
         <Box flex={10} p={{ xs: 0 }}>
             <Grid container component={Paper}>
                 <Grid item xs={12}>

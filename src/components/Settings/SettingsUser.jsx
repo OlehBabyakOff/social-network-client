@@ -4,6 +4,9 @@ import {AccountBox, Image, Link} from "@mui/icons-material";
 import {getUser, updateAvatarService, updateBgService, updateInfoService} from "../../api/userService";
 import {Context} from "../../index";
 import {useHistory} from "react-router-dom";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
+import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 
 const SettingsUser = () => {
 
@@ -15,6 +18,7 @@ const SettingsUser = () => {
     const [first_name, setFirstName] = useState("")
     const [second_name, setSecondName] = useState("")
     const [phone, setPhone] = useState("")
+    const [birthday, setBirthday] = useState("")
     const [avatar, setAvatar] = useState(null)
     const [bg, setBg] = useState(null)
 
@@ -26,17 +30,19 @@ const SettingsUser = () => {
             setFirstName(fetchUser.data.first_name)
             setSecondName(fetchUser.data.second_name)
             setPhone(fetchUser.data.phone)
+            setBirthday(fetchUser.data.birthday)
         }
         fetchData()
     }, [])
 
-    const updateInfo = async (email, username, first_name, second_name, phone) => {
-        await updateInfoService(email, username, first_name, second_name, phone)
+    const updateInfo = async (email, username, first_name, second_name, phone, birthday) => {
+        await updateInfoService(email, username, first_name, second_name, phone, birthday)
         setEmail(email)
         setUsername(username)
         setFirstName(first_name)
         setSecondName(second_name)
         setPhone(phone)
+        setBirthday(birthday)
     }
 
     const updateAvatar = async (avatar) => {
@@ -149,14 +155,25 @@ const SettingsUser = () => {
                     value={phone}
                     onChange={e => setPhone(e.target.value)}
                 />
-
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                        label="Дата народження"
+                        value={birthday}
+                        onChange={(newValue) => {
+                            setBirthday(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params}  margin="normal"
+                                                            required
+                                                            fullWidth/>}
+                    />
+                </LocalizationProvider>
                 <Button
                     type="submit"
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                     onClick={(e) => {
-                        updateInfo(email, username, first_name, second_name, phone)
+                        updateInfo(email, username, first_name, second_name, phone, birthday)
                     }}
                 >
                     Змінити дані

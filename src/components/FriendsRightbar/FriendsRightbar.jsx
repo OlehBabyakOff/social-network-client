@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Autocomplete, Box, Button, TextField, Typography} from "@mui/material";
 import {observer} from "mobx-react-lite";
+import {Context} from "../../index";
 
 const FriendsRightbar = ({users, searchUsers}) => {
+
+    const {store} = useContext(Context)
 
     const secondName = []
     const firstName = []
@@ -11,11 +14,13 @@ const FriendsRightbar = ({users, searchUsers}) => {
     const phone = []
 
     users.map(user => {
-        secondName.push(user.second_name)
-        firstName.push(user.first_name)
-        username.push(user.username)
-        email.push(user.email)
-        phone.push(user.phone)
+        if (user._id !== store.user._id) {
+            secondName.push(user.second_name)
+            firstName.push(user.first_name)
+            username.push(user.username)
+            email.push(user.email)
+            phone.push(user.phone)
+        }
     })
 
     const [secondNameState, setSecondNameState] = useState("")

@@ -55,7 +55,7 @@ const GroupMembersList = ({group, member}) => {
                         </ListItemButton>
                     </Link>
                     {group.creatorId === store.user._id ?
-                        <BackspaceOutlined onClick={() => kickUser(group._id, member.memberId)} sx={{cursor: "pointer"}} color={'primary'}/>
+                        <BackspaceOutlined onClick={() => kickUser(group._id, member.memberId)} sx={{cursor: "pointer", ml: 1}} color={'primary'}/>
                         : null}
                 </ListItem>) :
                 (<ListItem sx={{lineHeight: 2, background: "#f9fafb"}}

@@ -65,7 +65,7 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
 
                         {groups.map(group => {
                             if (loading) {
-                                return <Skeleton variant="text" height={100} />
+                                return <Skeleton variant="text" height={100} sx={{width: 890}}/>
                             } else {
                                 return (
                                     <GroupItem group={group} reload={reload} setReload={setReload} key={group._id}/>

@@ -1,5 +1,4 @@
-import React, {useContext, useState} from 'react';
-import {loginService} from "../../api/authService";
+import React, {useContext, useEffect, useState} from 'react';
 import {Box, Button, CssBaseline, Grid, Paper, TextField, Typography} from "@mui/material";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
@@ -25,7 +24,6 @@ const Login = () => {
                 data.append('email', email)
                 data.append('password', password)
                 await store.login(data)
-                history.push("/")
             }
         } else {
             store.clearErrors()

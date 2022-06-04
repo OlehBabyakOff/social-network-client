@@ -57,26 +57,30 @@ const Rightbar = () => {
                 <List sx={{ width: '100%', maxWidth: 360, background: "#f9fafb" }}>
                     {users.map(user => {
                         if (loading) {
-                            return (<Skeleton variant="text" height={50} />)
+                            return (<Skeleton variant="text" height={50}/>)
                         } else {
                             return (
-                                <ListItem key={user._id}
-                                          secondaryAction={
-                                                <Button onClick={() => createChat(user._id)}><ForwardToInboxOutlined/></Button>
-                                          }
-                                          disablePadding
-                                >
-                                    <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 1000 }} to={`/user/${user._id}`}>
-                                        <ListItemButton>
-                                            <ListItemAvatar>
-                                                <Avatar
-                                                    src={`data:buffer;base64,${user.avatar}`}
-                                                />
-                                            </ListItemAvatar>
-                                            <ListItemText primary={`${user.second_name} ${user.first_name}`} />
-                                        </ListItemButton>
-                                    </Link>
-                                </ListItem>)}})}
+                            <ListItem key={user._id}
+                                              secondaryAction={
+                                                  <Button
+                                                      onClick={() => createChat(user._id)}><ForwardToInboxOutlined/></Button>
+                                              }
+                                              disablePadding
+                            >
+                                <Link style={{textDecoration: 'inherit', color: 'inherit', width: 1000}}
+                                      to={`/user/${user._id}`}>
+                                    <ListItemButton>
+                                        <ListItemAvatar>
+                                            <Avatar
+                                                src={`data:buffer;base64,${user.avatar}`}
+                                            />
+                                        </ListItemAvatar>
+                                        <ListItemText primary={`${user.second_name} ${user.first_name}`}/>
+                                    </ListItemButton>
+                                </Link>
+                            </ListItem>)
+                        }
+                    })}
                 </List>
 
                 <Divider/>
@@ -107,6 +111,7 @@ const Rightbar = () => {
                                     </AvatarGroup>
                                 }
                                 disablePadding
+                                key={group._id}
                             >
                                 <ListItemButton>
                                     <ListItemText primary={group.title}/>

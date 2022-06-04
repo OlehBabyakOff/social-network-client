@@ -17,7 +17,13 @@ import {Link, useHistory, useParams} from "react-router-dom";
 import {followUserService, getFollowingsService, getReportsService, getUser} from "../../api/userService";
 import {getUserPosts} from "../../api/postService";
 import {Context} from "../../index.js";
-import {ForwardToInboxOutlined, PersonAddAltOutlined, PersonRemoveAlt1Outlined, Verified} from "@mui/icons-material";
+import {
+    CakeOutlined, CelebrationOutlined,
+    ForwardToInboxOutlined,
+    PersonAddAltOutlined,
+    PersonRemoveAlt1Outlined,
+    Verified
+} from "@mui/icons-material";
 import ReportModal from "../Modals/ReportModal";
 import {Alert} from "@mui/lab";
 import {createConversationService} from "../../api/chatService";
@@ -35,6 +41,7 @@ const UserProfile = () => {
     const [reload, setReload] = useState(true)
     const [isFollowed, setIsFollowed] = useState(null)
     const [isReported, setIsReported] = useState(false)
+    const [isBirthday, setIsBirthday] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -50,6 +57,7 @@ const UserProfile = () => {
             const fetchReports = await getReportsService(fetchUser.data._id)
             fetchFollowings.data.find(followed => followed.followedId === fetchUser.data._id && followed.followerId === store.user._id ? setIsFollowed(true) : setIsFollowed(false))
             fetchReports.data.find(report => report.reporterId === store?.user._id ? setIsReported(true) : setIsReported(false))
+            await birthdayCheck(fetchUser.data.birthday)
         }
         fetchData().then(() => setLoading(false))
     }, [reload])
@@ -62,6 +70,10 @@ const UserProfile = () => {
     const createChat = async (userId) => {
         const chat = await createConversationService(userId)
         history.push(`/chat/${chat.data._id}`)
+    }
+
+    const birthdayCheck = (birthday) => {
+        new Date().toLocaleDateString('ua-Ua', { month:"numeric", day:"numeric"}) === new Date(birthday).toLocaleDateString('ua-Ua', { month:"numeric", day:"numeric"}) ? setIsBirthday(true) : setIsBirthday(false)
     }
 
     return (
@@ -129,12 +141,13 @@ const UserProfile = () => {
                    </List>
                 </Box>
                 <Divider/>
+                {isBirthday ?  <Alert icon={<CelebrationOutlined fontSize="inherit" />} severity="info">У користувача {`${user.second_name} ${user.first_name}`} сьогодні день народження!</Alert> : null}
                 {user.roles.isBlocked ?
                     <Alert severity="error">Акаунт користувача {`${user.second_name} ${user.first_name}`} - заблоковано</Alert>
                     :
                     !user.roles.isActivated ?
                         <>
-                            <Alert severity="warning">Обережно, акаунт користувача {`${user.second_name} ${user.first_name}`} - не підтверджений</Alert>
+                            <Alert severity="warning">Обережно, акаунт користувача {`${user.second_name} ${user.first_name}`} - не активований</Alert>
                             <Stack direction="row" spacing={2} justifyContent="space-between">
                                 <UserBodyLeft user={user}/>
                                 <UserBodyRight user={user} userPosts={userPosts} reload={reload} setReload={setReload} followings={followings}/>

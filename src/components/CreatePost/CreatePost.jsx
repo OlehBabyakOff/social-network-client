@@ -1,9 +1,21 @@
 import React, {useContext, useState} from 'react';
-import {Avatar, Box, Button, ButtonGroup, Paper, Stack, styled, TextField, Typography} from "@mui/material";
-import {CheckCircleOutline, Image, Room} from "@mui/icons-material";
+import {
+    Avatar,
+    Box,
+    Button,
+    ButtonGroup, IconButton,
+    InputAdornment,
+    Paper,
+    Stack,
+    styled,
+    TextField,
+    Typography
+} from "@mui/material";
+import {CheckCircleOutline, Image, Room, SentimentSatisfiedAlt} from "@mui/icons-material";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
 import {createPostService} from "../../api/postService";
+import Picker from "emoji-picker-react";
 
 const UserBox = styled(Box)({
     display: "flex",
@@ -22,6 +34,13 @@ const CreatePost = ({reload, setReload}) => {
     const [doneImage, setDoneImage] = useState(false)
     const [doneLocation, setDoneLocation] = useState(false)
 
+    const [margin, setMargin] = useState(10)
+    const [showPicker, setShowPicker] = useState(false);
+
+    const onEmojiClick = (event, emojiObject) => {
+        setText(prevInput => prevInput + emojiObject.emoji)
+    };
+
     const createPost = async (text, image, location) => {
         if (store.user.roles.isActivated) {
             if (text.trim()) {
@@ -36,6 +55,8 @@ const CreatePost = ({reload, setReload}) => {
                 setLocation(null)
                 setDoneImage(false)
                 setDoneLocation(false)
+                setShowPicker(false)
+                setMargin(10)
             } else {
                 store.clearErrors()
                 store.setErrors('Ви не можете створювати порожній пост!')
@@ -48,6 +69,8 @@ const CreatePost = ({reload, setReload}) => {
             setLocation(null)
             setDoneImage(false)
             setDoneLocation(false)
+            setShowPicker(false)
+            setMargin(10)
         }
 
     }
@@ -64,7 +87,7 @@ const CreatePost = ({reload, setReload}) => {
 
     return (
         <Box
-            sx={{width: "70%", ml:20, mb: 10, height: 280, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
+            sx={{width: "70%", ml:20, mb: margin, height: 280, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
         >
             <Paper elevation={2} sx={{p:5, background: "#f9fafb"}}>
                 <UserBox>
@@ -90,7 +113,24 @@ const CreatePost = ({reload, setReload}) => {
                     variant="standard"
                     value={text}
                     onChange={e => setText(e.target.value)}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton size="large" color="primary" onClick={() => {
+                                    setShowPicker(val => !val)
+                                    if (margin !== 10) {
+                                        setMargin(10)
+                                    } else {
+                                        setMargin(50)
+                                    }
+                                }}><SentimentSatisfiedAlt/></IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
                 />
+                {showPicker && <Picker
+                    pickerStyle={{ width: '100%' }}
+                    onEmojiClick={onEmojiClick} />}
                 <Stack direction="row" gap={1} mt={2} mb={3} sx={{justifyContent: "space-around"}}>
                     {doneImage ?
                         <>
