@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -15,8 +15,11 @@ import {
     unAdminService
 } from "../../api/adminService";
 import {Close, Done} from "@mui/icons-material";
+import {Context} from "../../index";
 
 const DashboardStatistics = () => {
+
+    const {store} = useContext(Context)
 
     const [usersData, setUsersData] = useState([])
     const [users, setUsers] = useState(0)
@@ -69,18 +72,20 @@ const DashboardStatistics = () => {
         { field: 'phone', headerName: 'Номер телефону', width: 150 },
         { field: "Зняти",
             renderCell: (cellValues) => {
-                return (
-                    <Close
-                        variant="contained"
-                        color="error"
-                        onClick={e => {
-                            unAdmin(cellValues.row.id)
-                        }}
-                        sx={{cursor: 'pointer', margin: 'auto', width: '50%'}}
-                    >
-                        Print
-                    </Close>
-                );
+                if (cellValues.row.id !== store.user._id) {
+                    return (
+                        <Close
+                            variant="contained"
+                            color="error"
+                            onClick={e => {
+                                unAdmin(cellValues.row.id)
+                            }}
+                            sx={{cursor: 'pointer', margin: 'auto', width: '50%'}}
+                        >
+                            Print
+                        </Close>
+                    );
+                }
             }, width: 100},
     ];
 

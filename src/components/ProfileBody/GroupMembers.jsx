@@ -8,7 +8,7 @@ import GroupMembersList from "../GroupMembersList/GroupMembersList";
 import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
 
-const GroupMembers = ({group, members}) => {
+const GroupMembers = ({reload, setReload, group, members}) => {
 
     const {store} = useContext(Context)
 
@@ -21,7 +21,7 @@ const GroupMembers = ({group, members}) => {
                     </Typography>
 
                     {members.length > 0 ? members.map(member => (
-                        <GroupMembersList group={group} member={member}/>
+                        <GroupMembersList reload={reload} setReload={setReload} group={group} member={member}/>
                     )) : null}
 
                 </Paper>

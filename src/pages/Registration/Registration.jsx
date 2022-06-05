@@ -3,19 +3,20 @@ import {
     Box,
     Button,
     Checkbox,
-    CssBaseline,
+    CssBaseline, FormControl,
     FormControlLabel,
-    Grid,
+    Grid, IconButton, InputAdornment, InputLabel, OutlinedInput,
     Paper,
     Popper,
     TextField,
     Typography
 } from "@mui/material";
-import {AccountBox, Image} from "@mui/icons-material";
+import {AccountBox, Image, Visibility, VisibilityOff} from "@mui/icons-material";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
 import {Link, useHistory} from "react-router-dom";
@@ -24,6 +25,15 @@ const Registration = () => {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorEl2, setAnchorEl2] = useState(null);
+    const [showPassword, setShowPassword] = useState(false)
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword)
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -65,8 +75,8 @@ const Registration = () => {
                 store.setErrors('Ім`я повинно містити не менше 2 символів')
             } else if (second_name.length < 2) {
                 store.setErrors('Прізвище повинно містити не менше 2 символів')
-            } else if (phone.length < 8) {
-                store.setErrors('Номер телефона повинен містити не менше 8 символів')
+            } else if (phone.length < 10 && phone.length > 13) {
+                store.setErrors('Номер телефона повинен містити не менше 10 символів і не більше 13')
             } else {
                 const data = new FormData()
                 data.append('email', email)
@@ -166,21 +176,17 @@ const Registration = () => {
                                 value={first_name}
                                 onChange={e => setFirstName(e.target.value)}
                             />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="phone"
-                                label="Номер телефону"
-                                name="phone"
-                                autoComplete="phone"
+                            <PhoneInput
+                                country={'ua'}
                                 value={phone}
-                                onChange={e => setPhone(e.target.value)}
+                                onChange={phone => setPhone(phone)}
+                                inputStyle={{width: '720px', height: '50px', fontSize: '16px'}}
+                                containerStyle={{margin: "10px 0"}}
                             />
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
                                     label="Дата народження"
-                                    value={birthday}
+                                    value={birthday || null}
                                     onChange={(newValue) => {
                                         setBirthday(newValue);
                                     }}
@@ -189,18 +195,28 @@ const Registration = () => {
                                                                         fullWidth/>}
                                 />
                             </LocalizationProvider>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Пароль"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                            />
+                            <FormControl sx={{ mt: 2, mb: 1}} variant="outlined" required fullWidth>
+                                <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    label="Password"
+                                />
+                            </FormControl>
 
                             <input
                                 accept="image/*"

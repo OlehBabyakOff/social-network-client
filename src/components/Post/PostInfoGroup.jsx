@@ -8,10 +8,10 @@ import {
     CardMedia, Checkbox, CircularProgress, Divider, Grid,
     IconButton,
     Menu,
-    MenuItem, Paper,
+    MenuItem, Paper, Stack,
     Typography
 } from "@mui/material";
-import {ChatBubbleOutlineOutlined, Favorite, FavoriteBorder, MoreVert} from "@mui/icons-material";
+import {ChatBubbleOutlineOutlined, Favorite, FavoriteBorder, MoreVert, PinDrop} from "@mui/icons-material";
 import {useParams} from "react-router-dom";
 import Moment from "react-moment";
 import {Context} from "../../index.js";
@@ -139,8 +139,13 @@ const PostInfoGroup = () => {
                                 <Typography variant="body2" color="text.secondary">
                                     {post.text}
                                 </Typography>
-                                {post?.location ? (<Typography variant="body1" color="text.secondary">
-                                    <a style={{color: "inherit", textDecoration: "inherit"}} href={post.location} target="_blank">Геолокація</a>
+                                {post?.location ? (<Typography variant="body1" color="text.secondary" sx={{mt: 2}}>
+                                    <a style={{color: "inherit"}} href={post.location} target="_blank">
+                                        <Stack direction={'row'} spacing={2}>
+                                            <PinDrop color={'error'}/>
+                                            Моя геолокація
+                                        </Stack>
+                                    </a>
                                 </Typography>) : null}
                             </CardContent>
                             <CardActions disableSpacing sx={{justifyContent: "space-between"}}>

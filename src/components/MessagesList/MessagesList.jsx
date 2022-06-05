@@ -64,7 +64,6 @@ const MessagesList = ({socket}) => {
 
                     <List dense sx={{width: '100%', maxWidth: 900, bgcolor: 'background.paper'}}>
                         {conversations.map(conversation => {
-                            console.log(conversation)
                             if (loading) {
                                 return <Skeleton variant="text" height={100} />
                             } else {

@@ -68,6 +68,7 @@ export default class Store {
             this.setUser(res.data.user)
             this.setLoading(false)
         } catch (e) {
+            localStorage.removeItem('token')
         }
     }
     async getUsers() {

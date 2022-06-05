@@ -136,13 +136,10 @@ const GroupProfile = () => {
                     </List>
                 </Box>
                 <Divider/>
-                {isFollowed || group.creatorId === store.user._id ?
                 <Stack direction="row" spacing={2} justifyContent="space-between">
-                    <GroupMembers group={group} members={members} loading={loading} setLoading={setLoading}/>
+                    <GroupMembers group={group} members={members} reload={reload} setReload={setReload} loading={loading} setLoading={setLoading}/>
                     <GroupBody groupId={groupId} group={group} members={members} groupPosts={groupPosts} reload={reload} setReload={setReload}/>
-                </Stack> :
-                    <Alert severity="info">Підпишіться на спільноту, щоб бачити її пости</Alert>
-                }
+                </Stack>
             </Box>)
     );
 };

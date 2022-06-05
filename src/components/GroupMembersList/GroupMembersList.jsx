@@ -17,12 +17,11 @@ import {Skeleton} from "@mui/lab";
 import {BackspaceOutlined} from "@mui/icons-material";
 import {kickUserService} from "../../api/groupService";
 
-const GroupMembersList = ({group, member}) => {
+const GroupMembersList = ({reload, setReload, group, member}) => {
     const {store} = useContext(Context)
 
     const [fetchUser, setFetchUser] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [reload, setReload] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {

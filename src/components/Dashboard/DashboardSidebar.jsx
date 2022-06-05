@@ -1,25 +1,22 @@
-import React, {useContext, useEffect, useState} from 'react';
-import Box from "@mui/material/Box";
+import React, {useContext, useState} from 'react';
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
+import {Link, useHistory} from "react-router-dom";
+import {Avatar, ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
+import {mainListItems, secondaryListItems} from "./ListItems";
 import {styled} from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
-import {mainListItems, secondaryListItems} from "./ListItems";
-import {Avatar, CircularProgress} from "@mui/material";
 import {Context} from "../../index";
-import {BrowserRouter as Router, Redirect, Route, Switch, Link, useHistory} from "react-router-dom";
-import DashboardStatistics from "./DashboardStatistics";
-import DashboardUsers from "./DashboardUsers";
-import DashboardGroups from "./DashboardGroups";
-import DashboardPosts from "./DashboardPosts";
-import DashboardReports from "./DashboardReports";
+import {observer} from "mobx-react-lite";
+import {AdminPanelSettingsOutlined, Home, Logout, Settings} from "@mui/icons-material";
+import DrawerRight from '@mui/material/Drawer';
 
 const drawerWidth = 260;
 
@@ -67,26 +64,26 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
-const DashboardMain = () => {
+const DashboardSidebar = () => {
 
     const {store} = useContext(Context)
+    const history = useHistory()
 
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = useState(true);
 
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
-    useEffect(() => {
-        if (localStorage.getItem('token')) {
-            store.checkAuth()
-        } else {
-            store.setLoading(false)
-        }
-    }, [])
+    const [openRight, setOpenRight] = useState(false);
+
+    const logout = async () => {
+        await store.logout()
+        history.push("/login")
+    }
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <>
             <CssBaseline />
             <AppBar position="absolute" open={open}>
                 <Toolbar
@@ -115,13 +112,52 @@ const DashboardMain = () => {
                     >
                         Панель адміністратора
                     </Typography>
-                    <Link style={{ textDecoration: 'inherit', color: 'inherit' }} to={`/me`}>
-                        <IconButton color="inherit">
-                            <Avatar sx={{ width: 30, height: 30 }}
-                                    src={`data:buffer;base64,${store.user.avatar}`}
-                            />
-                        </IconButton>
-                    </Link>
+                    <IconButton color="inherit">
+                        <Avatar onClick={() => setOpenRight(!openRight)}
+                                sx={{ width: 30, height: 30 }}
+                                src={`data:buffer;base64,${store.user.avatar}`}
+                        />
+                    </IconButton>
+                    <DrawerRight
+                        anchor={'right'}
+                        open={openRight}
+                        onClose={() => setOpenRight(false)}
+                    >
+                        <List sx={{mt: 8}}>
+                            <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/me`}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <Home />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Моя сторінка" />
+                                </ListItemButton>
+                            </Link>
+                            <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/settings`}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <Settings />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Налаштування" />
+                                </ListItemButton>
+                            </Link>
+                            {store.user.roles.isAdmin ? <ListItem disablePadding>
+                                <Link style={{ textDecoration: 'inherit', color: 'inherit', width: 300 }} to={`/dashboard/home`}>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <AdminPanelSettingsOutlined />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Панель адміністратора" />
+                                    </ListItemButton>
+                                </Link>
+                            </ListItem> : null}
+                            <ListItemButton onClick={() => logout()}>
+                                <ListItemIcon>
+                                    <Logout />
+                                </ListItemIcon>
+                                <ListItemText primary="Вихід" />
+                            </ListItemButton>
+                        </List>
+                    </DrawerRight>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
@@ -144,54 +180,8 @@ const DashboardMain = () => {
                     {secondaryListItems}
                 </List>
             </Drawer>
-            <Router>
-                <Switch>
-                    <Route exact path='/dashboard/home'>
-                        {store.loading ? <CircularProgress sx={{position: 'absolute',
-                                left: '50%',
-                                top: '50%',
-                                transform: 'translate(-50%, -50%)'}}/> :
-                            store.user && store.user.roles.isAdmin ?  <DashboardStatistics/> : <Redirect to='/me'/>}
-                    </Route>
-                    <Route exact path='/dashboard/users'>
-                        {store.loading ? <CircularProgress sx={{position: 'absolute',
-                                left: '50%',
-                                top: '50%',
-                                transform: 'translate(-50%, -50%)'}}/> :
-                            store.user && store.user.roles.isAdmin ?  <DashboardUsers/> : <Redirect to='/me'/>}
-                    </Route>
-                    <Route exact path='/dashboard/groups'>
-                        {store.loading ? <CircularProgress sx={{position: 'absolute',
-                                left: '50%',
-                                top: '50%',
-                                transform: 'translate(-50%, -50%)'}}/> :
-                            store.user && store.user.roles.isAdmin ?  <DashboardGroups/> : <Redirect to='/me'/>}
-                    </Route>
-                    <Route exact path='/dashboard/posts'>
-                        {store.loading ? <CircularProgress sx={{position: 'absolute',
-                                left: '50%',
-                                top: '50%',
-                                transform: 'translate(-50%, -50%)'}}/> :
-                            store.user && store.user.roles.isAdmin ?  <DashboardPosts/> : <Redirect to='/me'/>}
-                    </Route>
-                    <Route exact path='/dashboard/reports'>
-                        {store.loading ? <CircularProgress sx={{position: 'absolute',
-                                left: '50%',
-                                top: '50%',
-                                transform: 'translate(-50%, -50%)'}}/> :
-                            store.user && store.user.roles.isAdmin ?  <DashboardReports/> : <Redirect to='/me'/>}
-                    </Route>
-                    <Route exact path='/*'>
-                        {store.loading ? <CircularProgress sx={{position: 'absolute',
-                                left: '50%',
-                                top: '50%',
-                                transform: 'translate(-50%, -50%)'}}/> :
-                            store.user && store.user.roles.isAdmin ?  <Redirect to='/dashboard/home'/> : <Redirect to='/me'/>}
-                    </Route>
-                </Switch>
-            </Router>
-        </Box>
+        </>
     );
 };
 
-export default DashboardMain;
+export default observer(DashboardSidebar);

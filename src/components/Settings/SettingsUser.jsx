@@ -7,6 +7,7 @@ import {useHistory} from "react-router-dom";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import PhoneInput from "react-phone-input-2";
 
 const SettingsUser = () => {
 
@@ -144,16 +145,12 @@ const SettingsUser = () => {
                     value={first_name}
                     onChange={e => setFirstName(e.target.value)}
                 />
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="phone"
-                    label="Номер телефону"
-                    name="phone"
-                    autoComplete="phone"
+                <PhoneInput
+                    country={'ua'}
                     value={phone}
-                    onChange={e => setPhone(e.target.value)}
+                    onChange={phone => setPhone(phone)}
+                    inputStyle={{width: '1220px', height: '50px', fontSize: '16px'}}
+                    containerStyle={{margin: "10px 0"}}
                 />
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker

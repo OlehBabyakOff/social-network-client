@@ -98,8 +98,20 @@ const App = () => {
                         <Route exact path='/login'>
                             {store.user ? <Redirect to='/'/> : <Login/>}
                         </Route>
-                        <Route exact path='/dashboard/*'>
-                            {store.user ? <Dashboard/> : <Redirect to='/login'/>}
+                        <Route exact path='/dashboard/home'>
+                            {store.user ? <Dashboard page={'home'}/> : <Redirect to='/login'/>}
+                        </Route>
+                        <Route exact path='/dashboard/users'>
+                            {store.user ? <Dashboard page={'users'}/> : <Redirect to='/login'/>}
+                        </Route>
+                        <Route exact path='/dashboard/groups'>
+                            {store.user ? <Dashboard page={'groups'}/> : <Redirect to='/login'/>}
+                        </Route>
+                        <Route exact path='/dashboard/posts'>
+                            {store.user ? <Dashboard page={'posts'}/> : <Redirect to='/login'/>}
+                        </Route>
+                        <Route exact path='/dashboard/reports'>
+                            {store.user ? <Dashboard page={'reports'}/> : <Redirect to='/login'/>}
                         </Route>
                         <Route path='*'>
                             {store.user ? <Redirect to='/'/> : <Redirect to='/login'/>}

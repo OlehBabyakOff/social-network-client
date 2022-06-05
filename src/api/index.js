@@ -23,7 +23,6 @@ api.interceptors.response.use(config => {
             localStorage.setItem('token', res.data.accessToken)
             return api.request(originalReq)
         } catch (e) {
-            console.log('Ви не авторизовані')
         }
     }
     throw error

@@ -7,10 +7,10 @@ import {
     CardHeader,
     CardMedia,
     Checkbox, CircularProgress,
-    IconButton, Menu, MenuItem, Skeleton,
+    IconButton, Menu, MenuItem, Skeleton, Stack,
     Typography
 } from "@mui/material";
-import {ChatBubbleOutlineOutlined, Favorite, FavoriteBorder, MoreVert, Share} from "@mui/icons-material";
+import {ChatBubbleOutlineOutlined, Favorite, FavoriteBorder, MoreVert, PinDrop, Share} from "@mui/icons-material";
 import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
 import Moment from "react-moment";
@@ -107,8 +107,13 @@ const PostGroup = ({post, groupId, reload, setReload}) => {
                     <Typography variant="body1" color="text.secondary">
                         {post.text}
                     </Typography>
-                    {post?.location ? (<Typography variant="body1" color="text.secondary">
-                        <a style={{color: "inherit", textDecoration: "inherit"}} href={post.location} target="_blank">Геолокація</a>
+                    {post?.location ? (<Typography variant="body1" color="text.secondary" sx={{mt: 2}}>
+                        <a style={{color: "inherit"}} href={post.location} target="_blank">
+                            <Stack direction={'row'} spacing={2}>
+                                <PinDrop color={'error'}/>
+                                Геолокація
+                            </Stack>
+                        </a>
                     </Typography>) : null}
                 </CardContent>
                 <CardActions disableSpacing sx={{justifyContent: "space-between"}}>
