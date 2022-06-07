@@ -116,6 +116,14 @@ const UserProfile = () => {
                    <List component="nav" aria-label="main mailbox folders">
                        <Stack direction="row" spacing={1} justifyContent="space-evenly" sx={{marginX: 20}}>
                            {isFollowed ?
+                               user.roles.isBlocked ?
+                                   <ListItemButton sx={{maxWidth: 250}} onClick={() => followUser(user._id)} disabled>
+                                       <ListItemIcon>
+                                           <PersonRemoveAlt1Outlined />
+                                       </ListItemIcon>
+                                       <ListItemText primary="Відписатися" />
+                                   </ListItemButton>
+                                   :
                                <ListItemButton sx={{maxWidth: 250}} onClick={() => followUser(user._id)}>
                                    <ListItemIcon>
                                        <PersonRemoveAlt1Outlined />
@@ -123,20 +131,36 @@ const UserProfile = () => {
                                    <ListItemText primary="Відписатися" />
                                </ListItemButton>
                                :
-                               <ListItemButton sx={{maxWidth: 250}} onClick={() => followUser(user._id)}>
+                               user.roles.isBlocked ?
+                                       <ListItemButton sx={{maxWidth: 250}} onClick={() => followUser(user._id)} disabled>
+                                           <ListItemIcon>
+                                               <PersonAddAltOutlined />
+                                           </ListItemIcon>
+                                           <ListItemText primary="Підписатися" />
+                                       </ListItemButton>
+                                    :
+                                       <ListItemButton sx={{maxWidth: 250}} onClick={() => followUser(user._id)}>
+                                           <ListItemIcon>
+                                               <PersonAddAltOutlined />
+                                           </ListItemIcon>
+                                           <ListItemText primary="Підписатися" />
+                                       </ListItemButton>
+                           }
+                           {user.roles.isBlocked ?
+                               <ListItemButton sx={{maxWidth: 250, mr: 5}} onClick={() => createChat(user._id)} disabled>
                                    <ListItemIcon>
-                                       <PersonAddAltOutlined />
+                                       <ForwardToInboxOutlined />
                                    </ListItemIcon>
-                                   <ListItemText primary="Підписатися" />
+                                   <ListItemText primary="Повідомлення" />
+                               </ListItemButton>
+                               :
+                               <ListItemButton sx={{maxWidth: 250, mr: 5}} onClick={() => createChat(user._id)}>
+                                   <ListItemIcon>
+                                       <ForwardToInboxOutlined />
+                                   </ListItemIcon>
+                                   <ListItemText primary="Повідомлення" />
                                </ListItemButton>
                            }
-
-                           <ListItemButton sx={{maxWidth: 250, mr: 5}} onClick={() => createChat(user._id)}>
-                               <ListItemIcon>
-                                   <ForwardToInboxOutlined />
-                               </ListItemIcon>
-                               <ListItemText primary="Повідомлення" />
-                           </ListItemButton>
                            <ReportModal user={user} isReported={isReported} setIsReported={setIsReported}/>
                        </Stack>
                    </List>

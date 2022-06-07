@@ -25,7 +25,7 @@ import Moment from "react-moment";
 import {Link} from "react-router-dom";
 import {deletePostService, getPostLikeService, likePostService} from "../../api/postService";
 
-const Post = ({post, reload, setReload, style}) => {
+const Post = ({post, reload, setReload, style, imgStyle}) => {
 
     const {store} = useContext(Context)
 
@@ -109,7 +109,7 @@ const Post = ({post, reload, setReload, style}) => {
                   component="img"
                   image={`data:buffer;base64,${post.image}`}
                   alt="Фото"
-                  sx={{maxWidth: '1025px', maxHeight: '580px', height: 'auto', width: 'auto', margin: "auto"}}
+                  sx={imgStyle}
               />) : null}
 
               <CardContent>

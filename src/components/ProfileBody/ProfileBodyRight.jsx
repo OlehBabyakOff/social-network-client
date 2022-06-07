@@ -23,7 +23,9 @@ const ProfileBodyRight = ({reload, setReload}) => {
         <Box flex={6} p={{ xs: 0, md: 2 }}>
             <CreatePostProfile reload={reload} setReload={setReload}/>
                 {posts.map(post => (
-                    <Post post={post} key={post._id} reload={reload} setReload={setReload} style={{ margin: 5, mt: 0, width: "85%", ml:12, background: "#f9fafb" }}/>
+                    <Post post={post} key={post._id} reload={reload} setReload={setReload}
+                          style={{ margin: 5, mt: 0, width: "85%", ml:12, background: "#f9fafb" }}
+                          imgStyle={{maxWidth: '950px', maxHeight: '478px', height: 'auto', width: 'auto', margin: "auto"}}/>
                 ))}
         </Box>
     );

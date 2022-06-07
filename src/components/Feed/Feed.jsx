@@ -28,7 +28,9 @@ const Feed = () => {
             <CreatePost reload={reload} setReload={setReload}/>
                 <>
                     {posts.map(post => (
-                        <Post post={post} reload={reload} setReload={setReload} key={post._id} style={{ margin: 5, mt: 0, width: "85%", ml:12, background: "#f9fafb" }}/>
+                        <Post post={post} reload={reload} setReload={setReload} key={post._id}
+                              style={{ margin: 5, mt: 0, width: "85%", ml:12, background: "#f9fafb" }}
+                              imgStyle={{maxWidth: '1025px', maxHeight: '580px', height: 'auto', width: 'auto', margin: "auto"}}/>
                     ))}
                 </>
         </Box>

@@ -32,7 +32,7 @@ const ReportModal = ({user, isReported, setIsReported}) => {
 
     return (
         <>
-            {isReported || user.roles.isAdmin ?
+            {isReported || user.roles.isAdmin || user.roles.isBlocked ?
                 <ListItemButton sx={{maxWidth: 250}} onClick={handleOpen} disabled>
                     <ListItemIcon>
                         <Report />
