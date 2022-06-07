@@ -25,8 +25,6 @@ const Login = () => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [emailError, setEmailError] = useState(false)
-    const [passwordError, setPasswordError] = useState(false)
 
     const [showPassword, setShowPassword] = useState(false)
 
@@ -42,25 +40,17 @@ const Login = () => {
         if (email && password) {
             if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
                 store.setErrors('Невірний формат електронної адреси')
-                setEmailError(true)
-                setPasswordError(false)
             } else if (password.length <= 8) {
-                setEmailError(false)
                 store.setErrors('Пароль повинен містити не менше 8 символів')
-                setPasswordError(true)
             } else {
                 const data = new FormData()
                 data.append('email', email)
                 data.append('password', password)
                 await store.login(data)
-                setEmailError(false)
-                setPasswordError(false)
             }
         } else {
             store.clearErrors()
             store.setErrors('Дані не можуть бути порожніми')
-            setEmailError(true)
-            setPasswordError(true)
         }
     }
 
@@ -110,7 +100,6 @@ const Login = () => {
                             autoFocus
                             value={email}
                             onChange={e => setEmail(e.target.value)}
-                            error={emailError}
                             inputProps={{style: {WebkitBoxShadow: "0 0 0 1000px white inset"}}}
                         />
                         <FormControl sx={{ mt: 2, mb: 1}} variant="outlined" required fullWidth>
@@ -120,7 +109,6 @@ const Login = () => {
                                 type={showPassword ? 'text' : 'password'}
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
-                                error={passwordError}
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton

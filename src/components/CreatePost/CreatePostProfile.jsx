@@ -79,7 +79,7 @@ const CreatePostProfile = ({reload, setReload}) => {
 
     return (
             <Box
-                sx={{width: "80%", ml: 14, mb: margin, height: 250, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
+                sx={{width: "80%", ml: 12, mb: margin, height: 250, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
             >
                 <Paper elevation={2} sx={{p:5, background: "#f9fafb"}}>
                 <TextField

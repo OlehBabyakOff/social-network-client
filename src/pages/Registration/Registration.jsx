@@ -74,66 +74,22 @@ const Registration = () => {
     const [avatar, setAvatar] = useState(null)
     const [bg, setBg] = useState(null)
 
-    const [emailError, setErrorEmail] = useState(false)
-    const [usernameError, setErrorUsername] = useState(false)
-    const [passwordError, setErrorPassword] = useState(false)
-    const [first_nameError, setErrorFirstName] = useState(false)
-    const [second_nameError, setErrorSecondName] = useState(false)
-    const [phoneError, setErrorPhone] = useState(false)
-    const [birthdayError, setErrorBirthday] = useState(false)
-
-
     const registration = async (email, password, username, first_name, second_name, phone, birthday, avatarImg, backgroundImg) => {
         if (email && password && username && first_name && second_name && phone && birthday && avatarImg && backgroundImg) {
             if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
                 store.setErrors('Невірний формат електронної адреси')
-                setErrorEmail(true)
-                setErrorUsername(false)
-                setErrorPassword(false)
-                setErrorFirstName(false)
-                setErrorSecondName(false)
             } else if (password.length <= 7) {
                 store.setErrors('Пароль повинен містити не менше 8 символів')
-                setErrorEmail(false)
-                setErrorUsername(false)
-                setErrorPassword(true)
-                setErrorFirstName(false)
-                setErrorSecondName(false)
             } else if (username.length < 3) {
                 store.setErrors('Логін повинен містити не менше 3 символів')
-                setErrorEmail(false)
-                setErrorUsername(true)
-                setErrorPassword(false)
-                setErrorFirstName(false)
-                setErrorSecondName(false)
             } else if (first_name.length < 2) {
                 store.setErrors('Ім`я повинно містити не менше 2 символів')
-                setErrorEmail(false)
-                setErrorUsername(false)
-                setErrorPassword(false)
-                setErrorFirstName(true)
-                setErrorSecondName(false)
             } else if (second_name.length < 2) {
                 store.setErrors('Прізвище повинно містити не менше 2 символів')
-                setErrorEmail(false)
-                setErrorUsername(false)
-                setErrorPassword(false)
-                setErrorFirstName(false)
-                setErrorSecondName(true)
             } else if (phone.length < 10 && phone.length > 13) {
                 store.setErrors('Номер телефона повинен містити не менше 10 символів і не більше 13')
-                setErrorEmail(false)
-                setErrorUsername(false)
-                setErrorPassword(false)
-                setErrorFirstName(false)
-                setErrorSecondName(false)
             } else if (new Date() < new Date(birthday)) {
                 store.setErrors('Ви не можете обрати дату, яка ще не настала, як дату свого народження')
-                setErrorEmail(false)
-                setErrorUsername(false)
-                setErrorPassword(false)
-                setErrorFirstName(false)
-                setErrorSecondName(false)
             } else {
                 const data = new FormData()
                 data.append('email', email)
@@ -147,20 +103,10 @@ const Registration = () => {
                 data.append('background', backgroundImg)
                 await store.registration(data)
                 history.push("/")
-                setErrorEmail(false)
-                setErrorUsername(false)
-                setErrorPassword(false)
-                setErrorFirstName(false)
-                setErrorSecondName(false)
             }
         } else {
             store.clearErrors()
             store.setErrors('Дані не можуть бути порожніми')
-            setErrorEmail(true)
-            setErrorUsername(true)
-            setErrorPassword(true)
-            setErrorFirstName(true)
-            setErrorSecondName(true)
         }
     }
 
@@ -210,7 +156,6 @@ const Registration = () => {
                                 autoFocus
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
-                                error={emailError}
                                 inputProps={{style: {WebkitBoxShadow: "0 0 0 1000px white inset"}}}
                             />
                             <TextField
@@ -223,7 +168,6 @@ const Registration = () => {
                                 autoComplete="login"
                                 value={username}
                                 onChange={e => setUsername(e.target.value)}
-                                error={usernameError}
                                 inputProps={{style: {WebkitBoxShadow: "0 0 0 1000px white inset"}}}
                             />
                             <TextField
@@ -236,7 +180,6 @@ const Registration = () => {
                                 autoComplete="second_name"
                                 value={second_name}
                                 onChange={e => setSecondName(e.target.value)}
-                                error={second_nameError}
                                 inputProps={{style: {WebkitBoxShadow: "0 0 0 1000px white inset"}}}
                             />
                             <TextField
@@ -249,7 +192,6 @@ const Registration = () => {
                                 autoComplete="first_name"
                                 value={first_name}
                                 onChange={e => setFirstName(e.target.value)}
-                                error={first_nameError}
                                 inputProps={{style: {WebkitBoxShadow: "0 0 0 1000px white inset"}}}
                             />
                             <PhoneInput
@@ -278,7 +220,6 @@ const Registration = () => {
                                     id="outlined-adornment-password"
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
-                                    error={passwordError}
                                     onChange={e => setPassword(e.target.value)}
                                     endAdornment={
                                         <InputAdornment position="end">

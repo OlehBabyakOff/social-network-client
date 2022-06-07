@@ -25,7 +25,7 @@ import Moment from "react-moment";
 import {Link} from "react-router-dom";
 import {deletePostService, getPostLikeService, likePostService} from "../../api/postService";
 
-const Post = ({post, reload, setReload}) => {
+const Post = ({post, reload, setReload, style}) => {
 
     const {store} = useContext(Context)
 
@@ -51,7 +51,7 @@ const Post = ({post, reload, setReload}) => {
             setFetchUser(store.users.find(user => user._id === post.user))
         }
         fetchData().then(() => setLoading(false))
-    }, [reload])
+    }, [reload, post.likes, post.comments])
 
     const likePost = async (id) => {
         if (store.user.roles.isActivated) {
@@ -72,7 +72,7 @@ const Post = ({post, reload, setReload}) => {
     return (
         loading ? <Skeleton variant="text" height={300} sx={{width: "85%", mt: 0, mb: 0, ml:12}} /> :
             fetchUser.roles.isBlocked ? null :
-          (<Card sx={{ margin: 5, mt: 0, width: "85%", ml:12, background: "#f9fafb" }}>
+          (<Card sx={style}>
               <CardHeader
                   avatar={
                       <Avatar sx={{ bgcolor: "red" }} aria-label="recipe" src={`data:buffer;base64,${fetchUser.avatar}`}>
