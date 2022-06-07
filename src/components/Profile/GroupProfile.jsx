@@ -25,6 +25,7 @@ import {
 } from "../../api/groupService";
 import {Delete, GroupAddOutlined, PersonRemoveAlt1Outlined, Settings} from "@mui/icons-material";
 import {Alert} from "@mui/lab";
+import AlertMain from "../Alert/Alert";
 
 const GroupProfile = () => {
 
@@ -136,6 +137,7 @@ const GroupProfile = () => {
                     </List>
                 </Box>
                 <Divider/>
+                {store.errors.length > 0 ? <AlertMain width={'98%'} position={'relative'}/> : null}
                 <Stack direction="row" spacing={2} justifyContent="space-between">
                     <GroupMembers group={group} members={members} reload={reload} setReload={setReload} loading={loading} setLoading={setLoading}/>
                     <GroupBody groupId={groupId} group={group} members={members} groupPosts={groupPosts} reload={reload} setReload={setReload}/>

@@ -47,7 +47,7 @@ const PostUser = ({post, reload, setReload}) => {
     }
 
     return (
-        loading ? <Skeleton variant="text" height={300} /> :
+        loading ? <Skeleton variant="text" height={300} sx={{width: "80%", ml:13}}/> :
             (<Card sx={{ margin: 5,  width: "80%", ml:13, background: "#f9fafb" }}>
                 <CardHeader
                     avatar={
@@ -64,6 +64,7 @@ const PostUser = ({post, reload, setReload}) => {
                     height="20%"
                     image={`data:buffer;base64,${post.image}`}
                     alt="Фото"
+                    sx={{maxWidth: '850px', maxHeight: '477px', height: 'auto', width: 'auto', margin: "auto"}}
                 />) : null}
                 <CardContent>
                     <Typography variant="body1" color="text.secondary">

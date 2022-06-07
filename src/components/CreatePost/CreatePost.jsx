@@ -87,7 +87,7 @@ const CreatePost = ({reload, setReload}) => {
 
     return (
         <Box
-            sx={{width: "70%", ml:20, mb: margin, height: 280, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
+            sx={{width: "70%", ml:20, mb: margin, height: 250, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
         >
             <Paper elevation={2} sx={{p:5, background: "#f9fafb"}}>
                 <UserBox>
@@ -131,7 +131,33 @@ const CreatePost = ({reload, setReload}) => {
                 {showPicker && <Picker
                     pickerStyle={{ width: '100%' }}
                     onEmojiClick={onEmojiClick} />}
-                <Stack direction="row" gap={1} mt={2} mb={3} sx={{justifyContent: "space-around"}}>
+                <Stack direction="row" gap={2} mt={3} mb={3} sx={{justifyContent: "space-around"}}>
+                    <ButtonGroup
+                        fullWidth
+                        variant="contained"
+                        aria-label="outlined primary button group"
+                    >
+                        <Button onClick={(e) => {
+                            e.preventDefault()
+                            createPost(text, image, location)
+                        }}>Створити</Button>
+                    </ButtonGroup>
+
+                    {doneLocation ?
+                        <label htmlFor="raised-button-file">
+                            <Button variant="raised" component="span">
+                                <CheckCircleOutline color={"success"}/>
+                            </Button>
+                        </label>
+                        :
+                        <Button onClick={() => {
+                            sendLocation()
+                            setDoneLocation(true)
+                        }} variant="raised" component="span">
+                            <Room color="success" />
+                        </Button>
+                    }
+
                     {doneImage ?
                         <>
                             <input
@@ -170,32 +196,7 @@ const CreatePost = ({reload, setReload}) => {
                         </>
                     }
 
-                    {doneLocation ?
-                        <label htmlFor="raised-button-file">
-                            <Button variant="raised" component="span">
-                                <CheckCircleOutline color={"success"}/>
-                            </Button>
-                        </label>
-                        :
-                        <Button onClick={() => {
-                            sendLocation()
-                            setDoneLocation(true)
-                        }} variant="raised" component="span">
-                            <Room color="success" />
-                        </Button>
-                    }
-
                 </Stack>
-                <ButtonGroup
-                    fullWidth
-                    variant="contained"
-                    aria-label="outlined primary button group"
-                >
-                    <Button onClick={(e) => {
-                        e.preventDefault()
-                        createPost(text, image, location)
-                    }}>Створити</Button>
-                </ButtonGroup>
             </Paper>
         </Box>
     );

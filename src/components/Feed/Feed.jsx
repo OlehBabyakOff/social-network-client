@@ -5,6 +5,7 @@ import CreatePost from "../CreatePost/CreatePost";
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index.js";
 import {getAllPosts} from "../../api/postService.js";
+import AlertMain from "../Alert/Alert";
 
 const Feed = () => {
 
@@ -23,6 +24,7 @@ const Feed = () => {
 
     return (
         <Box flex={7} p={{ xs: 0, md: 2 }}>
+            {store.errors.length > 0 ? <AlertMain width={'97%'} position={'relative'}/> : null}
             <CreatePost reload={reload} setReload={setReload}/>
                 <>
                     {posts.map(post => (

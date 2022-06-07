@@ -70,7 +70,7 @@ const Post = ({post, reload, setReload}) => {
     }
 
     return (
-        loading ? <Skeleton variant="text" height={300} /> :
+        loading ? <Skeleton variant="text" height={300} sx={{width: "85%", mt: 0, mb: 0, ml:12}} /> :
             fetchUser.roles.isBlocked ? null :
           (<Card sx={{ margin: 5, mt: 0, width: "85%", ml:12, background: "#f9fafb" }}>
               <CardHeader
@@ -107,9 +107,9 @@ const Post = ({post, reload, setReload}) => {
               </Menu>
               {post.image ? (<CardMedia
                   component="img"
-                  height="20%"
                   image={`data:buffer;base64,${post.image}`}
                   alt="Фото"
+                  sx={{maxWidth: '1025px', maxHeight: '580px', height: 'auto', width: 'auto', margin: "auto"}}
               />) : null}
 
               <CardContent>

@@ -9,6 +9,7 @@ import {AddBox, Image} from "@mui/icons-material";
 import {addGalleryService, getGallery} from "../../api/userService";
 import {Context} from "../../index";
 import GalleryImg from "./GalleryImg";
+import AlertMain from "../Alert/Alert";
 
 const GalleryList = () => {
 
@@ -46,6 +47,7 @@ const GalleryList = () => {
             store.clearErrors()
             store.setErrors('Ви не можете додавати фото в галерею, поки не підтвердите свій акаунт за посиланням на пошті!')
             setValue('Gallery')
+            setImage(null)
         }
     }
 
@@ -57,10 +59,12 @@ const GalleryList = () => {
                     alignItems: "center",
                     justifyContent: "center", borderBottom: 1, borderColor: 'divider'}}>
 
-                    <TabList onChange={handleChange}>
+                    <TabList onChange={handleChange} sx={{mb: 1}}>
                         <Tab label="Моя галерея" value="Gallery" />
                         <Tab label="Додати фото" value="AddPhoto" />
                     </TabList>
+
+                    {store.errors.length > 0 ? <AlertMain width={'98%'} position={'relative'}/> : null}
 
                     <TabPanel value="Gallery">
                         {gallery.length > 0 ?

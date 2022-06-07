@@ -84,7 +84,8 @@ const GaleryUser = () => {
                                             display: 'block',
                                             maxWidth: 500,
                                             overflow: 'hidden',
-                                            width: '100%',
+                                            width: 'auto',
+                                            margin: 'auto'
                                         }}
                                         src={`data:buffer;base64,${step.image}`}
                                         alt={step.createdAt}

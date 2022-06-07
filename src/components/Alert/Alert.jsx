@@ -3,7 +3,7 @@ import {Alert} from "@mui/material";
 import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
 
-const AlertMain = () => {
+const AlertMain = ({width, position}) => {
 
     const {store} = useContext(Context)
 
@@ -17,7 +17,7 @@ const AlertMain = () => {
     return (
         visible ?
         store.errors.map(error => (
-            <Alert severity="error">{error}</Alert>
+            <Alert sx={{position: position, width: width}} severity="error">{error}</Alert>
         )) : null
     );
 };

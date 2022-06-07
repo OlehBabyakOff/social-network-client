@@ -13,12 +13,6 @@ const Homepage = () => {
     const {store} = useContext(Context)
     const history = useHistory()
 
-    // useEffect(() => {
-    //     if (store.user.roles.isBlocked) {
-    //         history.push('/me')
-    //     }
-    // }, [])
-
     const logout = async () => {
         await store.logout()
         history.push("/login")

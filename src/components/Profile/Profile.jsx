@@ -11,6 +11,7 @@ import {CollectionsOutlined, GroupsOutlined, PersonOutlineOutlined, Verified} fr
 import {getFollowingsService, getGallery} from "../../api/userService";
 import {getMyGroupsService} from "../../api/groupService";
 import {Alert} from "@mui/lab";
+import AlertMain from "../Alert/Alert";
 
 const Profile = () => {
 
@@ -100,9 +101,10 @@ const Profile = () => {
                 </List>
             </Box>
             <Divider/>
+            {store.errors.length > 0 ? <AlertMain width={'98%'} position={'relative'}/> : null}
             {!store.user.roles.isActivated ?
                 <>
-                    <Alert severity="warning">Увага, ваш акаунт не підтверджено. Ви не зможете користуватися усім функціоналом сайту. Щоб активувати акаунт - перейдіть за посиланням відправленим вам на пошту при реєстрації.</Alert>
+                    <Alert severity="warning">Увага, ваш акаунт не активовано. Ви не зможете користуватися усім функціоналом сайту. Щоб активувати акаунт - перейдіть за посиланням відправленим вам на пошту при реєстрації.</Alert>
                     <Stack direction="row" spacing={2} justifyContent="space-between">
                         <ProfileBodyLeft/>
                         <ProfileBodyRight reload={reload} setReload={setReload}/>

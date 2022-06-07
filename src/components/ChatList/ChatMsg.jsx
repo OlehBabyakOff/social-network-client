@@ -11,8 +11,11 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 1000,
-    height: 600,
+    maxWidth: 1000,
+    maxHeight: 600,
+    width: 'auto',
+    height: 'auto',
+    margin: 'auto',
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 0,
@@ -97,7 +100,7 @@ const ChatMsg = withStyles(defaultChatMsgStyles, { name: 'ChatMsg' })(props => {
                                     >
                                         {image ?
                                         <Grid item xs={12}>
-                                            <img src={`data:buffer;base64,${image}`} style={{width: 500, height: 350, cursor: 'pointer'}} onClick={handleOpen}/>
+                                            <img src={`data:buffer;base64,${image}`} style={{maxWidth: 600, maxHeight: 400, width: 'auto', margin: 'auto', cursor: 'pointer'}} onClick={handleOpen}/>
                                         </Grid> : null}
 
                                         <Modal
@@ -107,7 +110,7 @@ const ChatMsg = withStyles(defaultChatMsgStyles, { name: 'ChatMsg' })(props => {
                                             aria-describedby="modal-modal-description"
                                         >
                                             <Box sx={style}>
-                                                <img src={`data:buffer;base64,${image}`} style={{width: 1000, height: 600}}/>
+                                                <img src={`data:buffer;base64,${image}`} style={{maxWidth: 1000, maxHeight: 600, width: 'auto', margin: 'auto'}}/>
                                             </Box>
                                         </Modal>
 

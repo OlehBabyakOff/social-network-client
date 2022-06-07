@@ -30,6 +30,7 @@ const GalleryImg = ({image, loading, reload, setReload}) => {
                     src={`data:buffer;base64,${image.image}`}
                     srcSet={`data:buffer;base64,${image.image}`}
                     loading="lazy"
+                    style={{maxWidth: '400px', width: 'auto', margin: 'auto'}}
                 />
                 <Stack direction="row" spacing={1} justifyContent="space-between">
                     <ImageListItemBar

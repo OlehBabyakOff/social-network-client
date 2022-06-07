@@ -15,6 +15,7 @@ import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
 import {Link, useHistory} from "react-router-dom";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import AlertMain from "../../components/Alert/Alert";
 
 const Login = () => {
 
@@ -24,6 +25,8 @@ const Login = () => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [emailError, setEmailError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
 
     const [showPassword, setShowPassword] = useState(false)
 
@@ -37,24 +40,33 @@ const Login = () => {
 
     const login = async (email, password) => {
         if (email && password) {
-            if (!email.includes('@')) {
+            if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
                 store.setErrors('Невірний формат електронної адреси')
-            } else if (password.length <= 5) {
-                store.setErrors('Пароль повинен містити не менше 6 символів')
+                setEmailError(true)
+                setPasswordError(false)
+            } else if (password.length <= 8) {
+                setEmailError(false)
+                store.setErrors('Пароль повинен містити не менше 8 символів')
+                setPasswordError(true)
             } else {
                 const data = new FormData()
                 data.append('email', email)
                 data.append('password', password)
                 await store.login(data)
+                setEmailError(false)
+                setPasswordError(false)
             }
         } else {
             store.clearErrors()
             store.setErrors('Дані не можуть бути порожніми')
+            setEmailError(true)
+            setPasswordError(true)
         }
     }
 
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
+            {store.errors.length > 0 ? <AlertMain width={'100%'} position={'absolute'}/> : null}
             <CssBaseline />
             <Grid
                 item
@@ -98,6 +110,8 @@ const Login = () => {
                             autoFocus
                             value={email}
                             onChange={e => setEmail(e.target.value)}
+                            error={emailError}
+                            inputProps={{style: {WebkitBoxShadow: "0 0 0 1000px white inset"}}}
                         />
                         <FormControl sx={{ mt: 2, mb: 1}} variant="outlined" required fullWidth>
                             <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
@@ -106,6 +120,7 @@ const Login = () => {
                                 type={showPassword ? 'text' : 'password'}
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
+                                error={passwordError}
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton

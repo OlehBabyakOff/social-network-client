@@ -7,7 +7,7 @@ import {
     List,
     ListItem,
     ListItemAvatar,
-    ListItemButton, Menu, MenuItem, Stack, Tab, TextField,
+    ListItemButton, Menu, MenuItem, Popper, Stack, Tab, TextField,
     Typography
 } from "@mui/material";
 import {AccountBox, EmailOutlined, Image, MoreVert} from "@mui/icons-material";
@@ -29,6 +29,8 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
     const [title, setTitle] = useState("")
     const [avatar, setAvatar] = useState(null)
     const [bg, setBg] = useState(null)
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl2, setAnchorEl2] = useState(null);
 
     const createGroup = async (title, avatarImg, backgroundImg) => {
         if (store.user.roles.isActivated) {
@@ -45,6 +47,29 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
             setValue("Groups")
         }
     }
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleExit = (event) => {
+        setAnchorEl(null);
+    };
+
+    const handleClick2 = (event) => {
+        setAnchorEl2(event.currentTarget);
+    };
+
+    const handleExit2 = (event) => {
+        setAnchorEl2(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const open2 = Boolean(anchorEl2);
+
+    const id = open ? 'simple-popper' : undefined;
+    const id2 = open2 ? 'simple-popper' : undefined;
+
 
     return (
         <TabContext value={value}>
@@ -84,12 +109,26 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
                             id="raised-button-file1"
                             multiple
                             type="file"
-                            onChange={e => setAvatar(e.target.files[0])}
+                            onChange={e => {
+                                setAvatar(e.target.files[0])
+                                handleExit()
+                            }}
                         />
                         <label htmlFor="raised-button-file1">
-                            <Button variant="raised" component="span" sx={{width: 200, height: 200}}>
-                                <AccountBox color="primary" sx={{width: 200, height: 200}}/>
+                            <Button variant="raised" component="span" sx={{maxWidth: 400, width: 'auto', maxHeight: 200, height: 'auto', margin: 'auto'}}
+                                    onMouseEnter={handleClick} onMouseLeave={handleExit}>
+                                {avatar ? <CardMedia
+                                    component="img"
+                                    height="200"
+                                    image={avatar.name ? URL.createObjectURL(avatar) : null}
+                                    alt="Фото"
+                                /> : <AccountBox color="primary" sx={{width: 200, height: 200}}/>}
                             </Button>
+                            <Popper id={id} open={open} anchorEl={anchorEl}>
+                                <Box sx={{p: 1, border: '1px solid', bgcolor: 'background.paper' }}>
+                                    Аватар спільноти
+                                </Box>
+                            </Popper>
                         </label>
 
                         <input
@@ -98,12 +137,26 @@ const GroupsList = ({groups, setGroups, reload, setReload, loading, setLoading, 
                             id="raised-button-file"
                             multiple
                             type="file"
-                            onChange={e => setBg(e.target.files[0])}
+                            onChange={e => {
+                                setBg(e.target.files[0])
+                                handleExit2()
+                            }}
                         />
                         <label htmlFor="raised-button-file">
-                            <Button variant="raised" component="span" sx={{width: 200, height: 200}}>
-                                <Image color="primary" sx={{width: 200, height: 200}}/>
+                            <Button variant="raised" component="span" sx={{maxWidth: 400, width: 'auto', maxHeight: 200, height: 'auto', margin: 'auto'}}
+                                    onMouseEnter={handleClick2} onMouseLeave={handleExit2}>
+                                {bg ? <CardMedia
+                                    component="img"
+                                    height="200"
+                                    image={bg.name ? URL.createObjectURL(bg) : null}
+                                    alt="Фото"
+                                /> : <AccountBox color="primary" sx={{width: 200, height: 200}}/>}
                             </Button>
+                            <Popper id={id2} open={open2} anchorEl={anchorEl2}>
+                                <Box sx={{p: 1, border: '1px solid', bgcolor: 'background.paper' }}>
+                                    Задній фон спільноти
+                                </Box>
+                            </Popper>
                         </label>
 
                         <TextField

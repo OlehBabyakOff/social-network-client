@@ -17,6 +17,7 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
     const [doneLocation, setDoneLocation] = useState(false)
 
     const [margin, setMargin] = useState(2)
+    const [height, setHeight] = useState(220)
     const [showPicker, setShowPicker] = useState(false);
 
     const onEmojiClick = (event, emojiObject) => {
@@ -39,6 +40,7 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
                 setDoneLocation(false)
                 setShowPicker(false)
                 setMargin(2)
+                setHeight(220)
             } else {
                 store.clearErrors()
                 store.setErrors('Ви не можете створювати порожній пост!')
@@ -53,6 +55,7 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
             setDoneLocation(false)
             setShowPicker(false)
             setMargin(2)
+            setHeight(220)
         }
     }
 
@@ -68,7 +71,7 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
 
     return (
             <Box
-                sx={{width: "80%", ml: 10, mb: margin, height: 280, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
+                sx={{width: "80%", ml: 12, mb: margin, height: height, bgColor: "background.default", color: "text.primary", p:3, borderRadius:"5"}}
             >
                 <Paper elevation={2} sx={{p:5, background: "#f9fafb"}}>
                     <TextField
@@ -85,10 +88,12 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
                                 <InputAdornment position="end">
                                     <IconButton size="large" color="primary" onClick={() => {
                                         setShowPicker(val => !val)
-                                        if (margin !== 2) {
+                                        if (margin !== 2 && height !== 220) {
                                             setMargin(2)
+                                            setHeight(220)
                                         } else {
                                             setMargin(40)
+                                            setHeight(250)
                                         }
                                     }}><SentimentSatisfiedAlt/></IconButton>
                                 </InputAdornment>
@@ -98,7 +103,31 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
                     {showPicker && <Picker
                         pickerStyle={{ width: '100%' }}
                         onEmojiClick={onEmojiClick} />}
-                <Stack direction="row" gap={1} mt={2} mb={3} sx={{justifyContent: "space-around"}}>
+                <Stack direction="row" gap={2} mt={2} mb={3} sx={{justifyContent: "space-around"}}>
+
+                    <ButtonGroup
+                        fullWidth
+                        variant="contained"
+                        aria-label="outlined primary button group"
+                    >
+                        <Button onClick={() => createPost(text, image, location)}>Створити</Button>
+                    </ButtonGroup>
+
+                    {doneLocation ?
+                        <label htmlFor="raised-button-file">
+                            <Button variant="raised" component="span">
+                                <CheckCircleOutline color={"success"}/>
+                            </Button>
+                        </label>
+                        :
+                        <Button onClick={() => {
+                            sendLocation()
+                            setDoneLocation(true)
+                        }} variant="raised" component="span">
+                            <Room color="success" />
+                        </Button>
+                    }
+
                     {doneImage ?
                         <>
                             <input
@@ -137,29 +166,7 @@ const CreatePostGroup = ({groupId, reload, setReload}) => {
                         </>
                     }
 
-                    {doneLocation ?
-                        <label htmlFor="raised-button-file">
-                            <Button variant="raised" component="span">
-                                <CheckCircleOutline color={"success"}/>
-                            </Button>
-                        </label>
-                        :
-                        <Button onClick={() => {
-                            sendLocation()
-                            setDoneLocation(true)
-                        }} variant="raised" component="span">
-                            <Room color="success" />
-                        </Button>
-                    }
-
                 </Stack>
-                <ButtonGroup
-                    fullWidth
-                    variant="contained"
-                    aria-label="outlined primary button group"
-                >
-                    <Button onClick={() => createPost(text, image, location)}>Створити</Button>
-                </ButtonGroup>
                 </Paper>
             </Box>
     );

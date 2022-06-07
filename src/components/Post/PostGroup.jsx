@@ -62,7 +62,7 @@ const PostGroup = ({post, groupId, reload, setReload}) => {
     }
 
     return (
-        loading ? <Skeleton variant="text" height={300} /> :
+        loading ? <Skeleton variant="text" height={300} sx={{width: "85%", ml:12}}/> :
             (<Card sx={{ margin: 5, width: "85%", ml:12, background: "#f9fafb" }}>
                 <CardHeader
                     avatar={
@@ -101,6 +101,7 @@ const PostGroup = ({post, groupId, reload, setReload}) => {
                     height="20%"
                     image={`data:buffer;base64,${post.image}`}
                     alt="Фото"
+                    sx={{maxWidth: '850px', maxHeight: '477px', height: 'auto', width: 'auto', margin: "auto"}}
                 />) : null}
 
                 <CardContent>

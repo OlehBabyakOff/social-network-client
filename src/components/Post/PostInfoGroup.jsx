@@ -26,6 +26,7 @@ import {
 import CreateCommentGroup from "../Comment/CreateCommentGroup";
 import GroupComment from "../Comment/GroupComment";
 import {Skeleton} from "@mui/lab";
+import AlertMain from "../Alert/Alert";
 
 const PostInfoGroup = () => {
 
@@ -86,9 +87,10 @@ const PostInfoGroup = () => {
 
     return (
             <Box flex={7} p={{xs: 0, md: 2}}>
+                {store.errors.length > 0 ? <AlertMain width={'97%'} position={'relative'}/> : null}
                 {loading ? <Skeleton variant="rectangular" height={300} /> : (
                     <>
-                        <Breadcrumbs aria-label="breadcrumb" sx={{marginBottom: "20px"}}>
+                        <Breadcrumbs aria-label="breadcrumb" sx={{marginBottom: "20px", marginTop: '20px'}}>
                             <Link style={{textDecoration: 'inherit', color: 'inherit', fontSize: '20px'}}
                                   to={`/group/${groupId}`}
                             >
@@ -134,6 +136,7 @@ const PostInfoGroup = () => {
                                 height="20%"
                                 image={`data:buffer;base64,${post.image}`}
                                 alt="Фото"
+                                sx={{maxWidth: '1025px', maxHeight: '580px', height: 'auto', width: 'auto', margin: "auto"}}
                             />) : null }
                             <CardContent>
                                 <Typography variant="body2" color="text.secondary">

@@ -32,6 +32,7 @@ import {observer} from "mobx-react-lite";
 import Picker from 'emoji-picker-react';
 import {Context} from "../../index";
 import {Alert} from "@mui/lab";
+import AlertMain from "../Alert/Alert";
 
 const ChatList = ({socket}) => {
 
@@ -199,8 +200,9 @@ const ChatList = ({socket}) => {
                                 </IconButton>
                             </ListItem>
                         </Stack>
+                        {store.errors.length > 0 ? <AlertMain width={'98%'} position={'absolute'}/> : null}
                         {user.roles.isBlocked ?
-                        <Alert severity="error">Користувач {`${user.second_name} ${user.first_name}`} - заблокований</Alert>
+                        <Alert severity="error" sx={{width: '98%', position: 'absolute'}}>Користувач {`${user.second_name} ${user.first_name}`} - заблокований</Alert>
                             : null}
                         <Divider/>
                         <Box sx={{overflowY: "auto", height: `${height}vh`, mx: 1}}>

@@ -49,7 +49,6 @@ const App = () => {
                   top: '50%',
                   transform: 'translate(-50%, -50%)'}}/> :
         <>
-            {store.errors.length > 0 ? <AlertMain/> : null}
             <ThemeProvider theme={darkTheme}>
                 <Router>
                     <Switch>

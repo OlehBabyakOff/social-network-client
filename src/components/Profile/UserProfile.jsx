@@ -27,6 +27,7 @@ import {
 import ReportModal from "../Modals/ReportModal";
 import {Alert} from "@mui/lab";
 import {createConversationService} from "../../api/chatService";
+import AlertMain from "../Alert/Alert";
 
 const UserProfile = () => {
 
@@ -141,6 +142,7 @@ const UserProfile = () => {
                    </List>
                 </Box>
                 <Divider/>
+                {store.errors.length > 0 ? <AlertMain width={'98%'} position={'relative'}/> : null}
                 {isBirthday ?  <Alert icon={<CelebrationOutlined fontSize="inherit" />} severity="info">У користувача {`${user.second_name} ${user.first_name}`} сьогодні день народження!</Alert> : null}
                 {user.roles.isBlocked ?
                     <Alert severity="error">Акаунт користувача {`${user.second_name} ${user.first_name}`} - заблоковано</Alert>
